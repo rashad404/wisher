@@ -6,7 +6,8 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
- 
+use Illuminate\Support\Facades\Hash;
+
 class LoginController extends Controller
 {
     public function showLoginForm()
@@ -31,9 +32,9 @@ class LoginController extends Controller
             return redirect()->intended('dashboard');
         }
  
-        return back()->withErrors([
-            'email' => 'The provided credentials do not match our records.',
-        ])->onlyInput('email');
+        // Set an error message in the session
+        return redirect()->route('login')->with('error', 'The provided credentials do not match our records.');
+
     }
 
     public function showRegistrationForm()
@@ -43,26 +44,40 @@ class LoginController extends Controller
 
     public function register(Request $request)
     {
-        
         // Validation
         $request->validate([
-            'name' => ['required', 'string', 'max:255'],
+            'first_name' => ['required', 'string', 'max:255'],
+            'last_name' => ['required', 'string', 'max:255'],
+            'gender' => ['required', 'in:Male,Female,Other'],
+            'dob' => ['required', 'date'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8', 'confirmed'],
+            'password' => ['required', 'string', 'min:8'],
         ]);
-    
+
         // Create a new user
-        $user = new User([
-            'name' => $request->input('name'),
+        $user = User::create([
             'email' => $request->input('email'),
-            'password' => bcrypt($request->input('password')),
+            'password' => Hash::make($request->input('password')),
         ]);
-        $user->save();
-    
-        Auth::login($user);
-    
+
+        // Create a profile for the user
+        $user->profile()->create([
+            'first_name' => $request->input('first_name'),
+            'last_name' => $request->input('last_name'),
+            'gender' => $request->input('gender'),
+            'dob' => $request->input('dob'),
+        ]);
+
         // Redirect to a success page or login page
         return redirect('/dashboard')->with('success', 'Registration successful. You can now log in.');
     }
-    
+
+    public function logout(Request $request)
+    {
+        Auth::logout(); // Logout the user
+        $request->session()->invalidate(); // Invalidate the user's session
+        $request->session()->regenerateToken(); // Regenerate the CSRF token
+
+        return redirect('/login'); // Redirect to the login page or any other desired page
+    }
 }

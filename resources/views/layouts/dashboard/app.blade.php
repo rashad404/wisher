@@ -8,7 +8,7 @@
 </head>
 <body class="h-full">
     <header>
-        @include('/layouts/header')
+        @include('/layouts/dashboard/header')
     </header>
     
     <nav>
@@ -20,7 +20,7 @@
     </main>
     
     <footer>
-        @include('/layouts/footer')
+        @include('/layouts/dashboard/footer')
     </footer>
 </body>
 </html>
