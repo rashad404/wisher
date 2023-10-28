@@ -123,6 +123,7 @@ return [
 
     'cipher' => 'AES-256-CBC',
 
+    'license_key' => env('Pztg2rkGRZOSPpFVvenF1ju1HKAjXR1VMqOWsVGExDMgGjZXxi', ''),
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
@@ -173,6 +174,7 @@ return [
         App\Providers\AuthServiceProvider::class,
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
+        App\Providers\NovaServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
     ],
