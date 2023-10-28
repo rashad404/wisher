@@ -68,6 +68,9 @@ class LoginController extends Controller
             'dob' => $request->input('dob'),
         ]);
 
+        // Log in the user
+        Auth::login($user);
+        
         // Redirect to a success page or login page
         return redirect('/dashboard')->with('success', 'Registration successful. You can now log in.');
     }
