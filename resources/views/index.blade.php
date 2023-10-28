@@ -1,20 +1,31 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-    <div class="sm:mx-auto sm:w-full sm:max-w-xl">
-        <img class="mx-auto h-10 w-auto" src="{{ asset('images/logo.svg') }}" alt="Wisher.az">
-        <h2 class="mt-4 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Hədiyyə və Arzuların Ünvanı!</h2>
-        <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"> TEZLIKLƏ!</h2>
+<div class="mx-auto">
+  <div class="relative bg-white">
+    <h1 class="text-center mt-8 mb-6 text-3xl font-semibold tracking-tight text-red-500 sm:text-4xl">TEZLIKLƏ!</h1>
+      <div class="my-12 mx-auto max-w-7xl lg:flex lg:justify-between lg:px-8 xl:justify-end">
 
-        <h3 class="mt-10 text-center  leading-9 tracking-tight text-gray-900">
-            <p class="mb-4">Wisher.az xüsusi günləri xatırlamaq və qeyd etmək üçün şəxsi köməkçinizdir. </p>
-            <p class="mb-4">Siz onu ad günləri, yubileylər və ya hər hansı mühüm tarixlərdə avtomatik olaraq sms mesaj və ya elektron poçt göndərmək üçün istifadə edə bilərsiniz və hətta avtomatik hədiyyələr göndərə bilərsiniz. </p>
-            <p class="mb-4">Hədiyyə və mesajlar hər bir şəxsə uyğun fərdiləşdirilə bilinir.</p>
-            <p class="mb-4">Wisher.az -dan həm fərdi şəxslər, həm də şirkətlər istifadə edə bilər.</p>
-            <p class="mb-4">Şirkətlər üçün hədiyyə / təbrik prosesini avtomatikləşdirmək və hər bir işçiyə və ya biznes partnyora dəyərli olduğunu hiss etdirmək daha asan olacaq.</p>
-            <p class="mb-4">Artıq vacib tarixləri unutmaq və ya düzgün hədiyyələr seçməklə bağlı narahatlığınız olmayacaq - Wisher.az hər bir anı həm sizin, həm də sevdikləriniz üçün xüsusi edərək, bütün bunların qayğısına qalır.</p>
-        </h3>
+        <div class="lg:flex ">
+            <img class="max-h-screen object-cover" src="{{ asset('images/wish-banner.jpg') }}" alt="Wisher.az">
+        </div>
+
+        <div class="pl-12">
+          <div class="mx-auto ">
+            <h1 class="mt-2 text-3xl font-semibold tracking-tight text-indigo-900 sm:text-4xl">Hədiyyə və Arzuların Ünvanı!</h1>
+            
+
+            <p class="mt-6 text-xl leading-8 text-gray-700">Wisher.az xüsusi günləri xatırlamaq və qeyd etmək üçün şəxsi köməkçinizdir. </p>
+            <p class="mt-6 text-xl leading-8 text-gray-700">Siz onu ad günləri, yubileylər və ya hər hansı mühüm tarixlərdə avtomatik olaraq sms mesaj və ya elektron poçt göndərmək üçün istifadə edə bilərsiniz və hətta avtomatik hədiyyələr göndərə bilərsiniz. </p>
+            <p class="mt-6 text-xl leading-8 text-gray-700">Hədiyyə və mesajlar hər bir şəxsə uyğun fərdiləşdirilə bilinir.</p>
+            <p class="mt-6 text-xl leading-8 text-gray-700">Wisher.az -dan həm fərdi şəxslər, həm də şirkətlər istifadə edə bilər.</p>
+            <p class="mt-6 text-xl leading-8 text-gray-700">Şirkətlər üçün hədiyyə / təbrik prosesini avtomatikləşdirmək və hər bir işçiyə və ya biznes partnyora dəyərli olduğunu hiss etdirmək daha asan olacaq.</p>
+            <p class="mt-6 text-xl leading-8 text-gray-700">Artıq vacib tarixləri unutmaq və ya düzgün hədiyyələr seçməklə bağlı narahatlığınız olmayacaq - Wisher.az hər bir anı həm sizin, həm də sevdikləriniz üçün xüsusi edərək, bütün bunların qayğısına qalır.</p>
+            
+          </div>
+        </div>
+      </div>
     </div>
-</div>
+    
+  </div>
 @endsection
