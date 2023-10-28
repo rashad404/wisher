@@ -21,4 +21,7 @@ Route::get('/', function () {
 Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+
+Route::get('/register', [LoginController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [LoginController::class, 'register']);
 Route::get('password/reset', 'ForgotPasswordController@showLinkRequestForm')->name('password.request');

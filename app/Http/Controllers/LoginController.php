@@ -1,7 +1,8 @@
 <?php
  
 namespace App\Http\Controllers;
- 
+
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
@@ -34,4 +35,33 @@ class LoginController extends Controller
             'email' => 'The provided credentials do not match our records.',
         ])->onlyInput('email');
     }
+
+    public function showRegistrationForm()
+    {
+        return view('auth.register');
+    }
+
+    public function register(Request $request)
+    {
+        // Validation
+        $request->validate([
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
+            'password' => ['required', 'string', 'min:8', 'confirmed'],
+        ]);
+    
+        // Create a new user
+        $user = new User([
+            'name' => $request->input('name'),
+            'email' => $request->input('email'),
+            'password' => bcrypt($request->input('password')),
+        ]);
+        $user->save();
+    
+        Auth::login($user);
+    
+        // Redirect to a success page or login page
+        return redirect('/dashboard')->with('success', 'Registration successful. You can now log in.');
+    }
+    
 }
