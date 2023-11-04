@@ -9,7 +9,7 @@
       <div class="hidden lg:flex lg:gap-x-12">
         <a href="/" class="text-sm font-semibold leading-6 text-white">Product</a>
         <a href="#" class="text-sm font-semibold leading-6 text-white">Features</a>
-        <a href="#" class="text-sm font-semibold leading-6 text-white">Marketplace</a>
+        <a href="#" class="text-sm font-semibold leading-6 text-white">Hədiyyələr</a>
         <a href="#" class="text-sm font-semibold leading-6 text-white">Company</a>
       </div>
       <div class="flex flex-1 items-center justify-end gap-x-6">
