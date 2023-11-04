@@ -7,14 +7,15 @@
         </a>
       </div>
       <div class="hidden lg:flex lg:gap-x-12">
-        <a href="/" class="text-sm font-semibold leading-6 text-white">Product</a>
-        <a href="#" class="text-sm font-semibold leading-6 text-white">Features</a>
-        <a href="#" class="text-sm font-semibold leading-6 text-white">Hədiyyələr</a>
-        <a href="#" class="text-sm font-semibold leading-6 text-white">Company</a>
+        <a href="#" class="text-sm font-semibold leading-6 text-white">Hədiyyə Kataloqu</a>
+        <a href="#" class="text-sm font-semibold leading-6 text-white">Təbriklərim</a>
+        <a href="#" class="text-sm font-semibold leading-6 text-white">Dost siyahım</a>
+        <a href="/" class="text-sm font-semibold leading-6 text-white">Necə İşləyir</a>
+        <a href="#" class="text-sm font-semibold leading-6 text-white">Haqqımızda</a>
       </div>
       <div class="flex flex-1 items-center justify-end gap-x-6">
-        <a href="/login" class="hidden lg:block lg:text-sm lg:font-semibold lg:leading-6 lg:text-white">Log in</a>
-        <a href="/register" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign up</a>
+        <a href="/login" class="hidden lg:block lg:text-sm lg:font-semibold lg:leading-6 lg:text-white">Daxil ol</a>
+        <a href="/register" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Qeydiyyat</a>
       </div>
       <div class="flex lg:hidden">
         <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">
