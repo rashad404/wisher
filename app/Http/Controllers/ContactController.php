@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 
-class DashboardController extends Controller
+class ContactController extends Controller
 {
     public function index()
     {
-        $user = Auth::user(); // Get the authenticated user
+         // Get the authenticated user
+        $user = Auth::user();
 
         // Check if a user is authenticated
         if ($user) {
@@ -19,6 +20,6 @@ class DashboardController extends Controller
             $lastName = '';
         }
     
-        return view('dashboard.index', compact('firstName', 'lastName'));
+        return view('user.contacts.index', compact('firstName', 'lastName'));
     }
 }

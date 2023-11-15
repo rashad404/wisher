@@ -1,10 +1,11 @@
 <?php
 
-use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\GiftController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\ContactController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,5 +34,6 @@ Route::get('/password/reset', [ForgotPasswordController::class, 'index'])->name(
 Route::get('/gifts', [GiftController::class, 'index'])->name('gifts.index');
 Route::get('/gifts/view/{id}', [GiftController::class, 'view'])->name('gifts.view');
 
-// Dashboard
-Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
+// User Panel
+Route::get('/user/dashboard', [UserController::class, 'index'])->name('user.index');
+Route::get('/user/contacts', [ContactController::class, 'index'])->name('contacts.index');

@@ -29,7 +29,7 @@ class LoginController extends Controller
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
  
-            return redirect()->intended('dashboard');
+            return redirect()->intended('/user/dashboard');
         }
  
         // Set an error message in the session
@@ -72,7 +72,7 @@ class LoginController extends Controller
         Auth::login($user);
         
         // Redirect to a success page or login page
-        return redirect('/dashboard')->with('success', 'Registration successful. You can now log in.');
+        return redirect('/user/dashboard')->with('success', 'Registration successful. You can now log in.');
     }
 
     public function logout(Request $request)

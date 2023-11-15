@@ -8,6 +8,8 @@
 </head>
 <body class="h-full">
     <header>
+        @include('/layouts/dashboard/sidebar')
+        @include('/layouts/dashboard/sidebar-mobile')
         @include('/layouts/dashboard/header')
     </header>
     
@@ -15,7 +17,7 @@
         <!-- Include your navigation menu here -->
     </nav>
     
-    <main>
+    <main class="ml-80">
         @yield('content')
     </main>
     
