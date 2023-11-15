@@ -30,6 +30,7 @@ Route::post('/register', [LoginController::class, 'register']);
 Route::get('/password/reset', [ForgotPasswordController::class, 'index'])->name('password.request');
 
 Route::get('/gifts', [GiftController::class, 'index'])->name('gifts.index');
+Route::get('/gifts/view/{id}', [GiftController::class, 'view'])->name('gifts.view');
 
 // Dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');

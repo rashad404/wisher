@@ -8,7 +8,11 @@ class GiftController extends Controller
 {
     public function index()
     {
-    
         return view('gifts.index');
+    }
+
+    public function view()
+    {
+        return view('gifts.view');
     }
 }
