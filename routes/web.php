@@ -37,3 +37,4 @@ Route::get('/gifts/view/{id}', [GiftController::class, 'view'])->name('gifts.vie
 // User Panel
 Route::get('/user/dashboard', [UserController::class, 'index'])->name('user.index');
 Route::get('/user/contacts', [ContactController::class, 'index'])->name('contacts.index');
+Route::get('/user/contacts/view/{id}', [ContactController::class, 'view'])->name('contacts.view');
