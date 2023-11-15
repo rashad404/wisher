@@ -4,6 +4,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\GiftController;
+use App\Http\Controllers\MainController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,9 +18,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/', [MainController::class, 'index'])->name('main.index');
+Route::get('/about', [MainController::class, 'about'])->name('main.about');
+Route::get('/how-it-works', [MainController::class, 'howItWorks'])->name('main.howItWorks');
 
 Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');

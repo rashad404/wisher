@@ -10,8 +10,8 @@
         <a href="/gifts" class="text-sm font-semibold leading-6 text-white">Hədiyyə Kataloqu</a>
         <a href="#" class="text-sm font-semibold leading-6 text-white">Təbriklərim</a>
         <a href="#" class="text-sm font-semibold leading-6 text-white">Dost siyahım</a>
-        <a href="/" class="text-sm font-semibold leading-6 text-white">Necə İşləyir</a>
-        <a href="#" class="text-sm font-semibold leading-6 text-white">Haqqımızda</a>
+        <a href="/how-it-works" class="text-sm font-semibold leading-6 text-white">Necə İşləyir</a>
+        <a href="/about" class="text-sm font-semibold leading-6 text-white">Haqqımızda</a>
       </div>
       <div class="flex flex-1 items-center justify-end gap-x-6">
         <a href="/login" class="hidden lg:block lg:text-sm lg:font-semibold lg:leading-6 lg:text-white">Daxil ol</a>
