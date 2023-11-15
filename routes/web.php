@@ -3,6 +3,7 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\GiftController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,6 +29,7 @@ Route::get('/register', [LoginController::class, 'showRegistrationForm'])->name(
 Route::post('/register', [LoginController::class, 'register']);
 Route::get('/password/reset', [ForgotPasswordController::class, 'index'])->name('password.request');
 
+Route::get('/gifts', [GiftController::class, 'index'])->name('gifts.index');
 
 // Dashboard
 Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard.index');
