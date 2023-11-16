@@ -8,9 +8,9 @@
 </head>
 <body class="h-full bg-gray-500 bg-opacity-25">
     <header>
-        @include('/layouts/dashboard/sidebar')
-        @include('/layouts/dashboard/sidebar-mobile')
-        @include('/layouts/dashboard/header')
+        @include('/layouts/user/sidebar')
+        @include('/layouts/user/sidebar-mobile')
+        @include('/layouts/user/header')
     </header>
     
     <nav>
@@ -22,7 +22,7 @@
     </main>
     
     <footer>
-        @include('/layouts/dashboard/footer')
+        @include('/layouts/user/footer')
     </footer>
 </body>
 </html>

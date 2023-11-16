@@ -36,5 +36,15 @@ Route::get('/gifts/view/{id}', [GiftController::class, 'view'])->name('gifts.vie
 
 // User Panel
 Route::get('/user/dashboard', [UserController::class, 'index'])->name('user.index');
-Route::get('/user/contacts', [ContactController::class, 'index'])->name('contacts.index');
-Route::get('/user/contacts/view/{id}', [ContactController::class, 'view'])->name('contacts.view');
+Route::get('/user/contacts', [ContactController::class, 'index'])->name('user.contacts');
+Route::get('/user/contacts/{id}', [ContactController::class, 'show'])->where('id', '[0-9]+')->name('contacts.show');
+
+// Contacts
+Route::get('/user/contacts/create', [ContactController::class, 'create'])->name('user.contacts.create');
+Route::post('/user/contacts', [ContactController::class, 'store'])->name('user.contacts.store');
+
+Route::get('/user/contacts/edit/{contact}', [ContactController::class, 'edit'])->name('user.contacts.edit');
+Route::put('/user/contacts/update/{contact}', [ContactController::class, 'update'])->name('user.contacts.update');
+
+Route::get('/user/contacts/delete/{contact}', [ContactController::class, 'destroy'])->name('user.contacts.delete');
+
