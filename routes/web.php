@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\GiftController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -33,6 +34,12 @@ Route::get('/password/reset', [ForgotPasswordController::class, 'index'])->name(
 
 Route::get('/gifts', [GiftController::class, 'index'])->name('gifts.index');
 Route::get('/gifts/view/{id}', [GiftController::class, 'view'])->name('gifts.view');
+
+// Products
+Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+Route::post('/products/variant/quantity', [ProductController::class, 'getVariantQuantity']);
+Route::post('/products/variant/sizes', [ProductController::class, 'getAvailableSizes']);
 
 // User Panel
 Route::get('/user/dashboard', [UserController::class, 'index'])->name('user.index');
