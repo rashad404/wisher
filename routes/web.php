@@ -6,6 +6,7 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\GiftController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
@@ -55,3 +56,14 @@ Route::put('/user/contacts/update/{contact}', [ContactController::class, 'update
 
 Route::get('/user/contacts/delete/{contact}', [ContactController::class, 'destroy'])->name('user.contacts.delete');
 
+Route::get('/user/groups', [GroupController::class, 'index'])->name('user.groups.index');
+Route::get('/user/groups/create', [GroupController::class, 'create'])->name('user.groups.create');
+Route::post('/user/groups', [GroupController::class, 'store'])->name('user.groups.store');
+Route::get('/user/groups/{group}', [GroupController::class, 'show'])->name('user.groups.show');
+Route::get('/user/groups/{group}/edit', [GroupController::class, 'edit'])->name('user.groups.edit');
+Route::put('/user/groups/{group}', [GroupController::class, 'update'])->name('user.groups.update');
+Route::delete('/user/groups/{group}', [GroupController::class, 'destroy'])->name('user.groups.destroy');
+
+
+Route::post('groups/{group}/add-contact', [GroupController::class, 'addContact'])->name('user.groups.addContact');
+Route::delete('groups/{group}/remove-contact/{contact}', [GroupController::class, 'removeContact'])->name('user.groups.removeContact');

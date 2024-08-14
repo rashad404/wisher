@@ -96,6 +96,18 @@
                     @endif
                 </div>
             </div>
+
+            <!-- Groups Field -->
+            <div class="sm:col-span-2">
+                <label for="groups" class="block text-sm font-semibold leading-6 text-gray-900">Groups</label>
+                <div class="mt-2.5">
+                    <select name="groups[]" id="groups" multiple class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        @foreach($groups as $group)
+                            <option value="{{ $group->id }}">{{ $group->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+            </div>
         </div>
         <div class="mt-10">
             <button type="submit" class="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Create Contact</button>

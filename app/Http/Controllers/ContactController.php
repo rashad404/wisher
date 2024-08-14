@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
+use App\Models\Group;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -19,7 +20,10 @@ class ContactController extends Controller
 
     public function create()
     {
-        return view('user.contacts.create');
+        // Retrieve the groups that belong to the authenticated user
+        $groups = Group::where('user_id', Auth::id())->get();
+
+        return view('user.contacts.create', compact('groups'));
     }
 
     public function store(Request $request)
@@ -44,8 +48,11 @@ class ContactController extends Controller
     
         $validatedData['user_id'] = Auth::id();
     
-        Contact::create($validatedData);
+        $contact = Contact::create($validatedData);
     
+        // Sync the groups
+        $contact->groups()->sync($request->groups);
+
         return redirect()->route('user.contacts.index')->with('success', 'Contact created successfully.');
     }
 
@@ -75,6 +82,8 @@ class ContactController extends Controller
 
         $contact->update($data);
 
+        // Sync the groups
+        $contact->groups()->sync($request->groups);
 
         return redirect()->route('user.contacts');
     }

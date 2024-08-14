@@ -28,4 +28,10 @@ class Contact extends Model
         $this->setAttribute('likes', $updatedLikes);
         $this->save();
     }
+
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'contact_group');
+    }
+
 }
