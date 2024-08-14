@@ -7,7 +7,7 @@
         </a>
       </div>
       <div class="hidden lg:flex lg:gap-x-12">
-        <a href="/gifts" class="text-sm font-semibold leading-6 text-white">Hədiyyə Kataloqu</a>
+        <a href="/products" class="text-sm font-semibold leading-6 text-white">Hədiyyə Kataloqu</a>
         <a href="#" class="text-sm font-semibold leading-6 text-white">Təbriklərim</a>
         <a href="#" class="text-sm font-semibold leading-6 text-white">Dost siyahım</a>
         <a href="/how-it-works" class="text-sm font-semibold leading-6 text-white">Necə İşləyir</a>

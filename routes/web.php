@@ -43,7 +43,7 @@ Route::post('/products/variant/sizes', [ProductController::class, 'getAvailableS
 
 // User Panel
 Route::get('/user/dashboard', [UserController::class, 'index'])->name('user.index');
-Route::get('/user/contacts', [ContactController::class, 'index'])->name('user.contacts');
+Route::get('/user/contacts', [ContactController::class, 'index'])->name('user.contacts.index');
 Route::get('/user/contacts/{id}', [ContactController::class, 'show'])->where('id', '[0-9]+')->name('contacts.show');
 
 // Contacts
