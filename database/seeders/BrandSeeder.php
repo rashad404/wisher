@@ -1,4 +1,5 @@
 <?php
+
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
@@ -8,11 +9,15 @@ class BrandSeeder extends Seeder
 {
     public function run()
     {
-        // Create specific brands
         Brand::firstOrCreate(['name' => 'Samsung']);
         Brand::firstOrCreate(['name' => 'Apple']);
-
-        // Create additional random brands using the factory
-        // Brand::factory()->count(8)->create(); // Adjust the count as needed
+        Brand::firstOrCreate(['name' => 'Google']);
+        Brand::firstOrCreate(['name' => 'OnePlus']);
+        Brand::firstOrCreate(['name' => 'Sony']);
+        Brand::firstOrCreate(['name' => 'Xiaomi']);
+        Brand::firstOrCreate(['name' => 'Oppo']);
+        Brand::firstOrCreate(['name' => 'Huawei']);
+        Brand::firstOrCreate(['name' => 'Nokia']);
+        Brand::firstOrCreate(['name' => 'Motorola']);
     }
 }
