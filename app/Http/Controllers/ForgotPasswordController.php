@@ -1,86 +1,82 @@
 <?php
- 
+
 namespace App\Http\Controllers;
 
-use App\Models\User;
-use Illuminate\Http\Request;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Password as PasswordFacade;
+use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
+use Illuminate\Validation\ValidationException;
 
 class ForgotPasswordController extends Controller
 {
-    public function index()
+    public function showLinkRequestForm()
     {
         return view('auth.forgotPassword');
     }
 
-
-    /**
-     * Handle an authentication attempt.
-     */
-    public function authenticate(Request $request): RedirectResponse
+    public function sendResetLinkEmail(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => ['required', 'email'],
-            'password' => ['required'],
-        ]);
- 
-        if (Auth::attempt($credentials)) {
-            $request->session()->regenerate();
- 
-            return redirect()->intended('/user/dashboard');
-        }
- 
-        // Set an error message in the session
-        return redirect()->route('login')->with('error', 'The provided credentials do not match our records.');
-
-    }
-
-    public function showRegistrationForm()
-    {
-        return view('auth.register');
-    }
-
-    public function register(Request $request)
-    {
-        // Validation
         $request->validate([
-            'first_name' => ['required', 'string', 'max:255'],
-            'last_name' => ['required', 'string', 'max:255'],
-            'gender' => ['required', 'in:Male,Female,Other'],
-            'dob' => ['required', 'date'],
-            'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
-            'password' => ['required', 'string', 'min:8'],
+            'email' => ['required', 'email'],
         ]);
 
-        // Create a new user
-        $user = User::create([
-            'email' => $request->input('email'),
-            'password' => Hash::make($request->input('password')),
-        ]);
+        $response = Password::sendResetLink(
+            $request->only('email')
+        );
 
-        // Create a profile for the user
-        $user->profile()->create([
-            'first_name' => $request->input('first_name'),
-            'last_name' => $request->input('last_name'),
-            'gender' => $request->input('gender'),
-            'dob' => $request->input('dob'),
-        ]);
+        if ($response == Password::RESET_LINK_SENT) {
+            return redirect()->route('password.sent');
+        }
 
-        // Log in the user
-        Auth::login($user);
-        
-        // Redirect to a success page or login page
-        return redirect('/user/dashboard')->with('success', 'Registration successful. You can now log in.');
+        return back()->withErrors(
+            ['email' => __($response)]
+        );
     }
 
-    public function logout(Request $request)
+    public function showResetForm(Request $request, $token = null)
     {
-        Auth::logout(); // Logout the user
-        $request->session()->invalidate(); // Invalidate the user's session
-        $request->session()->regenerateToken(); // Regenerate the CSRF token
+        return view('auth.resetPassword')->with(
+            ['token' => $token, 'email' => $request->email]
+        );
+    }
 
-        return redirect('/login'); // Redirect to the login page or any other desired page
+    public function reset(Request $request)
+    {
+        $request->validate([
+            'email' => ['required', 'email'],
+            'password' => ['required', 'confirmed', 'min:8'],
+            'token' => ['required'],
+        ]);
+
+        $response = PasswordFacade::reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($user, $password) {
+                $user->password = Hash::make($password);
+                $user->save();
+                Auth::login($user);
+            }
+        );
+
+        if ($response == Password::PASSWORD_RESET) {
+            return redirect()->route('user.index')->with('status', __('Your password has been reset and you are now logged in.'));
+        }
+
+        return back()->withErrors(
+            ['email' => [__($response)]]
+        );
+    }
+
+    public function sendTestEmail()
+    {
+        \Illuminate\Support\Facades\Mail::raw('This is a test email.', function ($message) {
+            $message->to('nihadnemetli9900@gmail.com')
+                    ->subject('Test Email');
+        });
+
+        return 'Test email sent!';
     }
 }
