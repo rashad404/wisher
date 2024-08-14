@@ -24,12 +24,12 @@ class ForgotPasswordController extends Controller
             'email' => ['required', 'email'],
         ]);
 
-        $response = PasswordFacade::sendResetLink(
+        $response = Password::sendResetLink(
             $request->only('email')
         );
 
         if ($response == Password::RESET_LINK_SENT) {
-            return back()->with('status', __($response));
+            return redirect()->route('password.sent');
         }
 
         return back()->withErrors(
@@ -62,7 +62,7 @@ class ForgotPasswordController extends Controller
         );
 
         if ($response == Password::PASSWORD_RESET) {
-            return redirect()->route('login')->with('status', __($response));
+            return redirect()->route('user.index')->with('status', __('Your password has been reset and you are now logged in.'));
         }
 
         return back()->withErrors(
