@@ -7,6 +7,7 @@ use App\Http\Controllers\GiftController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SubscriptionController;
 use Illuminate\Support\Facades\Route;
@@ -80,3 +81,6 @@ Route::delete('groups/{group}/remove-contact/{contact}', [GroupController::class
 
 Route::post('/subscribe', [SubscriptionController::class, 'store'])->name('subscribe');
 Route::get('/unsubscribe/{email}', [SubscriptionController::class, 'unsubscribe'])->name('unsubscribe');
+
+Route::get('/privacy-policy', [PageController::class, 'privacyPolicy'])->name('privacy-policy');
+Route::get('/terms', [PageController::class, 'termsOfService'])->name('terms-of-service');
