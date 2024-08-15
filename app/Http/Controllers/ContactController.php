@@ -1,5 +1,5 @@
 <?php
- 
+
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
@@ -22,7 +22,7 @@ class ContactController extends Controller
     {
         // Retrieve the groups that belong to the authenticated user
         $groups = Group::where('user_id', Auth::id())->get();
-
+        //dd($groups);
         return view('user.contacts.create', compact('groups'));
     }
 
@@ -37,21 +37,21 @@ class ContactController extends Controller
             'birth_year' => 'required_with:birth_day,birth_month|nullable|numeric|min:1950|max:' . date('Y'),
             'address' => 'nullable|string|max:500',
         ]);
-    
+
         // Combine birthdate fields if all are present
         if ($validatedData['birth_day'] && $validatedData['birth_month'] && $validatedData['birth_year']) {
             $validatedData['birthdate'] = Carbon::createFromDate($validatedData['birth_year'], $validatedData['birth_month'], $validatedData['birth_day'])->format('Y-m-d');
         }
-    
+
         // Remove individual birthdate fields
         unset($validatedData['birth_day'], $validatedData['birth_month'], $validatedData['birth_year']);
-    
+
         $validatedData['user_id'] = Auth::id();
-    
+
         $contact = Contact::create($validatedData);
-    
+
         // Sync the groups
-        $contact->groups()->sync($request->groups);
+        $contact->groups()->sync($request->input('groups', [])); // Ensure groups are synced
 
         return redirect()->route('user.contacts.index')->with('success', 'Contact created successfully.');
     }
@@ -83,15 +83,15 @@ class ContactController extends Controller
         $contact->update($data);
 
         // Sync the groups
-        $contact->groups()->sync($request->groups);
+        $contact->groups()->sync($request->input('groups', [])); // Ensure groups are synced
 
-        return redirect()->route('user.contacts');
+        return redirect()->route('user.contacts.index')->with('success', 'Contact updated successfully.');
     }
 
     public function destroy(Contact $contact)
     {
         $contact->delete();
 
-        return redirect()->route('user.contacts');
+        return redirect()->route('user.contacts.index')->with('success', 'Contact deleted successfully.');
     }
 }

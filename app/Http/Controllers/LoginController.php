@@ -1,5 +1,5 @@
 <?php
- 
+
 namespace App\Http\Controllers;
 
 use App\Models\User;
@@ -25,13 +25,13 @@ class LoginController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required'],
         ]);
- 
+
         if (Auth::attempt($credentials)) {
             $request->session()->regenerate();
- 
+
             return redirect()->intended('/user/dashboard');
         }
- 
+
         // Set an error message in the session
         return redirect()->route('login')->with('error', 'The provided credentials do not match our records.');
 
@@ -56,8 +56,10 @@ class LoginController extends Controller
 
         // Create a new user
         $user = User::create([
+            'name' => $request->input('first_name') . ' ' . $request->input('last_name'), // Combine first name and last name
             'email' => $request->input('email'),
             'password' => Hash::make($request->input('password')),
+            'email_verified_at' => now(), // Set email_verified_at to the current timestamp (optional)
         ]);
 
         // Create a profile for the user
@@ -70,7 +72,7 @@ class LoginController extends Controller
 
         // Log in the user
         Auth::login($user);
-        
+
         // Redirect to a success page or login page
         return redirect('/user/dashboard')->with('success', 'Registration successful. You can now log in.');
     }
