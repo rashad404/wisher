@@ -38,12 +38,12 @@
                                     </div>
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                                    <div class="text-gray-900">{{ $group->contacts_count }} Əlaqə</div>
+                                    <div class=“text-gray-900”>{{ $group->contacts()->count() }} Əlaqə</div>
                                 </td>
                                 <td class="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">
-                                    <a href="{{ route('user.groups.edit', $group->id) }}" class="text-indigo-600 hover:text-indigo-900">Dəyiş<span class="sr-only">, {{ $group->name }}</span></a> | 
-                                    <a 
-                                    href="{{ route('user.groups.destroy', $group->id) }}" 
+                                    <a href="{{ route('user.groups.edit', $group->id) }}" class="text-indigo-600 hover:text-indigo-900">Dəyiş<span class="sr-only">, {{ $group->name }}</span></a> |
+                                    <a
+                                    href="{{ route('user.groups.destroy', $group->id) }}"
                                     onclick="event.preventDefault(); if(confirm('Silmək istədiyinizə əminsinizmi?')) document.getElementById('delete-group-{{ $group->id }}').submit();"
                                     class="text-indigo-600 hover:text-indigo-900">Sil<span class="sr-only">, {{ $group->name }}</span></a>
 

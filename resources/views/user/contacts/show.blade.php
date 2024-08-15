@@ -6,7 +6,7 @@
 
 
   <div class="flex transform-gpu divide-x divide-gray-100">
-  
+
     <!-- Active item side-panel, show/hide based on active state -->
     <div class="hidden h-96 w-1/2 flex-none flex-col divide-y divide-gray-100 overflow-y-auto sm:flex">
       <div class="flex-none p-6 text-center">
@@ -28,6 +28,6 @@
     </div>
   </div>
 
-  
-  
+
+
 @endsection
