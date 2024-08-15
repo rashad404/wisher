@@ -8,6 +8,7 @@ use App\Http\Controllers\MainController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\SubscriptionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -75,3 +76,6 @@ Route::delete('/user/groups/{group}', [GroupController::class, 'destroy'])->name
 
 Route::post('groups/{group}/add-contact', [GroupController::class, 'addContact'])->name('user.groups.addContact');
 Route::delete('groups/{group}/remove-contact/{contact}', [GroupController::class, 'removeContact'])->name('user.groups.removeContact');
+
+Route::post('/subscribe', [SubscriptionController::class, 'store'])->name('subscribe');
+Route::get('/unsubscribe/{email}', [SubscriptionController::class, 'unsubscribe'])->name('unsubscribe');
