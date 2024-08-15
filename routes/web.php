@@ -84,3 +84,7 @@ Route::get('/unsubscribe/{email}', [SubscriptionController::class, 'unsubscribe'
 
 Route::get('/privacy-policy', [PageController::class, 'privacyPolicy'])->name('privacy-policy');
 Route::get('/terms', [PageController::class, 'termsOfService'])->name('terms-of-service');
+Route::get('/faq', [PageController::class, 'faq'])->name('faq');
+
+Route::get('/contact', [PageController::class, 'showContactForm'])->name('contact.show');
+Route::post('/contact', [PageController::class, 'submitContactForm'])->name('contact.submit');
