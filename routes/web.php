@@ -61,8 +61,9 @@ Route::post('/user/contacts', [ContactController::class, 'store'])->name('user.c
 
 Route::get('/user/contacts/edit/{contact}', [ContactController::class, 'edit'])->name('user.contacts.edit');
 Route::put('/user/contacts/update/{contact}', [ContactController::class, 'update'])->name('user.contacts.update');
+Route::get('/user/contacts/{contact}', [ContactController::class, 'show'])->name('user.contacts.show');
+Route::delete('/user/contacts/{contact}', [ContactController::class, 'destroy'])->name('user.contacts.destroy');
 
-Route::get('/user/contacts/delete/{contact}', [ContactController::class, 'destroy'])->name('user.contacts.delete');
 
 Route::get('/user/groups', [GroupController::class, 'index'])->name('user.groups.index');
 Route::get('/user/groups/create', [GroupController::class, 'create'])->name('user.groups.create');

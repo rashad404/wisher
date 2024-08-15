@@ -7,11 +7,11 @@
       <div>
         <h2 class="text-base font-semibold leading-7 text-gray-900">Dəyiş</h2>
         <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">Lorem İpsum...</p>
-  
+
         <div class="mt-10 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
 
-  
-  
+
+
           <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
             <label for="photo" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">Photo</label>
             <div class="mt-2 sm:col-span-2 sm:mt-0">
@@ -34,11 +34,11 @@
           </div>
         </div>
       </div>
-  
+
       <div>
         <h2 class="text-base font-semibold leading-7 text-gray-900">Personal Information</h2>
         <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">Use a permanent address where you can receive mail.</p>
-  
+
         <div class="mt-10 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
           <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
             <label for="first-name" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">Name</label>
@@ -46,37 +46,37 @@
               <input type="text" name="first-name" id="first-name" autocomplete="given-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
             </div>
           </div>
-  
-  
+
+
           <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
             <label for="email" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">Email address</label>
             <div class="mt-2 sm:col-span-2 sm:mt-0">
               <input id="email" name="email" type="email" autocomplete="email" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-md sm:text-sm sm:leading-6">
             </div>
           </div>
-  
-  
+
+
           <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
             <label for="street-address" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">Street address</label>
             <div class="mt-2 sm:col-span-2 sm:mt-0">
               <input type="text" name="street-address" id="street-address" autocomplete="street-address" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xl sm:text-sm sm:leading-6">
             </div>
           </div>
-  
+
           <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
             <label for="city" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">City</label>
             <div class="mt-2 sm:col-span-2 sm:mt-0">
               <input type="text" name="city" id="city" autocomplete="address-level2" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
             </div>
           </div>
-  
+
           <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
             <label for="region" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">State / Province</label>
             <div class="mt-2 sm:col-span-2 sm:mt-0">
               <input type="text" name="region" id="region" autocomplete="address-level1" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6">
             </div>
           </div>
-  
+
           <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
             <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">ZIP / Postal code</label>
             <div class="mt-2 sm:col-span-2 sm:mt-0">
@@ -85,11 +85,11 @@
           </div>
         </div>
       </div>
-  
+
       <div>
         <h2 class="text-base font-semibold leading-7 text-gray-900">Notifications</h2>
         <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">We'll always let you know about important changes, but you pick what else you want to hear about.</p>
-  
+
         <div class="mt-10 space-y-10 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
           <fieldset>
             <legend class="sr-only">By Email</legend>
@@ -128,6 +128,7 @@
               </div>
             </div>
           </fieldset>
+          <!--
           <fieldset>
             <legend class="sr-only">Push Notifications</legend>
             <div class="sm:grid sm:grid-cols-3 sm:items-baseline sm:gap-4 sm:py-6">
@@ -153,37 +154,84 @@
               </div>
             </div>
           </fieldset>
+          <!-->
         </div>
       </div>
     </div>
-  
+
     <div class="mt-6 flex items-center justify-end gap-x-6">
       <button type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button>
       <button type="submit" class="inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Save</button>
     </div>
   </form>
 
-  
+
     <div class="container">
-        <form method="POST" action="{{ route('user.contacts.update', $contact->id) }}">
-            @csrf
-            @method('PUT') <!-- Use PUT method for updating -->
+    <form method="POST" action="{{ route('user.contacts.update', $contact->id) }}">
+    @csrf
+    @method('PUT') <!-- Use PUT method for updating -->
 
-            <div class="form-group">
-                <label for="name">Name:</label>
-                <input type="text" name="name" id="name" class="form-control" value="{{ $contact->name }}" required>
-            </div>
-            <div class="form-group">
-                <label for="email">Email:</label>
-                <input type="email" name="email" id="email" class="form-control" value="{{ $contact->email }}">
-            </div>
-            <div class="form-group">
-                <label for="phone_number">Phone Number:</label>
-                <input type="text" name="phone_number" id="phone_number" class="form-control" value="{{ $contact->phone_number }}">
-            </div>
-            <!-- Add more form fields for other contact information like birthdate, interests, likes, dislikes, etc. -->
+    <div class="mt-10 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
 
-            <button type="submit" class="btn btn-primary">Update Contact</button>
-        </form>
+        <!-- Name Field -->
+        <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
+            <label for="name" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">Name:</label>
+            <div class="mt-2 sm:col-span-2 sm:mt-0">
+                <input type="text" name="name" id="name" autocomplete="given-name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6" value="{{ $contact->name }}">
+            </div>
+        </div>
+
+        <!-- Email Field -->
+        <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
+            <label for="email" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">Email:</label>
+            <div class="mt-2 sm:col-span-2 sm:mt-0">
+                <input type="email" name="email" id="email" autocomplete="email" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6" value="{{ $contact->email }}">
+            </div>
+        </div>
+
+        <!-- Phone Number Field -->
+        <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
+            <label for="phone_number" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">Phone Number:</label>
+            <div class="mt-2 sm:col-span-2 sm:mt-0">
+                <input type="text" name="phone_number" id="phone_number" autocomplete="tel" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6" value="{{ $contact->phone_number }}">
+            </div>
+        </div>
+
+        <!-- Birthdate Field -->
+        <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
+            <label for="birthdate" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">Birthdate:</label>
+            <div class="mt-2 sm:col-span-2 sm:mt-0">
+                <input type="date" name="birthdate" id="birthdate" autocomplete="bday" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6" value="{{ $contact->birthdate }}">
+            </div>
+        </div>
+
+        <!-- Interests Field
+        <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
+            <label for="interests" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">Interests:</label>
+            <div class="mt-2 sm:col-span-2 sm:mt-0">
+                <input type="text" name="interests" id="interests" autocomplete="off" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6" value="{{ $contact->interests }}">
+            </div>
+        </div>
+        -->
+        <!-- Likes Field
+        <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
+            <label for="likes" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">Likes:</label>
+            <div class="mt-2 sm:col-span-2 sm:mt-0">
+                <input type="text" name="likes" id="likes" autocomplete="off" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6" value="{{ $contact->likes }}">
+            </div>
+        </div>
+        -->
+        <!-- Dislikes Field
+        <div class="sm:grid sm:grid-cols-3 sm:items-start sm:gap-4 sm:py-6">
+            <label for="dislikes" class="block text-sm font-medium leading-6 text-gray-900 sm:pt-1.5">Dislikes:</label>
+            <div class="mt-2 sm:col-span-2 sm:mt-0">
+                <input type="text" name="dislikes" id="dislikes" autocomplete="off" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:max-w-xs sm:text-sm sm:leading-6" value="{{ $contact->dislikes }}">
+            </div>
+        </div>
+        -->
+    </div>
+
+    <button type="submit" class="inline-flex justify-center rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 mt-4">Update Contact</button>
+    </form>
     </div>
 @endsection
