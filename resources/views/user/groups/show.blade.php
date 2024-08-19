@@ -35,7 +35,11 @@
         <ul class="mt-4 space-y-4">
             @foreach($group->contacts as $contact)
                 <li class="flex justify-between items-center bg-white shadow-sm rounded-md p-4">
-                    <div class="text-sm font-medium text-gray-700 flex-1">{{ $contact->name }}</div>
+                    <div class="text-sm font-medium text-gray-700 flex-1">
+                        <a href="{{ route('contacts.show', $contact->id) }}" class="text-indigo-600 hover:text-indigo-900">
+                            {{ $contact->name }}
+                        </a>
+                    </div>
                     <form action="{{ route('user.groups.removeContact', [$group->id, $contact->id]) }}" method="POST" class="flex-none">
                         @csrf
                         @method('DELETE')
