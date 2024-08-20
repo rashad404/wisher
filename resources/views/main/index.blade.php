@@ -134,31 +134,31 @@
       </div>
     </div>
 
-    
     {{-- Testimonials --}}
 
     <div class="bg-white py-16">
       <div class="mx-auto max-w-7xl px-6 lg:px-8">
-        <div class="max-w-2xl mx-auto text-center">
-          <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('What Our Users Say') }}</h2>
-          <p class="mt-4 text-lg text-gray-600">{{ __('Hear from some of our satisfied users and learn how Wisher.az has made their special occasions even more memorable.') }}</p>
-        </div>
-        <div class="mt-10 space-y-8">
-          <!-- Example Testimonial -->
-          <blockquote class="rounded-lg bg-gray-100 p-8">
-            <div class="flex items-center gap-x-4">
-              <img class="h-12 w-12 rounded-full" src="/images/user-1.jpg" alt="">
-              <div>
-                <p class="text-lg font-semibold text-gray-900">{{ __('Jane Doe') }}</p>
-                <p class="text-sm text-gray-500">{{ __('Regular User') }}</p>
-              </div>
-            </div>
-            <p class="mt-4 text-base text-gray-700">{{ __('"Wisher.az has helped me never forget an important date! The automated reminders and gifting options are a lifesaver."') }}</p>
-          </blockquote>
-          <!-- Add more testimonials similarly -->
-        </div>
+          <div class="max-w-2xl mx-auto text-center">
+              <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('What Our Users Say') }}</h2>
+              <p class="mt-4 text-lg text-gray-600">{{ __('Hear from some of our satisfied users and learn how Wisher.az has made their special occasions even more memorable.') }}</p>
+          </div>
+          <div class="mt-10 space-y-8">
+              @foreach($testimonials as $testimonial)
+                  <blockquote class="rounded-lg bg-gray-100 p-8">
+                      <div class="flex items-center gap-x-4">
+                          <img class="h-12 w-12 rounded-full" src="{{ $testimonial->image ? asset('storage/' . $testimonial->image) : '/images/default-user.jpg' }}" alt="{{ $testimonial->name }}">
+                          <div>
+                              <p class="text-lg font-semibold text-gray-900">{{ $testimonial->name }}</p>
+                              <p class="text-sm text-gray-500">{{ $testimonial->role ?? __('User') }}</p>
+                          </div>
+                      </div>
+                      <p class="mt-4 text-base text-gray-700">"{{ $testimonial->getTranslation('message', app()->getLocale()) }}"</p>
+                  </blockquote>
+              @endforeach
+          </div>
       </div>
     </div>
+
 
     
     {{-- Pricing --}}
