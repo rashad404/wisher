@@ -32,12 +32,12 @@
                     </div>
                 </div>
             </div>
-  
+
             <a href="/login" class="hidden lg:block lg:text-sm lg:font-semibold lg:leading-6 lg:text-white">{{ __('messages.log_in') }}</a>
             <a href="/register" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">{{ __('messages.sign_up') }}</a>
         </div>
         <div class="flex lg:hidden">
-            <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700" aria-expanded="false" aria-label="Open main menu">
+            <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white" id="mobileMenuButton" aria-expanded="false" aria-label="Open main menu">
                 <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                 </svg>
@@ -45,23 +45,22 @@
         </div>
     </nav>
     <!-- Mobile menu -->
-    <div class="hidden lg:hidden" role="dialog" aria-modal="true">
-        <!-- Background backdrop -->
-        <div class="fixed inset-0 z-10"></div>
-        <div class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
-            <div class="flex items-center gap-x-6">
+    <div class="hidden lg:hidden" role="dialog" aria-modal="true" id="mobileMenuBackdrop">
+        <div class="absolute inset-0 bg-black opacity-50"></div>
+
+        <div class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
+            <div class="flex items-center justify-between bg-[#331E6D] px-6 py-8">
                 <a href="/" class="-m-1.5 p-1.5">
                     <span class="sr-only">Wisher.az</span>
-                    <img class="h-8 w-auto" src="{{ asset('images/logo.svg') }}" alt="Wisher.az">
+                    <img class="w-32" src="{{ asset('images/logo.svg') }}" alt="Wisher.az">
                 </a>
-                <a href="/register" class="ml-auto rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">{{ __('messages.sign_up') }}</a>
-                <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700" aria-label="Close menu">
+                <button type="button" class="-m-2.5 rounded-md p-2.5 text-white" id="closeMobileMenu" aria-label="Close menu">
                     <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
-            <div class="mt-6 flow-root">
+            <div class="mt-6 flow-root  px-6 py-6">
                 <div class="-my-6 divide-y divide-gray-500/10">
                     <div class="space-y-2 py-6">
                         <a href="/" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('messages.home') }}</a>
@@ -79,10 +78,10 @@
             </div>
         </div>
     </div>
-  </header>
-  
-  {{-- Notification Messages --}}
-  @if(session('success') || session('error'))
+</header>
+
+{{-- Notification Messages --}}
+@if(session('success') || session('error'))
     <div class="rounded-md p-4 {{ session('success') ? 'bg-green-50' : 'bg-red-50' }}">
         <div class="flex">
             <div class="flex-shrink-0">
@@ -98,17 +97,28 @@
                     <span class="sr-only">Dismiss</span>
                     <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                         <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-                        </svg>
+                    </svg>
                 </button>
             </div>
         </div>
     </div>
-  @endif
-  
-  <script>
-      document.getElementById('languageButton').addEventListener('click', function() {
-          var dropdown = document.getElementById('languageDropdown');
-          dropdown.classList.toggle('hidden');
-      });
-  </script>
-  
+@endif
+
+<script>
+    document.getElementById('languageButton').addEventListener('click', function() {
+        var dropdown = document.getElementById('languageDropdown');
+        dropdown.classList.toggle('hidden');
+    });
+    const mobileMenuBackdrop = document.getElementById('mobileMenuBackdrop');
+    const mobileMenuButton = document.getElementById('mobileMenuButton');
+    const closeMobileMenu = document.getElementById('closeMobileMenu');
+
+    mobileMenuButton.addEventListener('click', () => {
+        mobileMenuBackdrop.classList.remove('hidden');
+    });
+
+    closeMobileMenu.addEventListener('click', () => {
+        mobileMenuBackdrop.classList.add('hidden');
+    });
+
+</script>
