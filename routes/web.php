@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\LoginController;
@@ -92,3 +93,6 @@ Route::post('/contact', [PageController::class, 'submitContactForm'])->name('con
 Route::get('/features', [PageController::class, 'features'])->name('features');
 
 Route::get('/pricing', [PageController::class, 'pricing'])->name('pricing');
+
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{blog}', [BlogController::class, 'show'])->name('blog.show');
