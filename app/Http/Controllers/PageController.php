@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PricingPlan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
 
@@ -59,5 +60,13 @@ class PageController extends Controller
     public function features()
     {
         return view('pages.features');
+    }
+
+    public function pricing()
+    {
+        // Fetch all active pricing plans with their features
+        $plans = PricingPlan::with('features')->where('is_active', true)->get();
+
+        return view('pages.pricing', compact('plans'));
     }
 }
