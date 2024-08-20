@@ -90,3 +90,5 @@ Route::get('/contact', [PageController::class, 'showContactForm'])->name('contac
 Route::post('/contact', [PageController::class, 'submitContactForm'])->name('contact.submit');
 
 Route::get('/features', [PageController::class, 'features'])->name('features');
+
+Route::get('/pricing', [PageController::class, 'pricing'])->name('pricing');
