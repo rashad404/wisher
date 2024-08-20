@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\LoginController;
@@ -101,3 +102,12 @@ Route::put('/user/events/{event}', [UserEventController::class, 'update'])->name
 Route::get('/user/events/{event}', [UserEventController::class, 'show'])->name('user.events.show');
 Route::delete('/user/events/{event}', [UserEventController::class, 'destroy'])->name('user.events.delete');
 
+Route::get('/pricing', [PageController::class, 'pricing'])->name('pricing');
+
+Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
+Route::get('/blog/{blog}', [BlogController::class, 'show'])->name('blog.show');
+
+Route::get('/lang/{locale}', function ($locale) {
+    session(['locale' => $locale]);
+    return redirect()->back();
+})->name('switchLang');

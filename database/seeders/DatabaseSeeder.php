@@ -26,5 +26,9 @@ class DatabaseSeeder extends Seeder
         $this->call(UserEventSeeder::class);
         $this->call(ImportantDateCategorySeeder::class);
         $this->call(ImportantDateSeeder::class);
+        $this->call(ProductVariantSeeder::class);
+        $this->call(PricingPlanSeeder::class);
+        $this->call(PricingPlanFeatureSeeder::class);
+        $this->call(BlogSeeder::class);
     }
 }
