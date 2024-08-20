@@ -64,53 +64,67 @@
     {{-- Key Features --}}
     <div class="bg-gray-50 py-16">
       <div class="mx-auto max-w-7xl px-6 lg:px-8">
-        <div class="max-w-2xl mx-auto text-center">
-          <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('Key Features') }}</h2>
-          <p class="mt-4 text-lg text-gray-600">{{ __('Discover the standout features of Wisher.az that make it easy to remember special occasions and send the perfect gifts.') }}</p>
-        </div>
-        <div class="mt-10 grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8">
-          <!-- Example Feature -->
-          <div class="text-center">
-            <img class="mx-auto h-12 w-12" src="/images/icons/calendar.svg" alt="Feature Icon">
-            <h3 class="mt-6 text-lg font-semibold text-gray-900">{{ __('Automated Reminders') }}</h3>
-            <p class="mt-4 text-sm text-gray-600">{{ __('Never miss an important date with automated reminders for birthdays, anniversaries, and more.') }}</p>
+          <div class="max-w-2xl mx-auto text-center">
+              <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('messages.key_features') }}</h2>
+              <p class="mt-4 text-lg text-gray-600">{{ __('messages.discover_standout_features') }}</p>
           </div>
-          <!-- Add more features similarly -->
-        </div>
-        <div class="mt-10 text-center">
-          <a href="/features" class="text-indigo-600 font-semibold">{{ __('Explore All Features') }} &rarr;</a>
-        </div>
+          <div class="mt-10 grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8">
+              @foreach($features as $feature)
+              <div class="text-center">
+                  <img class="mx-auto h-12 w-12" src="{{ $feature->icon }}" alt="{{ $feature->getTranslation('title', app()->getLocale()) }} Icon">
+                  <h3 class="mt-6 text-lg font-semibold text-gray-900">{{ $feature->getTranslation('title', app()->getLocale()) }}</h3>
+                  <p class="mt-4 text-sm text-gray-600">{{ $feature->getTranslation('text', app()->getLocale()) }}</p>
+              </div>
+              @endforeach
+          </div>
+          <div class="mt-10 text-center">
+              <a href="/features" class="text-indigo-600 font-semibold">{{ __('messages.explore_all_features') }} &rarr;</a>
+          </div>
       </div>
     </div>
 
-    
-    {{-- How it works --}}
 
+
+    {{-- How it works --}}
     <div class="bg-white py-16">
       <div class="mx-auto max-w-7xl px-6 lg:px-8">
-        <div class="max-w-2xl mx-auto text-center">
-          <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('How It Works') }}</h2>
-          <p class="mt-4 text-lg text-gray-600">{{ __('A simple and intuitive process to help you send gifts and greetings effortlessly.') }}</p>
-        </div>
-        <div class="mt-10 grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8">
-          <!-- Example Step -->
-          <div class="text-center">
-            <img class="mx-auto h-12 w-12" src="/images/icons/signup.svg" alt="Step Icon">
-            <h3 class="mt-6 text-lg font-semibold text-gray-900">{{ __('1. Sign Up') }}</h3>
-            <p class="mt-4 text-sm text-gray-600">{{ __('Create your free account and start organizing your special dates.') }}</p>
+          <div class="max-w-2xl mx-auto text-center">
+              <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('messages.how_it_works_title') }}</h2>
+              <p class="mt-4 text-lg text-gray-600">{{ __('messages.how_it_works_description') }}</p>
           </div>
-          <!-- Add more steps similarly -->
-        </div>
+          <div class="mt-10 grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8">
+              <div class="text-center">
+                  <img class="mx-auto h-12 w-12" src="/images/icons/signup.svg" alt="{{ __('messages.how_it_works_step1_title') }} Icon">
+                  <h3 class="mt-6 text-lg font-semibold text-gray-900">{{ __('messages.how_it_works_step1_title') }}</h3>
+                  <p class="mt-4 text-sm text-gray-600">{{ __('messages.how_it_works_step1_description') }}</p>
+              </div>
+              <div class="text-center">
+                  <img class="mx-auto h-12 w-12" src="/images/icons/organize.svg" alt="{{ __('messages.how_it_works_step2_title') }} Icon">
+                  <h3 class="mt-6 text-lg font-semibold text-gray-900">{{ __('messages.how_it_works_step2_title') }}</h3>
+                  <p class="mt-4 text-sm text-gray-600">{{ __('messages.how_it_works_step2_description') }}</p>
+              </div>
+              <div class="text-center">
+                  <img class="mx-auto h-12 w-12" src="/images/icons/gift.svg" alt="{{ __('messages.how_it_works_step3_title') }} Icon">
+                  <h3 class="mt-6 text-lg font-semibold text-gray-900">{{ __('messages.how_it_works_step3_title') }}</h3>
+                  <p class="mt-4 text-sm text-gray-600">{{ __('messages.how_it_works_step3_description') }}</p>
+              </div>
+              <div class="text-center">
+                  <img class="mx-auto h-12 w-12" src="/images/icons/track.svg" alt="{{ __('messages.how_it_works_step4_title') }} Icon">
+                  <h3 class="mt-6 text-lg font-semibold text-gray-900">{{ __('messages.how_it_works_step4_title') }}</h3>
+                  <p class="mt-4 text-sm text-gray-600">{{ __('messages.how_it_works_step4_description') }}</p>
+              </div>
+          </div>
       </div>
     </div>
+
 
     
     {{-- Blog --}}
     <div class="bg-gray-50 py-16">
       <div class="mx-auto max-w-7xl px-6 lg:px-8">
         <div class="max-w-2xl mx-auto text-center">
-          <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('From Our Blog') }}</h2>
-          <p class="mt-4 text-lg text-gray-600">{{ __('Get tips and insights on how to make every occasion special with Wisher.az.') }}</p>
+          <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('messages.from_the_blog') }}</h2>
+          <p class="mt-2 text-lg leading-8 text-gray-600">{{ __('messages.blog_subtitle') }}</p>
         </div>
         <div class="mt-10 grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8">
           <!-- Example Blog Post -->
@@ -139,8 +153,8 @@
     <div class="bg-white py-16">
       <div class="mx-auto max-w-7xl px-6 lg:px-8">
           <div class="max-w-2xl mx-auto text-center">
-              <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('What Our Users Say') }}</h2>
-              <p class="mt-4 text-lg text-gray-600">{{ __('Hear from some of our satisfied users and learn how Wisher.az has made their special occasions even more memorable.') }}</p>
+            <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('messages.what_our_users_say') }}</h2>
+            <p class="mt-4 text-lg text-gray-600">{{ __('messages.user_testimonials_description') }}</p>        
           </div>
           <div class="mt-10 space-y-8">
               @foreach($testimonials as $testimonial)
@@ -164,38 +178,48 @@
     {{-- Pricing --}}
     <div class="bg-gray-50 py-16">
       <div class="mx-auto max-w-7xl px-6 lg:px-8">
-        <div class="max-w-2xl mx-auto text-center">
-          <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('Choose Your Plan') }}</h2>
-          <p class="mt-4 text-lg text-gray-600">{{ __('Find the perfect plan that suits your needs and start making every occasion special.') }}</p>
-        </div>
-        <div class="mt-10 grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8">
-          <!-- Example Pricing Plan -->
-          @foreach($plans as $plan)
-            <div class="border rounded-lg p-6 shadow-sm bg-white">
-              <h3 class="text-lg font-semibold text-gray-900">{{ $plan->getTranslation('name', app()->getLocale()) }}</h3>
-              <p class="mt-4 text-sm text-gray-600">{{ Str::limit(strip_tags($plan->description), 80) }}</p>
-              <p class="mt-6 text-4xl font-bold text-gray-900">${{ number_format($plan->price_monthly, 2) }}<span class="text-base font-medium text-gray-500">/{{ __('month') }}</span></p>
-              <a href="/pricing" class="mt-6 block w-full rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white">{{ __('Sign Up') }}</a>
-            </div>
-          @endforeach
-        </div>
-        <div class="mt-10 text-center">
-          <a href="/pricing" class="text-indigo-600 font-semibold">{{ __('View All Pricing Plans') }} &rarr;</a>
-        </div>
+          <div class="max-w-2xl mx-auto text-center">
+              <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('messages.choose_your_plan') }}</h2>
+              <p class="mt-4 text-lg text-gray-600">{{ __('messages.plan_description') }}</p>
+          </div>
+          <div class="mt-10 grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8">
+              @foreach($plans as $plan)
+                  <div class="border rounded-lg p-6 shadow-sm bg-white">
+                      <h3 class="text-lg font-semibold text-gray-900">{{ $plan->getTranslation('name', app()->getLocale()) }}</h3>
+                      <p class="mt-6 text-4xl font-bold text-gray-900">${{ number_format($plan->price_monthly, 2) }}<span class="text-base font-medium text-gray-500">/{{ __('messages.month') }}</span></p>
+                      <ul class="mt-6 space-y-2 text-sm text-gray-600">
+                          @foreach($plan->features as $feature)
+                              <li class="flex items-center">
+                                  <svg class="h-5 w-5 text-indigo-600" fill="currentColor" viewBox="0 0 20 20">
+                                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 00-1.414 0L9 11.586 4.707 7.293a1 1 0 00-1.414 1.414l5 5a1 1 0 001.414 0l7-7a1 1 0 000-1.414z" clip-rule="evenodd" />
+                                  </svg>
+                                  <span class="ml-2">{{ $feature->getTranslation('feature_key', app()->getLocale()) }}</span>
+                              </li>
+                          @endforeach
+                      </ul>
+                      <a href="/pricing" class="mt-6 block w-full rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white">{{ __('messages.sign_up') }}</a>
+                  </div>
+              @endforeach
+          </div>
+          <div class="mt-10 text-center">
+              <a href="/pricing" class="text-indigo-600 font-semibold">{{ __('messages.view_all_plans') }} &rarr;</a>
+          </div>
       </div>
     </div>
+
 
     
     {{-- CTA Section --}}
     <div class="bg-indigo-600 py-16">
       <div class="mx-auto max-w-7xl px-6 lg:px-8 text-center">
-        <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">{{ __('Get Started with Wisher.az Today') }}</h2>
-        <p class="mt-4 text-lg text-indigo-200">{{ __('Make every occasion unforgettable with personalized gifts and greetings.') }}</p>
-        <div class="mt-8">
-          <a href="/register" class="inline-block rounded-md bg-white px-6 py-3 text-base font-semibold text-indigo-600 shadow-sm hover:bg-indigo-50">{{ __('Sign Up Now') }}</a>
-        </div>
+          <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">{{ __('messages.get_started_with_wisher_today') }}</h2>
+          <p class="mt-4 text-lg text-indigo-200">{{ __('messages.make_every_occasion_unforgettable') }}</p>
+          <div class="mt-8">
+              <a href="/register" class="inline-block rounded-md bg-white px-6 py-3 text-base font-semibold text-indigo-600 shadow-sm hover:bg-indigo-50">{{ __('messages.sign_up_now') }}</a>
+          </div>
       </div>
-    </div>
+  </div>
+  
     
 
 

@@ -31,5 +31,6 @@ class DatabaseSeeder extends Seeder
         $this->call(PricingPlanFeatureSeeder::class);
         $this->call(BlogSeeder::class);
         $this->call(TestimonialSeeder::class);
+        $this->call(FeatureSeeder::class);
     }
 }

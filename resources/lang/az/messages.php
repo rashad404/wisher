@@ -63,4 +63,42 @@ return [
     'twitter' => 'Twitter',
     'github' => 'GitHub',
     'all_rights_reserved' => 'Bütün hüquqlar qorunur.',    
+
+    //index features section
+    'key_features' => 'Əsas Xüsusiyyətlər',
+    'discover_standout_features' => 'Wisher.az-ın xüsusi günləri xatırlamaq və mükəmməl hədiyyələr göndərmək üçün asanlaşdıran əsas xüsusiyyətlərini kəşf edin.',
+    'explore_all_features' => 'Bütün Xüsusiyyətləri Araşdırın',
+
+    // index how it works section
+    'how_it_works_title' => 'Necə İşləyir',
+    'how_it_works_description' => 'Hədiyyələr və təbriklər göndərməyinizi asanlaşdıran sadə və intuitiv bir proses.',
+
+    'how_it_works_step1_title' => '1. Qeydiyyatdan keçin',
+    'how_it_works_step1_description' => 'Pulsuz hesabınızı yaradın və xüsusi tarixlərinizi təşkil etməyə başlayın.',
+
+    'how_it_works_step2_title' => '2. Tarixləri təşkil edin',
+    'how_it_works_step2_description' => 'Dostlarınız və ailəniz üçün vacib tarixləri əlavə edin və idarə edin.',
+
+    'how_it_works_step3_title' => '3. Hədiyyələr Seçin',
+    'how_it_works_step3_description' => 'Xüsusi günlərdə göndəriləcək hədiyyələri seçin və fərdiləşdirin.',
+
+    'how_it_works_step4_title' => '4. İzləyin və Rahatlayın',
+    'how_it_works_step4_description' => 'Çatdırılma statusunu izləyin və sevdiklərinizlə xüsusi anların dadını çıxarın.',
+
+    // index pricing section
+    'choose_your_plan' => 'Planınızı seçin',
+    'plan_description' => 'Sizə uyğun olan planı tapın və hər anı xüsusi etməyə başlayın.',
+    'month' => 'ay',
+    'sign_up' => 'Qeydiyyatdan keçin',
+    'view_all_plans' => 'Bütün qiymət planlarına baxın',
+
+    // index testimonials section
+    'what_our_users_say' => 'İstifadəçilərimizin Nə Deyir?',
+    'user_testimonials_description' => 'Bəzi məmnun istifadəçilərimizin fikirlərini öyrənin və Wisher.az-ın onların xüsusi günlərini necə daha da yadda qalan etdiyini görün.',
+
+    // index cta section
+    'get_started_with_wisher_today' => 'Wisher.az ilə bu gün başlayın',
+    'make_every_occasion_unforgettable' => 'Şəxsi hədiyyələr və təbriklərlə hər anı unudulmaz edin.',
+    'sign_up_now' => 'İndi Qeydiyyatdan Keçin',
+    
 ];

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Feature;
 use App\Models\PricingPlan;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -59,7 +60,10 @@ class PageController extends Controller
 
     public function features()
     {
-        return view('pages.features');
+        $features = Feature::all();
+
+        return view('pages.features', compact('features'));
+
     }
 
     public function pricing()

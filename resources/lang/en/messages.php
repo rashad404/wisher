@@ -62,4 +62,41 @@ return [
     'twitter' => 'Twitter',
     'github' => 'GitHub',
     'all_rights_reserved' => 'All rights reserved.',
+
+    // index features section
+    'key_features' => 'Key Features',
+    'discover_standout_features' => 'Discover the standout features of Wisher.az that make it easy to remember special occasions and send the perfect gifts.',
+    'explore_all_features' => 'Explore All Features',
+
+    // index how it works section
+    'how_it_works_title' => 'How It Works',
+    'how_it_works_description' => 'A simple and intuitive process to help you send gifts and greetings effortlessly.',
+
+    'how_it_works_step1_title' => '1. Sign Up',
+    'how_it_works_step1_description' => 'Create your free account and start organizing your special dates.',
+
+    'how_it_works_step2_title' => '2. Organize Dates',
+    'how_it_works_step2_description' => 'Add and manage important dates for friends and family.',
+
+    'how_it_works_step3_title' => '3. Choose Gifts',
+    'how_it_works_step3_description' => 'Select and customize gifts to be sent on special occasions.',
+
+    'how_it_works_step4_title' => '4. Track & Relax',
+    'how_it_works_step4_description' => 'Track the delivery status and enjoy the special moments with your loved ones.',
+
+    // index pricing section
+    'choose_your_plan' => 'Choose Your Plan',
+    'plan_description' => 'Find the perfect plan that suits your needs and start making every occasion special.',
+    'month' => 'month',
+    'sign_up' => 'Sign Up',
+    'view_all_plans' => 'View All Pricing Plans',
+
+    // index testimonials section
+    'what_our_users_say' => 'What Our Users Say',
+    'user_testimonials_description' => 'Hear from some of our satisfied users and learn how Wisher.az has made their special occasions even more memorable.',
+
+    // index cta section
+    'get_started_with_wisher_today' => 'Get Started with Wisher.az Today',
+    'make_every_occasion_unforgettable' => 'Make every occasion unforgettable with personalized gifts and greetings.',
+    'sign_up_now' => 'Sign Up Now',
 ];
