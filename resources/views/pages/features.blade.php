@@ -3,7 +3,8 @@
 @section('content')
 <div class="bg-gray-100 py-12">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 class="text-4xl font-bold text-center text-gray-800 mb-12">{{ __('Our Features') }}</h1>
+        <h2 class="text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('messages.key_features') }}</h2>
+        <p class="text-center mt-4 mb-16 text-lg text-gray-600">{{ __('messages.discover_standout_features') }}</p>
 
         <!-- Group features in pairs -->
         @foreach($features->chunk(2) as $featurePair)

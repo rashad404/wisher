@@ -4,10 +4,9 @@
 <div class="bg-white py-24 sm:py-32">
   <div class="mx-auto max-w-7xl px-6 lg:px-8">
     <div class="mx-auto max-w-4xl text-center">
-      <h2 class="text-base font-semibold leading-7 text-indigo-600">{{ __('Pricing') }}</h2>
-      <p class="mt-2 text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">{{ __('Plans for Your Special Moments') }}</p>
+      <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('messages.choose_your_plan') }}</h2>
+      <p class="mt-4 text-lg text-gray-600">{{ __('messages.plan_description') }}</p>
     </div>
-    <p class="mx-auto mt-6 max-w-2xl text-center text-lg leading-8 text-gray-600">{{ __('Choose a plan that helps you stay connected, celebrate milestones, and make every occasion memorable.') }}</p>
     <div class="isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
       
       @foreach($plans as $plan)

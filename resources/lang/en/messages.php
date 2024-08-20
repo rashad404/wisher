@@ -99,4 +99,72 @@ return [
     'get_started_with_wisher_today' => 'Get Started with Wisher.az Today',
     'make_every_occasion_unforgettable' => 'Make every occasion unforgettable with personalized gifts and greetings.',
     'sign_up_now' => 'Sign Up Now',
+
+    // how it works
+    'how_it_works' => 'How It Works',
+    'sign_up' => 'Sign Up',
+    'sign_up_description' => 'Create your account on Wisher.az and access your personal dashboard. With our simple and intuitive interface, create your profile in just a few easy steps.',
+    'add_events' => 'Add Events',
+    'add_events_description' => 'Add birthdays, anniversaries, holidays, and other special dates to your calendar. Wisher.az will send reminders for these dates.',
+    'choose_wish_gift' => 'Choose Wish and Gift',
+    'choose_wish_gift_description' => 'Select the desired gift from our extensive catalog or set your own wishes. Use personalized options to make your wishes and gifts unique and creative.',
+    'set_delivery' => 'Set Delivery',
+    'set_delivery_description' => 'Specify how and where your gift or wish should be delivered. Easily send your gift via email, SMS, or physical delivery.',
+    'greetings_sent' => 'Greetings Sent',
+    'gifts_sent' => 'Gifts Sent',
+    'users_joined' => 'Users Joined',
+
+    // about us
+    'wisher_intro_title' => 'Wisher.az: Your Companion in Fulfilling Personal Wishes',
+    'wisher_intro_description' => 'At Wisher.az, we believe that every wish holds the power to create joy and strengthen connections. Our platform is dedicated to providing personalized wishes and gifts tailored to relationships, ensuring that your special moments are unforgettable. From birthdays to anniversaries, Wisher.az ensures that your sentiments are expressed beautifully and on time.',
+    'personalized_wishes_title' => 'Personalized Wishes for Everyone',
+    'personalized_wishes_description' => 'We understand that every person and their wishes are unique. That’s why Wisher.az offers personalized wishes and gifts tailored to each user, helping you and your loved ones create unforgettable moments.',
+    'technology_powered_title' => 'Powered by the Best Technology',
+    'technology_powered_description' => 'Our tech stack includes PHP/Laravel, TailwindCSS/Laravel Blade, MySQL, and a dedicated Linux server, ensuring fast and reliable service. Wisher.az offers a user-friendly interface and seamless navigation, with features like a personal account dashboard, automated wishes, customized gift sending options, and robust security.',
+    'wisher_conclusion' => 'Every wish and gift on Wisher.az connects you and your loved ones with deep emotions. Share your wishes with us and experience the joy of gifting.',
+
+    // contact
+    'contact_us_title' => 'Contact Us',
+    'get_in_touch' => 'Get in touch',
+    'contact_intro' => "Feel free to reach out to us with any questions or feedback. We're here to help!",
+    'address' => 'Address',
+    'telephone' => 'Telephone',
+    'email' => 'Email',
+    'first_name' => 'First name',
+    'last_name' => 'Last name',
+    'phone_number' => 'Phone number',
+    'message' => 'Message',
+    'send_message' => 'Send message',
+
+    // login
+    'sign_in_to_account' => 'Sign in to your account',
+    'email_address' => 'Email address',
+    'password' => 'Password',
+    'forgot_password' => 'Forgot password?',
+    'sign_in' => 'Sign in',
+    'not_a_member' => 'Not a member?',
+    'register' => 'Register',
+
+    // register
+    'registration' => 'Registration',
+    'first_name' => 'First Name',
+    'last_name' => 'Last Name',
+    'gender' => 'Gender',
+    'male' => 'Male',
+    'female' => 'Female',
+    'other' => 'Other',
+    'dob' => 'Date of Birth',
+    'email_address' => 'Email address',
+    'password' => 'Password',
+    'register' => 'Register',
+    'already_member' => 'Already a member?',
+    'log_in' => 'Log in',
+
+    // forgot password
+    'recover_password' => 'Recover your password',
+    'email_address' => 'Email address',
+    'continue' => 'Continue',
+    'already_member' => 'Already a member?',
+    'log_in' => 'Log in',
+
 ];
