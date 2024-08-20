@@ -55,4 +55,9 @@ class PageController extends Controller
 
         return redirect()->route('contact.show')->with('success', 'Your message has been sent successfully!');
     }
+
+    public function features()
+    {
+        return view('pages.features');
+    }
 }
