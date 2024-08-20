@@ -17,7 +17,7 @@
         </div>
         <div class="flex flex-1 items-center justify-end gap-x-6">
             <!-- Language Dropdown -->
-            <div class="relative">
+            <div class="relative index z-50">
                 <button type="button" class="text-white text-sm font-semibold leading-6 focus:outline-none" id="languageButton">
                     {{ strtoupper(app()->getLocale()) }}
                 </button>
@@ -45,8 +45,8 @@
         </div>
     </nav>
     <!-- Mobile menu -->
-    <div class="hidden lg:hidden" role="dialog" aria-modal="true" id="mobileMenuBackdrop">
-        <div class="absolute inset-0 bg-black opacity-50"></div>
+    <div class="hidden lg:hidden z-50" role="dialog" aria-modal="true" id="mobileMenu">
+        <div class="absolute inset-0 bg-black opacity-50 z-10" id="menuOverlay"></div>
 
         <div class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">
             <div class="flex items-center justify-between bg-[#331E6D] px-6 py-8">
@@ -109,16 +109,23 @@
         var dropdown = document.getElementById('languageDropdown');
         dropdown.classList.toggle('hidden');
     });
-    const mobileMenuBackdrop = document.getElementById('mobileMenuBackdrop');
+
+
+    const menuOverlay = document.getElementById('menuOverlay');
+    const mobileMenu = document.getElementById('mobileMenu');
     const mobileMenuButton = document.getElementById('mobileMenuButton');
     const closeMobileMenu = document.getElementById('closeMobileMenu');
 
     mobileMenuButton.addEventListener('click', () => {
-        mobileMenuBackdrop.classList.remove('hidden');
+        mobileMenu.classList.remove('hidden');
     });
 
     closeMobileMenu.addEventListener('click', () => {
-        mobileMenuBackdrop.classList.add('hidden');
+        mobileMenu.classList.add('hidden');
+    });
+
+    menuOverlay.addEventListener('click', function () {
+        mobileMenu.classList.add('hidden');
     });
 
 </script>
