@@ -14,7 +14,6 @@ class UserEvent extends Model
         'date',
         'is_annual',
         'is_monthly',
-        'category',
         'status',
         'user_id',
         'contact_id',
