@@ -61,5 +61,142 @@
     </div>
 
 
+    {{-- Key Features --}}
+    <div class="bg-gray-50 py-16">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="max-w-2xl mx-auto text-center">
+          <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('Key Features') }}</h2>
+          <p class="mt-4 text-lg text-gray-600">{{ __('Discover the standout features of Wisher.az that make it easy to remember special occasions and send the perfect gifts.') }}</p>
+        </div>
+        <div class="mt-10 grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8">
+          <!-- Example Feature -->
+          <div class="text-center">
+            <img class="mx-auto h-12 w-12" src="/images/icons/calendar.svg" alt="Feature Icon">
+            <h3 class="mt-6 text-lg font-semibold text-gray-900">{{ __('Automated Reminders') }}</h3>
+            <p class="mt-4 text-sm text-gray-600">{{ __('Never miss an important date with automated reminders for birthdays, anniversaries, and more.') }}</p>
+          </div>
+          <!-- Add more features similarly -->
+        </div>
+        <div class="mt-10 text-center">
+          <a href="/features" class="text-indigo-600 font-semibold">{{ __('Explore All Features') }} &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    
+    {{-- How it works --}}
+
+    <div class="bg-white py-16">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="max-w-2xl mx-auto text-center">
+          <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('How It Works') }}</h2>
+          <p class="mt-4 text-lg text-gray-600">{{ __('A simple and intuitive process to help you send gifts and greetings effortlessly.') }}</p>
+        </div>
+        <div class="mt-10 grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8">
+          <!-- Example Step -->
+          <div class="text-center">
+            <img class="mx-auto h-12 w-12" src="/images/icons/signup.svg" alt="Step Icon">
+            <h3 class="mt-6 text-lg font-semibold text-gray-900">{{ __('1. Sign Up') }}</h3>
+            <p class="mt-4 text-sm text-gray-600">{{ __('Create your free account and start organizing your special dates.') }}</p>
+          </div>
+          <!-- Add more steps similarly -->
+        </div>
+      </div>
+    </div>
+
+    
+    {{-- Blog --}}
+    <div class="bg-gray-50 py-16">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="max-w-2xl mx-auto text-center">
+          <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('From Our Blog') }}</h2>
+          <p class="mt-4 text-lg text-gray-600">{{ __('Get tips and insights on how to make every occasion special with Wisher.az.') }}</p>
+        </div>
+        <div class="mt-10 grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8">
+          <!-- Example Blog Post -->
+          @foreach($blogs as $blog)
+            <article>
+              <div class="aspect-w-4 aspect-h-3">
+                <img class="object-cover shadow-lg rounded-lg" src="{{ $blog->image }}" alt="{{ $blog->title }}">
+              </div>
+              <div class="mt-4">
+                <h3 class="text-lg font-semibold text-gray-900">
+                  <a href="{{ route('blog.show', $blog) }}">{{ $blog->title }}</a>
+                </h3>
+                <p class="mt-2 text-sm text-gray-600">{{ Str::limit(strip_tags($blog->content), 100) }}</p>
+              </div>
+            </article>
+          @endforeach
+        </div>
+        <div class="mt-10 text-center">
+          <a href="/blog" class="text-indigo-600 font-semibold">{{ __('View All Posts') }} &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    
+    {{-- Testimonials --}}
+
+    <div class="bg-white py-16">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="max-w-2xl mx-auto text-center">
+          <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('What Our Users Say') }}</h2>
+          <p class="mt-4 text-lg text-gray-600">{{ __('Hear from some of our satisfied users and learn how Wisher.az has made their special occasions even more memorable.') }}</p>
+        </div>
+        <div class="mt-10 space-y-8">
+          <!-- Example Testimonial -->
+          <blockquote class="rounded-lg bg-gray-100 p-8">
+            <div class="flex items-center gap-x-4">
+              <img class="h-12 w-12 rounded-full" src="/images/user-1.jpg" alt="">
+              <div>
+                <p class="text-lg font-semibold text-gray-900">{{ __('Jane Doe') }}</p>
+                <p class="text-sm text-gray-500">{{ __('Regular User') }}</p>
+              </div>
+            </div>
+            <p class="mt-4 text-base text-gray-700">{{ __('"Wisher.az has helped me never forget an important date! The automated reminders and gifting options are a lifesaver."') }}</p>
+          </blockquote>
+          <!-- Add more testimonials similarly -->
+        </div>
+      </div>
+    </div>
+
+    
+    {{-- Pricing --}}
+    <div class="bg-gray-50 py-16">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="max-w-2xl mx-auto text-center">
+          <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('Choose Your Plan') }}</h2>
+          <p class="mt-4 text-lg text-gray-600">{{ __('Find the perfect plan that suits your needs and start making every occasion special.') }}</p>
+        </div>
+        <div class="mt-10 grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8">
+          <!-- Example Pricing Plan -->
+          @foreach($plans as $plan)
+            <div class="border rounded-lg p-6 shadow-sm bg-white">
+              <h3 class="text-lg font-semibold text-gray-900">{{ $plan->getTranslation('name', app()->getLocale()) }}</h3>
+              <p class="mt-4 text-sm text-gray-600">{{ Str::limit(strip_tags($plan->description), 80) }}</p>
+              <p class="mt-6 text-4xl font-bold text-gray-900">${{ number_format($plan->price_monthly, 2) }}<span class="text-base font-medium text-gray-500">/{{ __('month') }}</span></p>
+              <a href="/pricing" class="mt-6 block w-full rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white">{{ __('Sign Up') }}</a>
+            </div>
+          @endforeach
+        </div>
+        <div class="mt-10 text-center">
+          <a href="/pricing" class="text-indigo-600 font-semibold">{{ __('View All Pricing Plans') }} &rarr;</a>
+        </div>
+      </div>
+    </div>
+
+    
+    {{-- CTA Section --}}
+    <div class="bg-indigo-600 py-16">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8 text-center">
+        <h2 class="text-3xl font-bold tracking-tight text-white sm:text-4xl">{{ __('Get Started with Wisher.az Today') }}</h2>
+        <p class="mt-4 text-lg text-indigo-200">{{ __('Make every occasion unforgettable with personalized gifts and greetings.') }}</p>
+        <div class="mt-8">
+          <a href="/register" class="inline-block rounded-md bg-white px-6 py-3 text-base font-semibold text-indigo-600 shadow-sm hover:bg-indigo-50">{{ __('Sign Up Now') }}</a>
+        </div>
+      </div>
+    </div>
+    
+
 
 @endsection
