@@ -33,6 +33,12 @@
               <li>
                 <a href="/faq" class="text-sm leading-6 text-gray-300 hover:text-white">FAQ</a>
               </li>
+              <li>
+                <a href="/pricing" class="text-sm leading-6 text-gray-300 hover:text-white">Pricing</a>
+              </li>
+              <li>
+                <a href="/blog" class="text-sm leading-6 text-gray-300 hover:text-white">Blog</a>
+              </li>
             </ul>
           </div>
         </div>
