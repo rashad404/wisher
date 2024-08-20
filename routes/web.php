@@ -88,3 +88,5 @@ Route::get('/faq', [PageController::class, 'faq'])->name('faq');
 
 Route::get('/contact', [PageController::class, 'showContactForm'])->name('contact.show');
 Route::post('/contact', [PageController::class, 'submitContactForm'])->name('contact.submit');
+
+Route::get('/features', [PageController::class, 'features'])->name('features');
