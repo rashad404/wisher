@@ -11,6 +11,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SubscriptionController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\UserEventController;
 
 /*
 |--------------------------------------------------------------------------
@@ -90,3 +91,13 @@ Route::get('/contact', [PageController::class, 'showContactForm'])->name('contac
 Route::post('/contact', [PageController::class, 'submitContactForm'])->name('contact.submit');
 
 Route::get('/features', [PageController::class, 'features'])->name('features');
+
+//User Events part
+Route::get('/user/events', [UserEventController::class, 'index'])->name('user.events.index');
+Route::get('/user/events/create', [UserEventController::class, 'create'])->name('user.events.create');
+Route::post('/user/events', [UserEventController::class, 'store'])->name('user.events.store');
+Route::get('/user/events/edit/{event}', [UserEventController::class, 'edit'])->name('user.events.edit');
+Route::put('/user/events/{event}', [UserEventController::class, 'update'])->name('user.events.update');
+Route::get('/user/events/{event}', [UserEventController::class, 'show'])->name('user.events.show');
+Route::delete('/user/events/{event}', [UserEventController::class, 'destroy'])->name('user.events.delete');
+

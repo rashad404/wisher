@@ -19,4 +19,9 @@ class Group extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function userEvents()
+    {
+        return $this->hasMany(UserEvent::class);
+    }
 }

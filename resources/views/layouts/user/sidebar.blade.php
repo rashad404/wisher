@@ -33,6 +33,16 @@
                                 Qruplarım
                             </a>
                         </li>
+
+                        <li>
+                            <a href="/user/events" class="{{ request()->is('user/events') ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700' }} group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                                <svg class="h-6 w-6 shrink-0 {{ request()->is('user/events') ? 'text-white' : 'text-indigo-200' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M3 5.25v13.5c0 1.242 1.008 2.25 2.25 2.25h13.5c1.242 0 2.25-1.008 2.25-2.25V5.25M21 5.25H3m3-2.25h12M9 9.75h6M9 13.5h6M9 17.25h6" />
+                                </svg>
+                                Events
+                            </a>
+                        </li>
+
                         <li>
                             <a href="#" class="{{ request()->is('user/calendar') ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700' }} group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
                                 <svg class="h-6 w-6 shrink-0 {{ request()->is('user/calendar') ? 'text-white' : 'text-indigo-200' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">

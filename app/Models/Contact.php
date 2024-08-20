@@ -34,4 +34,9 @@ class Contact extends Model
         return $this->belongsToMany(Group::class, 'contact_group');
     }
 
+    public function userEvents()
+    {
+        return $this->hasMany(UserEvent::class);
+    }
+
 }
