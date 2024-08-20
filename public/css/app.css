@@ -783,6 +783,9 @@ select {
 .-m-2\.5 {
   margin: -0.625rem;
 }
+.m-8 {
+  margin: 2rem;
+}
 .-mx-2 {
   margin-left: -0.5rem;
   margin-right: -0.5rem;
@@ -814,6 +817,10 @@ select {
 .my-4 {
   margin-top: 1rem;
   margin-bottom: 1rem;
+}
+.my-8 {
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 .-ml-24 {
   margin-left: -6rem;
@@ -907,6 +914,9 @@ select {
 }
 .mt-5 {
   margin-top: 1.25rem;
+}
+.mb-16 {
+  margin-bottom: 4rem;
 }
 .line-clamp-3 {
   overflow: hidden;

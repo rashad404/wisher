@@ -2,8 +2,7 @@
 
 @section('content')
 
-
-  <div class="">
+<div class="">
     <svg class="absolute inset-x-0 top-0 -z-10 h-[64rem] w-full stroke-gray-200 [mask-image:radial-gradient(32rem_32rem_at_center,white,transparent)]" aria-hidden="true">
       <defs>
         <pattern id="1f932ae7-37de-4c0a-a8b0-a6e3b4d44b84" width="200" height="200" x="50%" y="-1" patternUnits="userSpaceOnUse">
@@ -23,15 +22,15 @@
         <div class="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
           <div class="w-full max-w-xl lg:shrink-0 xl:max-w-2xl">
 
-            <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">Wisher.az: Şəxsi Arzularınızı Gerçəkləşdirən Yoldaşınız</h1>
-            <p class="relative mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">Wisher.az olaraq, inanırıq ki, hər bir arzu sevinc yaratmağın və əlaqələri gücləndirməyin gücünə malikdir. Platformamız, sizin xüsusi anlarınızı unudulmaz etmək üçün, münasibətlərə uyğun personalaşdırılmış arzular və hədiyyələr təqdim etməyə həsr olunmuşdur. Ad gününüzdən, ildönümlərinizə qədər, hər bir mühüm tarixdə, Wisher.az hisslərinizi zamanında və gözəl bir şəkildə ifadə etməyi təmin edir.</p>
+            <h1 class="text-2xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('messages.wisher_intro_title') }}</h1>
+            <p class="relative mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">{{ __('messages.wisher_intro_description') }}</p>
 
-            <h1 class="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl mt-8">Hər Şəxs Üçün Fərdiləşdirilmiş Arzular</h1>
-            <p class="relative mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">Hər bir fərdin və onun arzularının fərqli olduğunu anlayırıq. Buna görə, Wisher.az müxtəlif xüsusiyyətləri nəzərə alaraq, hər bir istifadəçi üçün xüsusi arzular və hədiyyələr hazırlayır. Sizin və sevdiklərinizin unudulmaz anlar yaratmaq istəyi bizim əsas məqsədimizdir.</p>
+            <h1 class="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl mt-8">{{ __('messages.personalized_wishes_title') }}</h1>
+            <p class="relative mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">{{ __('messages.personalized_wishes_description') }}</p>
 
-            <h1 class="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl mt-8">Ən Yaxşı Texnologiya ilə Gücləndirilmiş</h1>
-            <p class="relative mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">Bizim texniki dəsti, PHP/Laravel, TailwindCSS/Laravel Blade, MySQL və həsr olunmuş Linux serverdən ibarətdir ki, bu da sizə sürətli və etibarlı bir xidmət təmin edir. Wisher.az, istifadəçi dostu interfeysi və rahat navigasiyası ilə, hər bir istifadəçiyə şəxsi hesab paneli, avtomatik arzular, özelleştirilmiş hədiyyə göndərmə imkanları və möhkəm təhlükəsizlik təklif edir.</p>
-            <p class="relative mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">Wisher.az-da hər bir arzu və hədiyyə, sizi və sevdiklərinizi ən dərin hisslərlə qovuşdurur. Arzularınızı bizimlə paylaşın və hədiyyə vermək sevincini yaşayın.</p>
+            <h1 class="text-xl font-bold tracking-tight text-gray-900 sm:text-2xl mt-8">{{ __('messages.technology_powered_title') }}</h1>
+            <p class="relative mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">{{ __('messages.technology_powered_description') }}</p>
+            <p class="relative mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">{{ __('messages.wisher_conclusion') }}</p>
 
           </div>
 
