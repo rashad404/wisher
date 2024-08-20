@@ -13,13 +13,12 @@ class MainController extends Controller
     public function index()
     {
         // Fetching key features, latest blogs, and pricing plans
-        // $features = Feature::take(4)->get(); // Get the first 4 features
+        $features = Feature::take(4)->get(); // Get the first 4 features
         $blogs = Blog::latest()->take(3)->get(); // Get the latest 3 blogs
-        $plans = PricingPlan::where('is_active', 1)->take(3)->get(); // Get 3 active pricing plans
+        $plans = PricingPlan::with('features')->get();
         $testimonials = Testimonial::take(3)->get(); // Get 3 testimonials
-
-        return view('main.index', compact('blogs', 'plans', 'testimonials'));
-        // return view('main.index', compact('features', 'blogs', 'plans', 'testimonials'));
+        
+        return view('main.index', compact('features', 'blogs', 'plans', 'testimonials'));
     }
 
     public function about()
