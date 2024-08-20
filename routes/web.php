@@ -96,3 +96,8 @@ Route::get('/pricing', [PageController::class, 'pricing'])->name('pricing');
 
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
 Route::get('/blog/{blog}', [BlogController::class, 'show'])->name('blog.show');
+
+Route::get('/lang/{locale}', function ($locale) {
+    session(['locale' => $locale]);
+    return redirect()->back();
+})->name('switchLang');
