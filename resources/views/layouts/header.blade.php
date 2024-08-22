@@ -29,8 +29,39 @@
                         <a href="{{ route('switchLang', 'az') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                             {{ __('messages.azerbaijani') }}
                         </a>
+                        <a href="{{ route('switchLang', 'es') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            {{ __('messages.spanish') }}
+                        </a>
+                        <a href="{{ route('switchLang', 'fr') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            {{ __('messages.french') }}
+                        </a>
+                        <a href="{{ route('switchLang', 'de') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            {{ __('messages.german') }}
+                        </a>
+                        <a href="{{ route('switchLang', 'pt') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            {{ __('messages.portuguese') }}
+                        </a>
+                        <a href="{{ route('switchLang', 'ru') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            {{ __('messages.russian') }}
+                        </a>
+                        <a href="{{ route('switchLang', 'zh-CN') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            {{ __('messages.chinese') }}
+                        </a>
+                        <a href="{{ route('switchLang', 'ar') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            {{ __('messages.arabic') }}
+                        </a>
+                        <a href="{{ route('switchLang', 'hi') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            {{ __('messages.hindi') }}
+                        </a>
+                        <a href="{{ route('switchLang', 'ja') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            {{ __('messages.japanese') }}
+                        </a>
+                        <a href="{{ route('switchLang', 'it') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                            {{ __('messages.italian') }}
+                        </a>
                     </div>
                 </div>
+                
             </div>
 
             @auth

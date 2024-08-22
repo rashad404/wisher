@@ -13,6 +13,16 @@ return [
     'language' => 'Language',
     'english' => 'English',
     'azerbaijani' => 'Azerbaijani',
+    'spanish' => 'Español',
+    'french' => 'Français',
+    'german' => 'Deutsch',
+    'portuguese' => 'Português',
+    'russian' => 'Русский',
+    'chinese' => '中文 (简体)',
+    'arabic' => 'العربية',
+    'hindi' => 'हिन्दी',
+    'japanese' => '日本語',
+    'italian' => 'Italiano',
 
     // Blog related
     'from_the_blog' => 'Latest Stories from Wisher.az',
