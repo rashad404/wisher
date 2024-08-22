@@ -8,7 +8,21 @@ use App\Models\Group;
 class GroupSeeder extends Seeder
 {
     public function run()
-    {
-        Group::factory()->count(10)->create(); // Creates 10 group records
+{
+
+    $list = [
+        ['name' => 'Family'],
+        ['name' => 'Friends'],
+        ['name' => 'Work'],
+    ];
+
+    foreach ($list as $item) {
+        Group::firstOrCreate([
+            'user_id' => 1,
+            'name' => $item['name'],
+
+        ]);
+    }
+
     }
 }

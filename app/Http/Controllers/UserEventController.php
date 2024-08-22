@@ -45,7 +45,7 @@ class UserEventController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'date' => 'required|date',
-            'status' => 'required|in:active,inactive',
+            'status' => 'required|in:0,1',
             'group_id' => 'nullable|exists:groups,id',
             'contact_id' => 'nullable|exists:contacts,id',
             'recurrence' => 'nullable|in:annual,monthly',
@@ -97,7 +97,7 @@ class UserEventController extends Controller
         $request->validate([
             'name' => 'required|string|max:255',
             'date' => 'required|date',
-            'status' => 'required|in:active,inactive',
+            'status' => 'required|in:0,1',
             'group_id' => 'nullable|exists:groups,id',
             'contact_id' => 'nullable|exists:contacts,id',
             'recurrence' => 'nullable|in:annual,monthly',

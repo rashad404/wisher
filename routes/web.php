@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\LoginController;
@@ -133,5 +134,6 @@ Route::middleware('auth')->prefix('user')->group(function () {
     Route::put('/profile', [ProfileController::class, 'update'])->name('user.profile.update');
     
     Route::get('/settings', [ProfileController::class, 'index'])->name('user.settings');
+    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
 
 });

@@ -16,10 +16,10 @@ class UserEventFactory extends Factory
             'date' => $this->faker->date,
             'is_annual' => $this->faker->boolean,
             'is_monthly' => $this->faker->boolean,
-            'status' => $this->faker->word,
-            'user_id' => \App\Models\User::factory(),
-            'contact_id' => \App\Models\Contact::factory(),
-            'group_id' => \App\Models\Group::factory(),
+            'status' => 1,
+            'user_id' => 1,
+            'contact_id' => 1,
+            'group_id' => 1,
         ];
     }
 }
