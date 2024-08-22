@@ -24,5 +24,7 @@
     <footer>
         @include('/layouts/user/footer')
     </footer>
+    @stack('scripts')
+
 </body>
 </html>

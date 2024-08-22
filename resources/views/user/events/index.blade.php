@@ -45,9 +45,9 @@
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                                     <span class="inline-flex items-center rounded-md
-                                        @if($event->status === 'Active') bg-green-50 text-green-700 ring-green-600/20 @else bg-red-50 text-red-700 ring-red-600/20 @endif
+                                        @if($event->status === 1) bg-green-50 text-green-700 ring-green-600/20 @else bg-red-50 text-red-700 ring-red-600/20 @endif
                                         px-2 py-1 text-xs font-medium ring-1 ring-inset">
-                                        {{ $event->status }}
+                                        {{ $event->statusName() }}
                                     </span>
                                 </td>
                                 <td class="relative whitespace-nowrap py-5 pl-3 pr-4 text-right text-sm font-medium sm:pr-0">

@@ -34,4 +34,8 @@ class UserEvent extends Model
     {
         return $this->belongsTo(Group::class);
     }
+
+    public function statusName() {
+        return $this->status == 1 ? 'Active' : 'Inactive';
+    }
 }

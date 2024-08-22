@@ -12,7 +12,7 @@ class GroupFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => \App\Models\User::factory(), // Ensure you have a User factory
+            'user_id' => 1, // Ensure you have a User factory
             'name' => $this->faker->word,
         ];
     }
