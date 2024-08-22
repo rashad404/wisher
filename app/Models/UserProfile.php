@@ -8,7 +8,8 @@ class UserProfile extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'first_name', 'last_name', 'gender', 'dob'];
+    protected $fillable = ['first_name', 'last_name', 'dob', 'gender', 'address', 'city', 'state', 'zip', 'country', 'phone_number', 'profile_photo'];
+
 
     /**
      * The user that owns the profile.

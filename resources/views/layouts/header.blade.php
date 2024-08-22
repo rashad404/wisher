@@ -34,21 +34,32 @@
             </div>
 
             @auth
-                <!-- User Profile with Photo and Logout -->
-                <div class="flex items-center space-x-4">
-                    <!-- Profile Photo -->
-                    <img src="{{ asset(auth()->user()->profile->profile_photo ?? 'images/user.png') }}" class="w-8 h-8 rounded-full" alt="{{ auth()->user()->name }}">
+                <!-- User Profile with Photo and Dropdown -->
+                <div class="relative">
+                    <button type="button" class="flex items-center space-x-2 text-white text-sm font-semibold leading-6 focus:outline-none" id="userDropdownButton">
+                        <img src="{{ Storage::url(auth()->user()->profile->profile_photo ?? 'images/user.png') }}" class="w-8 h-8 rounded-full" alt="{{ auth()->user()->name() }}">
+                        <span>{{ auth()->user()->name() }}</span>
+                        <svg class="ml-2 h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                        </svg>
+                    </button>
 
-                    <!-- User Name -->
-                    <span class="text-sm font-semibold text-white">{{ auth()->user()->name }}</span>
-
-                    <!-- Logout Button -->
-                    <form method="GET" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="text-sm font-semibold leading-6 text-white hover:text-gray-300">
-                            {{ __('messages.log_out') }}
-                        </button>
-                    </form>
+                    <!-- Dropdown Menu -->
+                    <div id="userDropdownMenu" class="z-50 hidden absolute right-0 mt-2 w-48 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <a href="{{ route('user.index') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                            {{ __('Dashboard') }}
+                        </a>
+                        <a href="{{ route('user.profile') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                            {{ __('Your Profile') }}
+                        </a>
+                        <a href="{{ route('user.settings') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                            {{ __('Settings') }}
+                        </a>
+                        <form method="POST" action="{{ route('logout') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-50">
+                            @csrf
+                            <button type="submit" class="w-full text-left">{{ __('Sign out') }}</button>
+                        </form>
+                    </div>
                 </div>
             @else
                 <!-- Show Login and Sign Up buttons if not logged in -->
@@ -97,13 +108,13 @@
                         @auth
                             <div class="flex items-center space-x-4">
                                 <!-- Profile Photo -->
-                                <img src="{{ asset(auth()->user()->profile->profile_photo ?? 'images/user.png') }}" class="w-8 h-8 rounded-full" alt="{{ auth()->user()->name }}">
+                                <img src="{{ Storage::url(auth()->user()->profile->profile_photo ?? 'images/user.png') }}" class="w-8 h-8 rounded-full" alt="{{ auth()->user()->name() }}">
 
                                 <!-- User Name -->
-                                <span class="text-base font-semibold text-gray-900">{{ auth()->user()->name }}</span>
+                                <span class="text-base font-semibold text-gray-900">{{ auth()->user()->name() }}</span>
 
                                 <!-- Logout Button -->
-                                <form method="GET" action="{{ route('logout') }}">
+                                <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit" class="text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 block w-full text-left">
                                         {{ __('messages.log_out') }}
@@ -119,7 +130,6 @@
         </div>
     </div>
 </header>
-
 
 {{-- Notification Messages --}}
 @if(session('success') || session('error'))
@@ -151,7 +161,6 @@
         dropdown.classList.toggle('hidden');
     });
 
-
     const menuOverlay = document.getElementById('menuOverlay');
     const mobileMenu = document.getElementById('mobileMenu');
     const mobileMenuButton = document.getElementById('mobileMenuButton');
@@ -169,4 +178,18 @@
         mobileMenu.classList.add('hidden');
     });
 
+    // Dropdown toggle for user menu
+    document.getElementById('userDropdownButton').addEventListener('click', function() {
+        var dropdown = document.getElementById('userDropdownMenu');
+        dropdown.classList.toggle('hidden');
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener('click', function(event) {
+        var dropdown = document.getElementById('userDropdownMenu');
+        var button = document.getElementById('userDropdownButton');
+        if (!button.contains(event.target) && !dropdown.contains(event.target)) {
+            dropdown.classList.add('hidden');
+        }
+    });
 </script>

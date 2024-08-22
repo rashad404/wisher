@@ -48,4 +48,13 @@ class User extends Authenticatable
     {
         return $this->hasOne(UserProfile::class);
     }
+
+    public function name()
+    {
+        if ($this->profile && $this->profile->first_name && $this->profile->last_name) {
+            return $this->profile->first_name . ' ' . $this->profile->last_name;
+        }
+
+        return '';
+    }
 }
