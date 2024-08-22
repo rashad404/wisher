@@ -4,6 +4,7 @@ namespace App\Nova;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\Text;
 use Kongulov\NovaTabTranslatable\NovaTabTranslatable;
 use Mostafaznv\NovaCkEditor\CkEditor;
 use Laravel\Nova\Http\Requests\NovaRequest;

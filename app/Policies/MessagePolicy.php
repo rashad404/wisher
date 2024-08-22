@@ -13,7 +13,7 @@ class MessagePolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class MessagePolicy
      */
     public function view(User $user, Message $message): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -29,7 +29,7 @@ class MessagePolicy
      */
     public function create(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -37,7 +37,7 @@ class MessagePolicy
      */
     public function update(User $user, Message $message): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -54,7 +54,7 @@ class MessagePolicy
      */
     public function restore(User $user, Message $message): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -62,6 +62,6 @@ class MessagePolicy
      */
     public function forceDelete(User $user, Message $message): bool
     {
-        //
+        return true;
     }
 }
