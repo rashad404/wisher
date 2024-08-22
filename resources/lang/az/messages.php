@@ -90,6 +90,7 @@ return [
     'plan_description' => 'Sizə uyğun olan planı tapın və hər anı xüsusi etməyə başlayın.',
     'month' => 'ay',
     'sign_up' => 'Qeydiyyatdan keçin',
+    'log_out' => 'Çıxış',
     'view_all_plans' => 'Bütün qiymət planlarına baxın',
 
     // index testimonials section

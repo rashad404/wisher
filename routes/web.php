@@ -14,6 +14,7 @@ use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\TestimonialController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserEventController;
+use App\Http\Controllers\ChatController;
 
 /*
 |--------------------------------------------------------------------------
@@ -114,3 +115,14 @@ Route::get('/lang/{locale}', function ($locale) {
 })->name('switchLang');
 
 Route::get('/testimonials', [TestimonialController::class, 'index'])->name('testimonials.index');
+
+// CHat
+Route::middleware('auth')->prefix('user')->group(function () {
+    Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+    Route::get('/chat/{conversation}', [ChatController::class, 'show'])->name('chat.show');
+    Route::post('/chat/{conversation}/message', [ChatController::class, 'storeMessage'])->name('chat.storeMessage');
+    Route::delete('/chat/message/{message}', [ChatController::class, 'deleteMessage'])->name('chat.deleteMessage');
+    Route::delete('/chat/{conversation}', [ChatController::class, 'deleteConversation'])->name('chat.deleteConversation');
+    Route::post('/chat/create', [ChatController::class, 'create'])->name('chat.create');
+
+});

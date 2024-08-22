@@ -17,7 +17,7 @@
         </div>
         <div class="flex flex-1 items-center justify-end gap-x-6">
             <!-- Language Dropdown -->
-            <div class="relative index z-50">
+            <div class="relative z-50">
                 <button type="button" class="text-white text-sm font-semibold leading-6 focus:outline-none" id="languageButton">
                     {{ strtoupper(app()->getLocale()) }}
                 </button>
@@ -33,8 +33,30 @@
                 </div>
             </div>
 
-            <a href="/login" class="hidden lg:block lg:text-sm lg:font-semibold lg:leading-6 lg:text-white">{{ __('messages.log_in') }}</a>
-            <a href="/register" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">{{ __('messages.sign_up') }}</a>
+            @auth
+                <!-- User Profile with Photo and Logout -->
+                <div class="flex items-center space-x-4">
+                    <!-- Profile Photo -->
+                    <img src="{{ asset(auth()->user()->profile->profile_photo ?? 'images/user.png') }}" class="w-8 h-8 rounded-full" alt="{{ auth()->user()->name }}">
+
+                    <!-- User Name -->
+                    <span class="text-sm font-semibold text-white">{{ auth()->user()->name }}</span>
+
+                    <!-- Logout Button -->
+                    <form method="GET" action="{{ route('logout') }}">
+                        @csrf
+                        <button type="submit" class="text-sm font-semibold leading-6 text-white hover:text-gray-300">
+                            {{ __('messages.log_out') }}
+                        </button>
+                    </form>
+                </div>
+            @else
+                <!-- Show Login and Sign Up buttons if not logged in -->
+                <a href="/login" class="hidden lg:block lg:text-sm lg:font-semibold lg:leading-6 lg:text-white">{{ __('messages.log_in') }}</a>
+                <a href="/register" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
+                    {{ __('messages.sign_up') }}
+                </a>
+            @endauth
         </div>
         <div class="flex lg:hidden">
             <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-white" id="mobileMenuButton" aria-expanded="false" aria-label="Open main menu">
@@ -72,13 +94,32 @@
                         <a href="/blog" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('messages.blog') }}</a>
                     </div>
                     <div class="py-6">
-                        <a href="/login" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('messages.log_in') }}</a>
+                        @auth
+                            <div class="flex items-center space-x-4">
+                                <!-- Profile Photo -->
+                                <img src="{{ asset(auth()->user()->profile->profile_photo ?? 'images/user.png') }}" class="w-8 h-8 rounded-full" alt="{{ auth()->user()->name }}">
+
+                                <!-- User Name -->
+                                <span class="text-base font-semibold text-gray-900">{{ auth()->user()->name }}</span>
+
+                                <!-- Logout Button -->
+                                <form method="GET" action="{{ route('logout') }}">
+                                    @csrf
+                                    <button type="submit" class="text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 block w-full text-left">
+                                        {{ __('messages.log_out') }}
+                                    </button>
+                                </form>
+                            </div>
+                        @else
+                            <a href="/login" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('messages.log_in') }}</a>
+                        @endauth
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </header>
+
 
 {{-- Notification Messages --}}
 @if(session('success') || session('error'))

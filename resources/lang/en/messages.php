@@ -89,6 +89,7 @@ return [
     'plan_description' => 'Find the perfect plan that suits your needs and start making every occasion special.',
     'month' => 'month',
     'sign_up' => 'Sign Up',
+    'log_out' => 'Logout',
     'view_all_plans' => 'View All Pricing Plans',
 
     // index testimonials section
