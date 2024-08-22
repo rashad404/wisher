@@ -15,6 +15,7 @@ use App\Http\Controllers\TestimonialController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserEventController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\User\ProfileController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,7 +34,7 @@ Route::get('/how-it-works', [MainController::class, 'howItWorks'])->name('main.h
 
 Route::post('/authenticate', [LoginController::class, 'authenticate'])->name('authenticate');
 Route::get('/login', [LoginController::class, 'showLoginForm'])->name('login');
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/register', [LoginController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [LoginController::class, 'register']);
@@ -57,7 +58,6 @@ Route::post('/products/variant/quantity', [ProductController::class, 'getVariant
 Route::post('/products/variant/sizes', [ProductController::class, 'getAvailableSizes']);
 
 // User Panel
-Route::get('/user/dashboard', [UserController::class, 'index'])->name('user.index');
 Route::get('/user/contacts', [ContactController::class, 'index'])->name('user.contacts.index');
 Route::get('/user/contacts/{id}', [ContactController::class, 'show'])->where('id', '[0-9]+')->name('contacts.show');
 
@@ -116,13 +116,22 @@ Route::get('/lang/{locale}', function ($locale) {
 
 Route::get('/testimonials', [TestimonialController::class, 'index'])->name('testimonials.index');
 
-// CHat
+
 Route::middleware('auth')->prefix('user')->group(function () {
+    
+    Route::get('/dashboard', [UserController::class, 'index'])->name('user.index');
+
+    // Chat
     Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
     Route::get('/chat/{conversation}', [ChatController::class, 'show'])->name('chat.show');
     Route::post('/chat/{conversation}/message', [ChatController::class, 'storeMessage'])->name('chat.storeMessage');
     Route::delete('/chat/message/{message}', [ChatController::class, 'deleteMessage'])->name('chat.deleteMessage');
     Route::delete('/chat/{conversation}', [ChatController::class, 'deleteConversation'])->name('chat.deleteConversation');
     Route::post('/chat/create', [ChatController::class, 'create'])->name('chat.create');
+
+    Route::get('/profile', [ProfileController::class, 'index'])->name('user.profile');
+    Route::put('/profile', [ProfileController::class, 'update'])->name('user.profile.update');
+    
+    Route::get('/settings', [ProfileController::class, 'index'])->name('user.settings');
 
 });
