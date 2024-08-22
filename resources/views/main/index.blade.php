@@ -29,18 +29,18 @@
             </a>
           </div>
         </div>
-        <h1 class="mt-10 max-w-lg text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">Hədiyyə və Arzuların Ünvanı!</h1>
+        <h1 class="mt-10 max-w-lg text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">{{__('messages.main_heading')}}</h1>
 
-          <p class="mt-6 text-xl leading-8 text-gray-700">Wisher.az xüsusi günləri xatırlamaq və qeyd etmək üçün şəxsi köməkçinizdir. </p>
-          <p class="mt-6 text-xl leading-8 text-gray-700">Siz onu ad günləri, yubileylər və ya hər hansı mühüm tarixlərdə avtomatik olaraq sms mesaj və ya elektron poçt göndərmək üçün istifadə edə bilərsiniz və hətta avtomatik hədiyyələr göndərə bilərsiniz. </p>
-          <p class="mt-6 text-xl leading-8 text-gray-700">Hədiyyə və mesajlar hər bir şəxsə uyğun fərdiləşdirilə bilinir.</p>
-          <p class="mt-6 text-xl leading-8 text-gray-700">Wisher.az -dan həm fərdi şəxslər, həm də şirkətlər istifadə edə bilər.</p>
-          <p class="mt-6 text-xl leading-8 text-gray-700">Şirkətlər üçün hədiyyə / təbrik prosesini avtomatikləşdirmək və hər bir işçiyə və ya biznes partnyora dəyərli olduğunu hiss etdirmək daha asan olacaq.</p>
-          <p class="mt-6 text-xl leading-8 text-gray-700">Artıq vacib tarixləri unutmaq və ya düzgün hədiyyələr seçməklə bağlı narahatlığınız olmayacaq - Wisher.az hər bir anı həm sizin, həm də sevdikləriniz üçün xüsusi edərək, bütün bunların qayğısına qalır.</p>
+          <p class="mt-6 text-xl leading-8 text-gray-700">{{__('messages.main_description_1')}}</p>
+          <p class="mt-6 text-xl leading-8 text-gray-700">{{__('messages.main_description_2')}}</p>
+          <p class="mt-6 text-xl leading-8 text-gray-700">{{__('messages.main_description_3')}}</p>
+          <p class="mt-6 text-xl leading-8 text-gray-700">{{__('messages.main_description_4')}}</p>
+          <p class="mt-6 text-xl leading-8 text-gray-700">{{__('messages.main_description_5')}}</p>
+          <p class="mt-6 text-xl leading-8 text-gray-700">{{__('messages.main_description_6')}}</p>
 
         <div class="mt-10 flex items-center gap-x-6">
-          <a href="/register" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Qeydiyyatdan keç</a>
-          <a href="/how-it-works" class="text-sm font-semibold leading-6 text-gray-900">Daha ətraflı <span aria-hidden="true">→</span></a>
+          <a href="/register" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">{{__('messages.register_now')}}</a>
+          <a href="/how-it-works" class="text-sm font-semibold leading-6 text-gray-900">{{__('messages.learn_more')}} <span aria-hidden="true">→</span></a>
         </div>
       </div>
       <div class="mt-16 sm:mt-24 lg:mt-0 lg:flex-shrink-0 lg:flex-grow">
