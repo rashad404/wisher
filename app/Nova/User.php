@@ -8,6 +8,7 @@ use Laravel\Nova\Fields\Gravatar;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Image;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
 class User extends Resource
@@ -46,22 +47,25 @@ class User extends Resource
         return [
             ID::make()->sortable(),
 
-            Gravatar::make()->maxWidth(50),
+            Image::make('Profile Photo', 'profile_photo')
+                ->disk('public') // Ensure the disk is configured in your filesystem
+                ->path('profile-photos') // Optional: specify the path for storage
+                ->rules('nullable', 'image', 'max:1024'), // Image validation rules
 
-            Text::make('Name')
+            Text::make('First Name')
                 ->sortable()
                 ->rules('required', 'max:255'),
 
-            Text::make('Email')
+            Text::make('Last Name')
                 ->sortable()
-                ->rules('required', 'email', 'max:254')
-                ->creationRules('unique:users,email')
-                ->updateRules('unique:users,email,{{resourceId}}'),
+                ->rules('required', 'max:255'),
 
-            Password::make('Password')
-                ->onlyOnForms()
-                ->creationRules('required', Rules\Password::defaults())
-                ->updateRules('nullable', Rules\Password::defaults()),
+            Text::make('Address')->hideFromIndex(),
+            Text::make('City')->hideFromIndex(),
+            Text::make('State')->hideFromIndex(),
+            Text::make('Zip')->hideFromIndex(),
+            Text::make('Country')->hideFromIndex(),
+            Text::make('Phone Number')->hideFromIndex(),
         ];
     }
 
