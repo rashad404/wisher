@@ -41,7 +41,18 @@
                                     <div class="text-gray-900">{{ \Carbon\Carbon::parse($event->date)->format('d-m-Y') }}</div>
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
-                                    <div class="text-gray-900">{{ $event->recurrence ?? 'Yoxdur' }}</div>
+                                    <div class="text-gray-900">
+                                        @switch($event->recurrence)
+                                            @case(1)
+                                                İllik
+                                                @break
+                                            @case(2)
+                                                Aylıq
+                                                @break
+                                            @default
+                                                Yoxdur
+                                        @endswitch
+                                    </div>
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                                     <span class="inline-flex items-center rounded-md

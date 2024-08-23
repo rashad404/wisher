@@ -29,25 +29,22 @@
                 </div>
             </div>
 
-            <!-- Recurrence Fields -->
+            <!-- Recurrence Field -->
             <div>
-                <label class="block text-sm font-semibold leading-6 text-gray-900">Recurrence</label>
+                <label for="recurrence" class="block text-sm font-semibold leading-6 text-gray-900">Recurrence</label>
                 <div class="mt-2.5">
-                    <div>
-                        <input type="radio" name="recurrence" id="is_annual" value="annual" class="mr-2" {{ old('recurrence', $event->is_annual ? 'annual' : 'monthly') == 'annual' ? 'checked' : '' }}>
-                        <label for="is_annual" class="text-gray-900">Annual</label>
-                    </div>
-                    <div>
-                        <input type="radio" name="recurrence" id="is_monthly" value="monthly" class="mr-2" {{ old('recurrence', $event->is_monthly ? 'monthly' : 'annual') == 'monthly' ? 'checked' : '' }}>
-                        <label for="is_monthly" class="text-gray-900">Monthly</label>
-                    </div>
+                    <select name="recurrence" id="recurrence" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                        <option value="0" {{ old('recurrence', $event->recurrence) == 0 ? 'selected' : '' }}>None</option>
+                        <option value="1" {{ old('recurrence', $event->recurrence) == 1 ? 'selected' : '' }}>Annual</option>
+                        <option value="2" {{ old('recurrence', $event->recurrence) == 2 ? 'selected' : '' }}>Monthly</option>
+                    </select>
                     @if ($errors->has('recurrence'))
                         <p class="mt-1 text-sm text-red-600">{{ $errors->first('recurrence') }}</p>
                     @endif
                 </div>
             </div>
 
-            <!-- Status Field (Active/Inactive) -->
+            <!-- Status Field -->
             <div>
                 <label for="status" class="block text-sm font-semibold leading-6 text-gray-900">Status*</label>
                 <div class="mt-2.5">

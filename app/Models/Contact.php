@@ -34,4 +34,9 @@ class Contact extends Model
     {
         return $this->hasMany(UserEvent::class);
     }
+
+    public function events()
+    {
+        return $this->hasMany(UserEvent::class);
+    }
 }
