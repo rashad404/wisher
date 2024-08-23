@@ -1,10 +1,10 @@
 @extends('layouts.user.app')
 
 @section('content')
-<div class="flex justify-center items-center h-screen">
+<div class="flex justify-center items-center h-[80vh] py-12">
     <div class="w-full max-w-lg flex-none flex-col divide-y divide-gray-100">
         <div class="flex-none p-6 text-center">
-            <img src="{{ $contact->profile_image_url ?? 'https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80' }}" alt="" class="mx-auto h-24 w-24 rounded-full">
+            <img class="mx-auto h-24 w-24 rounded-full" src="{{ Storage::url($contact->photo) }}" alt="{{ $contact->name }}">
             <h2 class="mt-3 text-lg font-semibold text-gray-900">{{ $contact->name }}</h2>
             <p class="text-sm leading-6 text-gray-500">{{ $contact->title ?? 'No Title' }}</p>
         </div>

@@ -2,11 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Contact;
-use App\Models\Group;
 use Carbon\Carbon;
+use App\Models\Group;
+use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class ContactController extends Controller
 {
@@ -67,24 +68,39 @@ class ContactController extends Controller
         return view('user.contacts.edit', compact('contact'));
     }
 
-    public function update(Request $request, Contact $contact)
+    public function update(Request $request, $id)
     {
-        // Validate and update the contact
-        $data = $request->validate([
-            'name' => 'required',
+        $contact = Contact::findOrFail($id);
+
+
+        // Validate the request
+        $request->validate([
+            'name' => 'required|string|max:255',
             'email' => 'nullable|email',
-            'phone_number' => 'nullable',
+            'phone_number' => 'nullable|string',
             'birthdate' => 'nullable|date',
-            'address' => 'nullable',
-            'interests' => 'nullable|array',
-            'likes' => 'nullable|array',
-            'dislikes' => 'nullable|array',
+            'photo' => 'nullable|image|mimes:jpeg,png,gif|max:10240',
         ]);
 
-        $contact->update($data);
+        // Update contact details
+        $contact->name = $request->input('name');
+        $contact->email = $request->input('email');
+        $contact->phone_number = $request->input('phone_number');
+        $contact->birthdate = $request->input('birthdate');
 
-        // Sync the groups
-        $contact->groups()->sync($request->input('groups', [])); // Ensure groups are synced
+        // Handle photo upload
+        if ($request->hasFile('photo')) {
+            // Delete old photo if exists
+            if ($contact->photo) {
+                Storage::delete($contact->photo);
+            }
+
+            // Store new photo and update contact model
+            $path = $request->file('photo')->store('photos', 'public');
+            $contact->photo = $path;
+        }
+
+        $contact->save();
 
         return redirect()->route('user.contacts.index')->with('success', 'Contact updated successfully.');
     }
