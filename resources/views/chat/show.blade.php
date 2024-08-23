@@ -1,7 +1,13 @@
 @extends('layouts.user.app')
 
 @section('content')
-<div class="container mx-auto">
+<x-breadcrumbs :links="[
+    ['url' => route('main.index'), 'label' => __('Main')],
+    ['url' => route('chat.index'), 'label' => __('Chats')],
+    ['url' => route('chat.show', $conversation), 'label' => {{ $conversation->user1->id === auth()->id() ? $conversation->user2->name : $conversation->user1->name }}]
+]"  />
+
+<div class="container mx-auto pt-6">
     <div class="flex justify-between items-center mb-4">
         <div class="flex items-center">
             <img src="{{ $conversation->user1->id === auth()->id() ? asset($conversation->user2->profile->profile_photo ?? 'images/user.png') : asset($conversation->user1->profile->profile_photo ?? 'images/user.png') }}" class="w-10 h-10 rounded-full mr-3">

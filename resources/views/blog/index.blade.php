@@ -1,6 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
+
+<div class="p-6">
+    <x-breadcrumbs :links="[
+        ['url' => route('main.index'), 'label' => __('messages.home')],
+        ['url' => route('blog.index'), 'label' => __('messages.blog')],
+    ]"/>
+</div>
+
+
 <div class="bg-white py-24 sm:py-32">
     <div class="mx-auto max-w-7xl px-6 lg:px-8">
         <div class="mx-auto max-w-2xl text-center">
@@ -21,9 +30,10 @@
                     </div>
                     <div class="group relative">
                         <h3 class="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
-                            <a href="{{ route('blog.show', $blog) }}">
+                            <a href="{{ route('blog.show', ['id' => $blog->id, 'title' => Str::slug($blog->trans('title'))]) }}">
                                 <span class="absolute inset-0"></span>
-                                {{ $blog->getTranslation('title', app()->getLocale()) }}
+                                {{ $blog->trans('title') }}
+                            </a>
                             </a>
                         </h3>
                         <p class="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">{{ Str::limit(strip_tags($blog->getTranslation('content', app()->getLocale())), 150) }}</p>

@@ -1,6 +1,14 @@
 @extends('layouts.user.app')
 
 @section('content')
+<div class="py-6">
+
+    <x-breadcrumbs :links="[
+        ['url' => route('main.index'), 'label' => __('Home')],
+        ['url' => route('user.contacts.index'), 'label' => __('Contacts')],
+        ['url' => route('user.contacts.edit', $contact), 'label' => __('Edit Contact')]
+    ]"/>
+</div>
 
 <form method="POST" action="{{ route('user.contacts.update', $contact->id) }}" enctype="multipart/form-data">
     @csrf

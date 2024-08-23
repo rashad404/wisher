@@ -2,21 +2,11 @@
 
 @section('content')
 
-    
-<!--
-  This example requires some changes to your config:
-  
-  ```
-  // tailwind.config.js
-  module.exports = {
-    // ...
-    plugins: [
-      // ...
-      require('@tailwindcss/aspect-ratio'),
-    ],
-  }
-  ```
--->
+<div class="p-6">
+    <x-breadcrumbs :links="[
+        ['url' => route('main.index'), 'label' => __('Home')],
+        ['url' => route('gifts.index'), 'label' => __('Gifts')],
+    ]"/>
 <div class="bg-white">
   <div class="mx-auto max-w-7xl overflow-hidden sm:px-6 lg:px-8">
     <h2 class="sr-only">Products</h2>

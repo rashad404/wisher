@@ -1,6 +1,11 @@
 @extends('layouts.user.app')
 
 @section('content')
+    <x-breadcrumbs :links="[
+        ['url' => route('main.index'), 'label' => __('Main')],
+        ['url' => route('chat.index'), 'label' => __('Chats')]
+    ]"/>
+
 <div class="container mx-auto">
     <h2 class="text-xl font-bold mb-4">Chats</h2>
 
