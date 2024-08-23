@@ -13,7 +13,7 @@ class CreateUserProfilesTable extends Migration
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
             $table->date('dob')->nullable();
-            $table->tinyInteger('gender')->nullable();
+            $table->string('gender')->nullable();
             $table->string('address')->nullable();
             $table->string('city')->nullable();
             $table->string('state')->nullable();

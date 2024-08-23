@@ -11,20 +11,16 @@ class Contact extends Model
 
     protected $guarded = [];
 
-    /**
-     * Add likes to the contact's likes JSON column.
-     *
-     * @param array $likes
-     * @return void
-     */
+    // Accessor to get the full URL of the photo
+    public function getPhotoUrlAttribute()
+    {
+        return $this->photo ? asset('storage/' . $this->photo) : null;
+    }
+
     public function addLikes(array $likes)
     {
         $currentLikes = $this->getAttribute('likes') ?? [];
-
-        // Merge the new likes with the existing likes
         $updatedLikes = array_merge($currentLikes, $likes);
-
-        // Update the likes JSON column with the updated likes
         $this->setAttribute('likes', $updatedLikes);
         $this->save();
     }
@@ -38,5 +34,4 @@ class Contact extends Model
     {
         return $this->hasMany(UserEvent::class);
     }
-
 }
