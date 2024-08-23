@@ -1,7 +1,15 @@
 @extends('layouts.user.app')
 
 @section('content')
-<div class="container mx-auto px-4 py-8">
+
+<div class="p-6">
+    <x-breadcrumbs :links="[
+        ['url' => route('user.index'), 'label' => 'Home'],
+        ['url' => route('user.groups.index'), 'label' => 'Groups']
+    ]"/>
+</div>
+
+<div class="container mx-auto px-4 py-6">
     <h1 class="text-2xl font-bold mb-4">Your Calendar</h1>
 
     <!-- Date Picker Form -->

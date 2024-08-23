@@ -1,6 +1,15 @@
 @extends('layouts.user.app')
 
 @section('content')
+
+<div class="py-6">
+    <x-breadcrumbs :links="[
+        ['url' => route('user.index'), 'label' => 'Home'],
+        ['url' => route('user.groups.index'), 'label' => 'Groups'],
+        ['url' => isset($group) ? route('user.groups.edit', $group->id) : route('user.groups.create'), 'label' => isset($group) ? 'Edit' : 'Create']
+    ]"/>
+</div>
+
 <div class="container">
     <h1 class="text-xl font-bold text-gray-900">{{ isset($group) ? 'Edit' : 'Create' }} Group</h1>
 

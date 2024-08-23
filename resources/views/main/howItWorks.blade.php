@@ -3,6 +3,12 @@
 @section('content')
 
     <div class="mx-auto max-w-7xl px-6 lg:px-8 mt-16">
+      <div class="my-8">
+        <x-breadcrumbs :links="[
+          ['url' => route('main.index'), 'label' => __('messages.home')],
+          ['url' => route('main.about'), 'label' => __('messages.how_it_works')],
+      ]"/>
+      </div>
       <div class="mx-auto max-w-2xl lg:mx-0 lg:max-w-none">
         <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('messages.how_it_works') }}</h2>
         <h6 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-2xl mt-8">{{ __('messages.sign_up') }}</h6>

@@ -1,7 +1,16 @@
 @extends('layouts.user.app')
 
 @section('content')
-<div class="container">
+
+<div class="py-6">
+<x-breadcrumbs :links="[
+    ['url' => route('user.index'), 'label' => 'Home'],
+    ['url' => route('user.events.index'), 'label' => 'Event'],
+    ['url' => route('user.events.create'), 'label' => 'Create']
+]"/>
+</div>
+
+<div class="container pt-8">
     <h1 class="text-xl font-bold text-gray-900">Create an Important Date</h1>
     <form method="POST" action="{{ route('user.events.store') }}" class="max-w-xl sm:mt-10">
         @csrf

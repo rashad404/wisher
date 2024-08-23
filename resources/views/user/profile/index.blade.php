@@ -1,6 +1,14 @@
 @extends('layouts.user.app')
 
 @section('content')
+
+<div class="py-6">
+    <x-breadcrumbs :links="[
+        ['url' => route('user.index'), 'label' => 'Home'],
+        ['url' => route('user.profile'), 'label' => 'Profile']
+    ]"/>
+</div>
+
 <div class="container mx-auto px-4 py-8">
     <h1 class="text-2xl font-bold mb-4">Your Profile</h1>
 

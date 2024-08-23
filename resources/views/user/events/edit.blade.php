@@ -1,8 +1,18 @@
 @extends('layouts.user.app')
 
 @section('content')
-<div class="container">
-    <h1 class="text-xl font-bold text-gray-900">Edit Important Date</h1>
+
+<div class="py-6">
+
+    <x-breadcrumbs :links="[
+        ['url' => route('user.index'), 'label' => 'Home'],
+        ['url' => route('user.events.index'), 'label' => 'Events'],
+        ['url' => route('user.events.edit', $event->id), 'label' => 'Edit']
+    ]"/>
+</div>
+
+<div class="container pt-8">
+    <h1 class="text-xl font-bold text-gray-900">Edit Event</h1>
     <form method="POST" action="{{ route('user.events.update', $event->id) }}" class="max-w-xl sm:mt-10">
         @csrf
         @method('PUT')

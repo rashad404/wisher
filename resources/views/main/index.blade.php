@@ -135,7 +135,8 @@
               </div>
               <div class="mt-4">
                 <h3 class="text-lg font-semibold text-gray-900">
-                  <a href="{{ route('blog.show', $blog) }}">{{ $blog->title }}</a>
+                  <a href="{{ route('blog.show', ['id' => $blog->id, 'title' => Str::slug($blog->title)]) }}">{{ $blog->title }}</a>
+                </h3>
                 </h3>
                 <p class="mt-2 text-sm text-gray-600">{{ Str::limit(strip_tags($blog->content), 100) }}</p>
               </div>

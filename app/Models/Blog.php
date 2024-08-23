@@ -1,12 +1,13 @@
 <?php
 namespace App\Models;
 
+use App\Traits\HasTranslatable;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
 class Blog extends Model
 {
-    use HasTranslations;
+    use HasTranslations, HasTranslatable;
 
     /**
      * The attributes that are translatable.

@@ -2,7 +2,7 @@
 
 @section('content')
     <!-- Breadcrumbs -->
-    <div class="p-6">
+    <div class="py-6">
         <x-breadcrumbs :links="[
             ['url' => route('user.index'), 'label' => 'Home'],
             ['url' => route('user.contacts.index'), 'label' => 'Contacts'],
