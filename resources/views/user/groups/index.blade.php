@@ -1,7 +1,14 @@
 @extends('layouts.user.app')
 
 @section('content')
-
+    <!-- Breadcrumbs -->
+    <div class="p-6">
+        <x-breadcrumbs :links="[
+            ['url' => route('user.index'), 'label' => 'Home'],
+            ['url' => route('user.groups.index'), 'label' => 'Groups']
+        ]"/>
+    </div>
+    
 <div class="px-4 sm:px-6 lg:px-8">
     <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
@@ -56,6 +63,8 @@
                         @endforeach
                     </tbody>
                 </table>
+
+
             </div>
         </div>
     </div>

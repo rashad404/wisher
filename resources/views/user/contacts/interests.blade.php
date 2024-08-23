@@ -1,8 +1,19 @@
 @extends('layouts.user.app')
 
 @section('content')
-    <div class="max-w-3xl mx-auto p-6 bg-white rounded-lg shadow-lg">
-        <h1 class="text-2xl font-semibold mb-6 text-gray-800">Manage Interests for {{ $contact->name }}</h1>
+
+
+    <div class="p-6">
+        <x-breadcrumbs :links="[
+            ['url' => route('user.index'), 'label' => 'Home'],
+            ['url' => route('user.contacts.index'), 'label' => 'Contacts'],
+            ['url' => route('user.contacts.show', $contact->id), 'label' => $contact->name],
+            ['url' => route('contacts.interests.index', $contact->id), 'label' => 'Interests']
+        ]"/>
+    </div>
+
+    <div class="py-12">
+
 
         <!-- Form to add new interest (like/dislike) to the contact -->
         <form action="{{ route('contacts.interests.store', $contact) }}" method="POST" class="mb-8">
