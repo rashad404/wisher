@@ -42,3 +42,4 @@ class Contact extends Model
                     ->withPivot('type')
                     ->withTimestamps();
     }
+}
