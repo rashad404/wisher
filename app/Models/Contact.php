@@ -39,4 +39,12 @@ class Contact extends Model
         return $this->hasMany(UserEvent::class);
     }
 
+
+    public function interests()
+    {
+        return $this->belongsToMany(Interest::class, 'contact_interests')
+                    ->withPivot('type')
+                    ->withTimestamps();
+    }
+
 }

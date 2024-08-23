@@ -15,7 +15,14 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(UserSeeder::class);
         $this->call(GroupSeeder::class);
+
+        $this->call([
+            InterestCategorySeeder::class,
+            InterestSeeder::class,
+        ]);
         $this->call(ContactSeeder::class);
+        $this->call(ContactInterestSeeder::class);
+        
         $this->call(BrandSeeder::class);
         $this->call(CategorySeeder::class);
         $this->call(ColorSeeder::class);
@@ -34,5 +41,7 @@ class DatabaseSeeder extends Seeder
         $this->call(FeatureSeeder::class);
         $this->call(ConversationSeeder::class);
         $this->call(MessageSeeder::class);
+        
+
     }
 }
