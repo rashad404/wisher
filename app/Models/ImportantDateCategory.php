@@ -12,8 +12,13 @@ class ImportantDateCategory extends Model
 
     protected $fillable = ['name', 'position'];
 
-    public function importantDates(): HasMany
+    public function importantDates()
     {
-        return $this->hasMany(ImportantDate::class);
+        return $this->hasMany(ImportantDate::class, 'category_id');
+    }
+
+    public function congratulationsMessages()
+    {
+        return $this->hasMany(CongratulationsMessage::class, 'important_date_category_id');
     }
 }

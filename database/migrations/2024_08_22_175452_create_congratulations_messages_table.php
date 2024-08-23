@@ -10,8 +10,8 @@ class CreateCongratulationsMessagesTable extends Migration
     {
         Schema::create('congratulations_messages', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('important_date_id')->constrained()->onDelete('cascade');
-            $table->foreignId('important_date_category_id')->constrained()->onDelete('cascade');
+            $table->foreignId('important_date_id')->constrained('important_dates')->onDelete('cascade');
+            $table->foreignId('important_date_category_id')->constrained('important_date_categories')->onDelete('cascade');
             $table->string('language');
             $table->text('message');
             $table->timestamps();

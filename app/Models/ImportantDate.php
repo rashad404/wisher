@@ -23,8 +23,13 @@ class ImportantDate extends Model
         'position' => 'integer'
     ];
 
-    public function category(): BelongsTo
+    public function congratulationsMessages()
     {
-        return $this->belongsTo(ImportantDateCategory::class);
+        return $this->hasMany(CongratulationsMessage::class, 'important_date_id');
+    }
+
+    public function category()
+    {
+        return $this->belongsTo(ImportantDateCategory::class, 'category_id');
     }
 }
