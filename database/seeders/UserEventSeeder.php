@@ -17,8 +17,7 @@ class UserEventSeeder extends Seeder
             [
                 'name' => 'John\'s Birthday',
                 'date' => '2024-10-10',
-                'is_annual' => true,
-                'is_monthly' => false,
+                'recurrence' => 2,
                 'status' => 1,
                 'user_id' => 1,
                 'contact_id' => 1,
@@ -27,8 +26,7 @@ class UserEventSeeder extends Seeder
             [
                 'name' => 'Company Anniversary',
                 'date' => '2024-09-15',
-                'is_annual' => true,
-                'is_monthly' => false,
+                'recurrence' => 0,
                 'status' => 1,
                 'user_id' => 1,
                 'contact_id' => 3,
@@ -37,8 +35,7 @@ class UserEventSeeder extends Seeder
             [
                 'name' => 'Monthly Team Meeting',
                 'date' => '2024-08-22',
-                'is_annual' => false,
-                'is_monthly' => true,
+                'recurrence' => 1,
                 'status' => 1,
                 'user_id' => 1,
                 'contact_id' => 3,
@@ -51,8 +48,7 @@ class UserEventSeeder extends Seeder
             UserEvent::firstOrCreate([
                 'name' => $event['name'],
                 'date' => $event['date'],
-                'is_annual' => $event['is_annual'],
-                'is_monthly' => $event['is_monthly'],
+                'recurrence' => $event['recurrence'],
                 'status' => $event['status'],
                 'user_id' => $event['user_id'],
                 'contact_id' => $event['contact_id'],
