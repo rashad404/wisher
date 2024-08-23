@@ -1,8 +1,15 @@
 @extends('layouts.user.app')
 
 @section('content')
+<!-- Breadcrumbs -->
+<div class="p-6">
+    <x-breadcrumbs :links="[
+        ['url' => route('user.index'), 'label' => 'Home'],
+        ['url' => route('user.events.index'), 'label' => 'Tədbirlərim']
+    ]"/>
+</div>
 
-<div class="px-4 sm:px-6 lg:px-8">
+<div class="px-4 sm:px-6 lg:px-8 pt-6">
     <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
             <h1 class="text-base font-semibold leading-6 text-gray-900">Tədbirlərim</h1>

@@ -1,7 +1,16 @@
 @extends('layouts.user.app')
 
 @section('content')
-<div class="container">
+<div class="py-6">
+
+    <x-breadcrumbs :links="[
+        ['url' => route('main.index'), 'label' => __('Home')],
+        ['url' => route('user.contacts.index'), 'label' => __('Contacts')],
+        ['url' => route('user.contacts.create'), 'label' => __('Create Contact')]
+    ]"/>
+</div>
+
+<div class="container pt-8">
     <h1 class="text-xl font-bold text-gray-900">Create a New Contact</h1>
     <form method="POST" action="{{ route('user.contacts.store') }}" class="max-w-xl sm:mt-10">
         @csrf

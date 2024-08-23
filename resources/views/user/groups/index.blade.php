@@ -2,7 +2,14 @@
 
 @section('content')
 
-<div class="px-4 sm:px-6 lg:px-8">
+    <div class="py-6">
+        <x-breadcrumbs :links="[
+            ['url' => route('user.index'), 'label' => 'Home'],
+            ['url' => route('user.groups.index'), 'label' => 'Groups']
+        ]"/>
+    </div>
+    
+<div class="px-4 sm:px-6 lg:px-8 pt-8">
     <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">
             <h1 class="text-base font-semibold leading-6 text-gray-900">Qruplar</h1>
@@ -56,6 +63,8 @@
                         @endforeach
                     </tbody>
                 </table>
+
+
             </div>
         </div>
     </div>

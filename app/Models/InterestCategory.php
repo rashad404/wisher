@@ -7,11 +7,16 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Translatable\HasTranslations;
 
-class Feature extends Model
+class InterestCategory extends Model
 {
     use HasFactory, HasTranslations, HasTranslatable;
 
-    protected $fillable = ['title', 'text'];
+    protected $fillable = ['name', 'position', 'status'];
 
-    public $translatable = ['title', 'text'];
+    public $translatable = ['name'];
+
+    public function interests()
+    {
+        return $this->hasMany(Interest::class);
+    }
 }

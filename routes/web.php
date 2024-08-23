@@ -16,6 +16,7 @@ use App\Http\Controllers\TestimonialController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserEventController;
 use App\Http\Controllers\ChatController;
+use App\Http\Controllers\ContactInterestController;
 use App\Http\Controllers\User\ProfileController;
 
 /*
@@ -108,7 +109,7 @@ Route::delete('/user/events/{event}', [UserEventController::class, 'destroy'])->
 Route::get('/pricing', [PageController::class, 'pricing'])->name('pricing');
 
 Route::get('/blog', [BlogController::class, 'index'])->name('blog.index');
-Route::get('/blog/{blog}', [BlogController::class, 'show'])->name('blog.show');
+Route::get('/blog/{id}/{title}', [BlogController::class, 'show'])->name('blog.show');
 
 Route::get('/lang/{locale}', function ($locale) {
     session(['locale' => $locale]);
@@ -136,4 +137,9 @@ Route::middleware('auth')->prefix('user')->group(function () {
     Route::get('/settings', [ProfileController::class, 'index'])->name('user.settings');
     Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
 
+    Route::prefix('contacts/{contact}')->group(function () {
+        Route::get('interests', [ContactInterestController::class, 'index'])->name('contacts.interests.index');
+        Route::post('interests', [ContactInterestController::class, 'store'])->name('contacts.interests.store');
+        Route::delete('interests/{interest}/{type}', [ContactInterestController::class, 'destroy'])->name('contacts.interests.destroy');
+    });
 });
