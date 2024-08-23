@@ -36,6 +36,12 @@ class Contact extends Model
     }
 
 
+    public function events()
+    {
+        return $this->hasMany(UserEvent::class);
+    }
+
+
     public function interests()
     {
         return $this->belongsToMany(Interest::class, 'contact_interests')
@@ -43,3 +49,4 @@ class Contact extends Model
                     ->withTimestamps();
     }
 }
+

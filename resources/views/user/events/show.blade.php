@@ -2,6 +2,7 @@
 
 @section('content')
 
+
 <div class="py-6">
     <x-breadcrumbs :links="[
         ['url' => route('user.index'), 'label' => 'Home'],
@@ -11,6 +12,7 @@
 </div>
 
 <div class="flex justify-center h-screen">
+
     <div class="w-full max-w-lg flex-none flex-col divide-y divide-gray-100">
         <div class="flex-none p-6 text-center">
             <h2 class="mt-3 text-lg font-semibold text-gray-900">{{ $event->name }}</h2>

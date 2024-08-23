@@ -59,7 +59,7 @@ class ContactController extends Controller
 
     public function show($id)
     {
-        $contact = Contact::find($id);
+        $contact = Contact::with('events')->findOrFail($id);
         return view('user.contacts.show', compact('contact'));
     }
 

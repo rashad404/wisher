@@ -12,12 +12,11 @@ class CreateUserEventsTable extends Migration
             $table->id();
             $table->string('name');
             $table->date('date');
-            $table->boolean('is_annual')->default(false);
-            $table->boolean('is_monthly')->default(false);
+            $table->tinyInteger('recurrence')->default(0);
             $table->tinyInteger('status')->default(0);
-            $table->foreignId('user_id')->constrained()->onDelete('cascade'); // Link to users table
-            $table->foreignId('contact_id')->nullable()->constrained()->onDelete('set null'); // Link to contacts table
-            $table->foreignId('group_id')->nullable()->constrained()->onDelete('set null'); // Link to groups table
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->foreignId('contact_id')->nullable()->constrained()->onDelete('set null');
+            $table->foreignId('group_id')->nullable()->constrained()->onDelete('set null');
             $table->timestamps();
         });
     }

@@ -94,7 +94,28 @@
                     </div>
                 </div>
             </div>
-            <div class="mt-6 flex gap-6">
+
+            <!-- Display related events -->
+            @if($contact->events->isNotEmpty())
+                <div class="mt-6 space-y-4">
+                    <h3 class="text-lg font-semibold text-gray-900">Related Events</h3>
+                    <ul class="space-y-2">
+                        @foreach($contact->events as $event)
+                            <li class="flex justify-between text-sm text-gray-700">
+                                <span class="font-semibold text-gray-900">{{ $event->name }}</span>
+                                <span>{{ \Carbon\Carbon::parse($event->date)->format('d M Y') }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            @else
+                <div class="mt-6">
+                    <p class="text-sm text-gray-500">No events found for this contact.</p>
+                </div>
+            @endif
+
+            <div class="mt-6 flex gap-6 justify-center">
+
                 <button type="button" onclick="window.history.back()" class="w-32 rounded-md bg-gray-300 px-4 py-2 text-sm font-semibold text-gray-900 shadow-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300">Back</button>
                 <button type="button" class="w-32 rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white shadow-md hover:bg-indigo-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-600">Send message</button>
             </div>
