@@ -28,7 +28,7 @@ class ProfileController extends Controller
             'zip' => 'nullable|string|max:10',
             'country' => 'nullable|string|max:255',
             'phone_number' => 'nullable|string|max:20',
-            'profile_photo' => 'nullable|image|max:1024',
+            'profile_photo' => 'nullable|image|max:10240',
         ]);
 
         // Update the profile photo if provided

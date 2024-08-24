@@ -22,6 +22,21 @@
             </a>
         </div>
     </div>
+    
+    <!-- Search Form -->
+    <div class="mt-4">
+        <form action="{{ route('user.contacts.index') }}" method="GET" class="relative">
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="Search by name, phone, or email" class="w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+            <button type="submit" class="absolute inset-y-0 right-0 pr-3 flex items-center">
+                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
+                </svg>
+                  
+            </button>
+        </form>
+    </div>
+    
+
     <div class="mt-8 flow-root">
         <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
             <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
@@ -38,7 +53,7 @@
                         </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200 bg-white">
-                        @foreach($contacts as $contact)
+                        @forelse($contacts as $contact)
                             <tr>
                                 <td class="whitespace-nowrap py-5 pl-4 pr-3 text-sm sm:pl-0">
                                     <div class="flex items-center">
@@ -83,7 +98,13 @@
                                     </form>
                                 </td>
                             </tr>
-                        @endforeach
+                        @empty
+                            <tr>
+                                <td colspan="5" class="whitespace-nowrap py-5 text-sm text-gray-500 text-center">
+                                    No contacts found.
+                                </td>
+                            </tr>
+                        @endforelse
                     </tbody>
                 </table>
             </div>

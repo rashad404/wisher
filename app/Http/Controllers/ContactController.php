@@ -11,13 +11,24 @@ use Illuminate\Support\Facades\Storage;
 
 class ContactController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        // Retrieve all contacts
-        $contacts = Contact::all();
-
-        return view('user.contacts.index', compact('contacts'));
+        $search = $request->input('search');
+    
+        // Retrieve contacts based on search query or retrieve all contacts if no search query is provided
+        $contacts = Contact::query()
+            ->when($search, function ($query, $search) {
+                return $query->where(function ($query) use ($search) {
+                    $query->where('name', 'like', '%' . $search . '%')
+                        ->orWhere('email', 'like', '%' . $search . '%')
+                        ->orWhere('phone_number', 'like', '%' . $search . '%');
+                });
+            })
+            ->get();
+    
+        return view('user.contacts.index', compact('contacts', 'search'));
     }
+    
 
     public function create()
     {
@@ -72,14 +83,13 @@ class ContactController extends Controller
     {
         $contact = Contact::findOrFail($id);
 
-
         // Validate the request
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'nullable|email',
             'phone_number' => 'nullable|string',
             'birthdate' => 'nullable|date',
-            'photo' => 'nullable|image|mimes:jpeg,png,gif|max:10240',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
         ]);
 
         // Update contact details
@@ -92,7 +102,7 @@ class ContactController extends Controller
         if ($request->hasFile('photo')) {
             // Delete old photo if exists
             if ($contact->photo) {
-                Storage::delete($contact->photo);
+                Storage::disk('public')->delete($contact->photo); // Ensure to use the correct disk
             }
 
             // Store new photo and update contact model
@@ -104,6 +114,7 @@ class ContactController extends Controller
 
         return redirect()->route('user.contacts.index')->with('success', 'Contact updated successfully.');
     }
+
 
     public function destroy(Contact $contact)
     {

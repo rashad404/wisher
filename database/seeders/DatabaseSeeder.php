@@ -13,35 +13,31 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(UserSeeder::class);
-        $this->call(GroupSeeder::class);
-
         $this->call([
+            UserSeeder::class,
+            GroupSeeder::class,
             InterestCategorySeeder::class,
             InterestSeeder::class,
+            ContactSeeder::class,
+            ContactInterestSeeder::class,
+            BrandSeeder::class,
+            CategorySeeder::class,
+            ColorSeeder::class,
+            SizeSeeder::class,
+            ProductModelSeeder::class,
+            ProductSeeder::class,
+            ProductVariantSeeder::class,
+            UserEventSeeder::class,
+            ImportantDateCategorySeeder::class,
+            ImportantDateSeeder::class,
+            PricingPlanSeeder::class,
+            PricingPlanFeatureSeeder::class,
+            BlogSeeder::class,
+            TestimonialSeeder::class,
+            FeatureSeeder::class,
+            ConversationSeeder::class,
+            MessageSeeder::class,
+            ActivitySeeder::class,
         ]);
-        $this->call(ContactSeeder::class);
-        $this->call(ContactInterestSeeder::class);
-        
-        $this->call(BrandSeeder::class);
-        $this->call(CategorySeeder::class);
-        $this->call(ColorSeeder::class);
-        $this->call(SizeSeeder::class);
-        $this->call(ProductModelSeeder::class);
-        $this->call(ProductSeeder::class);
-        $this->call(ProductVariantSeeder::class);
-        $this->call(UserEventSeeder::class);
-        $this->call(ImportantDateCategorySeeder::class);
-        $this->call(ImportantDateSeeder::class);
-        $this->call(ProductVariantSeeder::class);
-        $this->call(PricingPlanSeeder::class);
-        $this->call(PricingPlanFeatureSeeder::class);
-        $this->call(BlogSeeder::class);
-        $this->call(TestimonialSeeder::class);
-        $this->call(FeatureSeeder::class);
-        $this->call(ConversationSeeder::class);
-        $this->call(MessageSeeder::class);
-        
-
     }
 }
