@@ -21,6 +21,6 @@ class CalendarController extends Controller
             ->orderBy('date')
             ->get();
 
-        return view('calendar.index', compact('events', 'startDate', 'endDate'));
+        return view('user.calendar.index', compact('events', 'startDate', 'endDate'));
     }
 }

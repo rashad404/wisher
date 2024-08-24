@@ -135,7 +135,7 @@ Route::middleware('auth')->prefix('user')->group(function () {
     Route::put('/profile', [ProfileController::class, 'update'])->name('user.profile.update');
     
     Route::get('/settings', [ProfileController::class, 'index'])->name('user.settings');
-    Route::get('/calendar', [CalendarController::class, 'index'])->name('calendar.index');
+    Route::get('/calendar', [CalendarController::class, 'index'])->name('user.calendar.index');
 
     Route::prefix('contacts/{contact}')->group(function () {
         Route::get('interests', [ContactInterestController::class, 'index'])->name('contacts.interests.index');

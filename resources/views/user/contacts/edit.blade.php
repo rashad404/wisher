@@ -1,6 +1,20 @@
 @extends('layouts.user.app')
 
 @section('content')
+
+
+@if ($errors->any())
+    <div class="mb-4">
+        <div class="font-medium text-red-600">Whoops! Something went wrong.</div>
+        <ul class="mt-3 list-disc list-inside text-sm text-red-600">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+
 <div class="py-6">
 
     <x-breadcrumbs :links="[
@@ -17,7 +31,6 @@
     <div class="space-y-12 sm:space-y-16">
       <div>
         <h2 class="text-base font-semibold leading-7 text-gray-900">Dəyiş</h2>
-        <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-600">Lorem İpsum...</p>
 
         <div class="mt-10 space-y-8 border-b border-gray-900/10 pb-12 sm:space-y-0 sm:divide-y sm:divide-gray-900/10 sm:border-t sm:pb-0">
 

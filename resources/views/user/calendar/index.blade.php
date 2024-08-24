@@ -13,7 +13,7 @@
     <h1 class="text-2xl font-bold mb-4">Your Calendar</h1>
 
     <!-- Date Picker Form -->
-    <form method="GET" action="{{ route('calendar.index') }}" class="mb-6">
+    <form method="GET" action="{{ route('user.calendar.index') }}" class="mb-6">
         <div class="flex items-center space-x-4">
             <div>
                 <label for="start_date" class="block text-sm font-medium text-gray-700">Start Date</label>

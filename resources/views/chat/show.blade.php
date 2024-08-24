@@ -4,7 +4,7 @@
 <x-breadcrumbs :links="[
     ['url' => route('main.index'), 'label' => __('Main')],
     ['url' => route('chat.index'), 'label' => __('Chats')],
-    ['url' => route('chat.show', $conversation), 'label' => {{ $conversation->user1->id === auth()->id() ? $conversation->user2->name : $conversation->user1->name }}]
+    ['url' => route('chat.show', $conversation), 'label' => $conversation->user1->id === auth()->id() ? $conversation->user2->name : $conversation->user1->name]
 ]"  />
 
 <div class="container mx-auto pt-6">
