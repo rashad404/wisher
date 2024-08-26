@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Activity;
 use App\Models\UserEvent;
 use App\Models\Contact;
 use App\Models\Group;
@@ -50,7 +51,7 @@ class UserEventController extends Controller
             'recurrence' => 'nullable|in:0,1,2', // 0->none, 1->annually, 2->monthly
         ]);
 
-        UserEvent::create([
+        $event = UserEvent::create([
             'name' => $request->input('name'),
             'date' => $request->input('date'),
             'recurrence' => $request->input('recurrence', 0), // Default to 0 if not provided
@@ -58,6 +59,13 @@ class UserEventController extends Controller
             'group_id' => $request->input('group_id'),
             'contact_id' => $request->input('contact_id'),
             'user_id' => Auth::id(),
+        ]);
+
+        // Log the activity
+        Activity::create([
+            'user_id' => Auth::id(),
+            'type' => 'event_created',
+            'description' => "Created a new event: {$event->name}",
         ]);
 
         return redirect()->route('user.events.index')->with('success', 'Event created successfully.');
@@ -104,6 +112,13 @@ class UserEventController extends Controller
             'contact_id' => $request->input('contact_id'),
         ]);
 
+        // Log the activity
+        Activity::create([
+            'user_id' => Auth::id(),
+            'type' => 'event_updated',
+            'description' => "Updated event: {$event->name}",
+        ]);
+
         return redirect()->route('user.events.index')->with('success', 'Event updated successfully.');
     }
 
@@ -127,6 +142,14 @@ class UserEventController extends Controller
     public function destroy(UserEvent $event)
     {
         $event->delete();
+
+        // Log the activity
+        Activity::create([
+            'user_id' => Auth::id(),
+            'type' => 'event_deleted',
+            'description' => "Deleted event: {$event->name}",
+        ]);
+
         return redirect()->route('user.events.index')->with('success', 'Event deleted successfully.');
     }
 }

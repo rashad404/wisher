@@ -6,7 +6,7 @@ use App\Models\Contact;
 use App\Models\Group;
 use App\Models\UserEvent;
 use Illuminate\Http\Request;
-
+use Illuminate\Support\Facades\Auth;
 
 class ContactEventController extends Controller
 {
@@ -17,25 +17,29 @@ class ContactEventController extends Controller
         return view('user.contacts.events', compact('contact', 'events', 'groups'));
     }
 
-    public function store(Request $request, Contact $contact)
+
+    public function store(Request $request)
     {
-        // Validate and store the event
-        $validated = $request->validate([
+        $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'date' => 'required|date',
-            'recurrence' => 'nullable|string',
-            'status' => 'required|string',
-            'group_id' => 'nullable|exists:groups,id',
+            'recurrence' => 'required|in:0,1,2',
+            'status' => 'required|in:active,inactive',
             'contact_id' => 'required|exists:contacts,id',
         ]);
 
-        // Add user_id to the validated data
-        $validated['user_id'] = auth()->id();
+        $event = new UserEvent();
+        $event->name = $validatedData['name'];
+        $event->date = $validatedData['date'];
+        $event->recurrence = $validatedData['recurrence'];
+        $event->status = $validatedData['status'];
+        $event->contact_id = $validatedData['contact_id'];
+        $event->user_id = Auth::id();
 
-        // Create the event
-        $contact->events()->create($validated);
+        $event->save();
 
-        return redirect()->route('contacts.events.index', $contact->id);
+        return redirect()->route('contacts.events.index', $event->contact_id)
+            ->with('success', 'Event added successfully!');
     }
 
     public function show($contactId)

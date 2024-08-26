@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Storage;
 use Twilio\Rest\Client;
 use Illuminate\Support\Facades\Mail;
 
-
 class ContactController extends Controller
 {
     public function index(Request $request)
@@ -65,6 +64,13 @@ class ContactController extends Controller
         // Sync the groups
         $contact->groups()->sync($request->input('groups', []));
 
+        // Log the activity
+        Activity::create([
+            'user_id' => Auth::id(),
+            'type' => 'contact_added',
+            'description' => "Added a new contact: {$contact->name}",
+        ]);
+
         return redirect()->route('user.contacts.index')->with('success', 'Contact created successfully.');
     }
 
@@ -107,107 +113,119 @@ class ContactController extends Controller
 
         $contact->save();
 
+        // Log the activity
+        Activity::create([
+            'user_id' => Auth::id(),
+            'type' => 'contact_updated',
+            'description' => "Updated contact: {$contact->name}",
+        ]);
+
         return redirect()->route('user.contacts.index')->with('success', 'Contact updated successfully.');
     }
 
     public function destroy(Contact $contact)
     {
         $contact->delete();
+
+        // Log the activity
+        Activity::create([
+            'user_id' => Auth::id(),
+            'type' => 'contact_deleted',
+            'description' => "Deleted contact: {$contact->name}",
+        ]);
+
         return redirect()->route('user.contacts.index')->with('success', 'Contact deleted successfully.');
     }
 
     public function sendSms(Request $request, $contactId)
     {
         $contact = Contact::findOrFail($contactId);
-    
+
         // Validate that the contact has a phone number
         if (!$contact->phone_number) {
             return redirect()->back()->with('error', 'This contact does not have a phone number.');
         }
-    
+
         // Additional Validations
         $request->validate([
             'message' => 'required|string|max:160',
         ]);
-    
+
         // Example: Check rate limiting
         $sentMessagesCount = Activity::where('user_id', auth()->id())
                                 ->where('type', 'sms')
                                 ->where('created_at', '>=', now()->subDay())
                                 ->count();
-    
+
         if ($sentMessagesCount >= 10) {
             return redirect()->back()->with('error', 'You have reached the limit of SMS messages you can send today.');
         }
-    
+
         // Twilio setup
         $sid = env('TWILIO_SID');
         $token = env('TWILIO_AUTH_TOKEN');
         $twilio = new Client($sid, $token);
-    
+
         $message = $request->input('message'); // The message text from the request
-    
+
         try {
             $twilio->messages->create($contact->phone_number, [
                 'from' => env('TWILIO_PHONE_NUMBER'),
                 'body' => $message
             ]);
-    
+
             // Log the SMS activity in the database
             Activity::create([
                 'user_id' => auth()->id(),
                 'type' => 'sms',
                 'description' => "Sent SMS to {$contact->phone_number}: {$message}",
             ]);
-    
+
             return redirect()->back()->with('success', 'SMS sent successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to send SMS: ' . $e->getMessage());
         }
     }
-    
-
 
     public function sendEmail(Request $request, $contactId)
     {
         $contact = Contact::findOrFail($contactId);
-    
+
         // Validate that the contact has an email address
         if (!$contact->email) {
             return redirect()->back()->with('error', 'This contact does not have an email address.');
         }
-    
+
         // Additional Validations
         $request->validate([
             'message' => 'required|string|max:1000',
         ]);
-    
+
         // Example: Check rate limiting
         $sentEmailsCount = Activity::where('user_id', auth()->id())
                               ->where('type', 'email')
                               ->where('created_at', '>=', now()->subDay())
                               ->count();
-    
+
         if ($sentEmailsCount >= 20) {
             return redirect()->back()->with('error', 'You have reached the limit of emails you can send today.');
         }
-    
+
         $messageText = $request->input('message'); // The message text from the request
-    
+
         try {
             Mail::to($contact->email)->send(new ContactMessage($contact, $messageText));
-    
+
             // Log the email activity in the database
             Activity::create([
                 'user_id' => auth()->id(),
                 'type' => 'email',
                 'description' => "Sent email to {$contact->email}: {$messageText}",
             ]);
-    
+
             return redirect()->back()->with('success', 'Email sent successfully.');
         } catch (\Exception $e) {
             return redirect()->back()->with('error', 'Failed to send email: ' . $e->getMessage());
         }
     }
-    
 }
