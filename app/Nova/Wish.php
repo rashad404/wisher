@@ -15,6 +15,7 @@ class Wish extends Resource
     public static $model = \App\Models\Wish::class;
 
     public static $title = 'title';
+    public static $group = 'Wishes';
 
     public static $search = [
         'id', 'title', 'text',

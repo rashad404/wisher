@@ -82,4 +82,25 @@ class ChatController extends Controller
 
         return redirect()->route('chat.show', $conversation);
     }
+
+    public function chatWithUser($id)
+    {
+        // Ensure the user exists
+        $user = User::findOrFail($id);
+
+        // Find or create a conversation between the authenticated user and the specified user
+        $conversation = Conversation::firstOrCreate(
+            [
+                'user1_id' => Auth::id(),
+                'user2_id' => $id,
+            ],
+            [
+                'user1_id' => Auth::id(),
+                'user2_id' => $id,
+            ]
+        );
+
+        // Redirect to the conversation
+        return redirect()->route('chat.show', $conversation);
+    }
 }

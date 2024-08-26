@@ -11,6 +11,9 @@ class Brand extends Resource
 {
     public static $model = 'App\Models\Brand';
     public static $title = 'name';
+
+    public static $group = 'Products';
+
     public static $search = [
         'id', 'name',
     ];

@@ -13,6 +13,8 @@ class PricingPlan extends Resource
 {
     public static $model = 'App\\Models\\PricingPlan';
 
+    public static $group = 'Pricing';
+
     /**
      * Get the fields displayed by the resource.
      *

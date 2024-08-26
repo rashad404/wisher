@@ -12,6 +12,9 @@ class ProductModel extends Resource
 {
     public static $model = 'App\Models\ProductModel';
     public static $title = 'name';
+
+    public static $group = 'Products';
+    
     public static $search = [
         'id', 'name',
     ];

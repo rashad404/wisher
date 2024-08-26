@@ -48,5 +48,11 @@ class Contact extends Model
                     ->withPivot('type')
                     ->withTimestamps();
     }
+
+    // Relationship to the registered user if the contact is a registered user
+    public function registeredUser()
+    {
+        return $this->belongsTo(User::class, 'registered_user_id');
+    }
 }
 

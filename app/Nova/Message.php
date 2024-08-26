@@ -12,6 +12,8 @@ class Message extends Resource
 {
     public static $model = \App\Models\Message::class;
 
+    public static $group = 'Messages';
+
     public function fields(NovaRequest $request)
     {
         return [

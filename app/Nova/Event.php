@@ -17,6 +17,8 @@ class Event extends Resource
 
     public static $title = 'name';
 
+    public static $group = 'Wishes';
+    
     public static $search = [
         'id', 'name', 'date',
     ];

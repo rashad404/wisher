@@ -12,6 +12,8 @@ class PricingPlanFeature extends Resource
 {
     public static $model = 'App\\Models\\PricingPlanFeature';
 
+    public static $group = 'Pricing';
+    
     /**
      * Get the fields displayed by the resource.
      *

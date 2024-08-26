@@ -130,7 +130,9 @@ Route::middleware('auth')->prefix('user')->group(function () {
     Route::delete('/chat/message/{message}', [ChatController::class, 'deleteMessage'])->name('chat.deleteMessage');
     Route::delete('/chat/{conversation}', [ChatController::class, 'deleteConversation'])->name('chat.deleteConversation');
     Route::post('/chat/create', [ChatController::class, 'create'])->name('chat.create');
-
+    // New route for creating/finding conversation by user ID
+    Route::get('/chat/user/{id}', [ChatController::class, 'chatWithUser'])->name('chat.withUser');
+    
     Route::get('/profile', [ProfileController::class, 'index'])->name('user.profile');
     Route::put('/profile', [ProfileController::class, 'update'])->name('user.profile.update');
     
@@ -141,5 +143,8 @@ Route::middleware('auth')->prefix('user')->group(function () {
         Route::get('interests', [ContactInterestController::class, 'index'])->name('contacts.interests.index');
         Route::post('interests', [ContactInterestController::class, 'store'])->name('contacts.interests.store');
         Route::delete('interests/{interest}/{type}', [ContactInterestController::class, 'destroy'])->name('contacts.interests.destroy');
+        Route::post('sms', [ContactController::class, 'sendSms'])->name('contacts.sendSms');
+        Route::post('email', [ContactController::class, 'sendEmail'])->name('contacts.sendEmail');
+
     });
 });
