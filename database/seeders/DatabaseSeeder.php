@@ -28,8 +28,8 @@ class DatabaseSeeder extends Seeder
             ProductSeeder::class,
             ProductVariantSeeder::class,
             UserEventSeeder::class,
-            ImportantDateCategorySeeder::class,
-            ImportantDateSeeder::class,
+            EventCategorySeeder::class,
+            EventSeeder::class,
             PricingPlanSeeder::class,
             PricingPlanFeatureSeeder::class,
             BlogSeeder::class,
@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
             ConversationSeeder::class,
             MessageSeeder::class,
             ActivitySeeder::class,
+            WishSeeder::class,
         ]);
     }
 }

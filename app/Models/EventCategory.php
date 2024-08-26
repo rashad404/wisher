@@ -6,14 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ImportantDateCategory extends Model
+class EventCategory extends Model
 {
     use HasFactory;
 
     protected $fillable = ['name', 'position'];
 
-    public function importantDates(): HasMany
+    public function Events(): HasMany
     {
-        return $this->hasMany(ImportantDate::class);
+        return $this->hasMany(Event::class);
     }
 }

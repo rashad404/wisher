@@ -11,9 +11,9 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Illuminate\Validation\ValidationException;
 
-class ImportantDate extends Resource
+class Event extends Resource
 {
-    public static $model = \App\Models\ImportantDate::class;
+    public static $model = \App\Models\Event::class;
 
     public static $title = 'name';
 
@@ -50,7 +50,7 @@ class ImportantDate extends Resource
                 }
             }),
 
-            BelongsTo::make('Category', 'category', ImportantDateCategory::class)
+            BelongsTo::make('Category', 'category', EventCategory::class)
                 ->sortable()
                 ->rules('required'),
 
@@ -80,11 +80,11 @@ class ImportantDate extends Resource
 
     public static function label()
     {
-        return 'Important Dates';
+        return 'Events';
     }
 
     public static function singularLabel()
     {
-        return 'Important Date';
+        return 'Event';
     }
 }

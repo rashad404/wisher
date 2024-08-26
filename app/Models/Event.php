@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ImportantDate extends Model
+class Event extends Model
 {
     use HasFactory;
 
@@ -25,6 +25,6 @@ class ImportantDate extends Model
 
     public function category(): BelongsTo
     {
-        return $this->belongsTo(ImportantDateCategory::class);
+        return $this->belongsTo(EventCategory::class);
     }
 }

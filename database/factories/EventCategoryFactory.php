@@ -2,12 +2,12 @@
 
 namespace Database\Factories;
 
-use App\Models\ImportantDateCategory;
+use App\Models\EventCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ImportantDateCategoryFactory extends Factory
+class EventCategoryFactory extends Factory
 {
-    protected $model = ImportantDateCategory::class;
+    protected $model = EventCategory::class;
 
     public function definition()
     {

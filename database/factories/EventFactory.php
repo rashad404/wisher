@@ -2,13 +2,13 @@
 
 namespace Database\Factories;
 
-use App\Models\ImportantDate;
-use App\Models\ImportantDateCategory;
+use App\Models\Event;
+use App\Models\EventCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-class ImportantDateFactory extends Factory
+class EventFactory extends Factory
 {
-    protected $model = ImportantDate::class;
+    protected $model = Event::class;
 
     public function definition()
     {
@@ -17,7 +17,7 @@ class ImportantDateFactory extends Factory
             'date' => $this->faker->date,
             'is_annual' => $this->faker->boolean,
             'is_monthly' => $this->faker->boolean,
-            'category_id' => ImportantDateCategory::factory(),
+            'category_id' => 1,
             'status' => $this->faker->randomElement(['active', 'inactive']),
             'position' => $this->faker->numberBetween(1, 100),
         ];
