@@ -35,7 +35,6 @@ class ContactEventController extends Controller
         $event->status = $validatedData['status'];
         $event->contact_id = $validatedData['contact_id'];
         $event->user_id = Auth::id();
-
         $event->save();
 
         return redirect()->route('contacts.events.index', $event->contact_id)
