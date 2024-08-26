@@ -8,6 +8,7 @@
         </div>
         <div class="hidden lg:flex lg:gap-x-12">
             <a href="/" class="text-sm font-semibold leading-6 text-white">{{ __('messages.home') }}</a>
+            <a href="/wishes" class="text-sm font-semibold leading-6 text-white">{{ __('messages.wishes') }}</a>
             <a href="/features" class="text-sm font-semibold leading-6 text-white">{{ __('messages.features') }}</a>
             <a href="/how-it-works" class="text-sm font-semibold leading-6 text-white">{{ __('messages.how_it_works') }}</a>
             <a href="/pricing" class="text-sm font-semibold leading-6 text-white">{{ __('messages.pricing') }}</a>
