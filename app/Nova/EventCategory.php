@@ -7,9 +7,9 @@ use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\BelongsToMany;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class ImportantDateCategory extends Resource
+class EventCategory extends Resource
 {
-    public static $model = \App\Models\ImportantDateCategory::class;
+    public static $model = \App\Models\EventCategory::class;
 
     public static $title = 'name';
 
@@ -34,11 +34,11 @@ class ImportantDateCategory extends Resource
 
     public static function label()
     {
-        return 'Important Date Categories';
+        return 'Event Categories';
     }
 
     public static function singularLabel()
     {
-        return 'Important Date Category';
+        return 'Event Category';
     }
 }

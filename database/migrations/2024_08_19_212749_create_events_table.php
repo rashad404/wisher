@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateImportantDatesTable extends Migration
+class CreateEventsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,15 @@ class CreateImportantDatesTable extends Migration
      */
     public function up()
     {
-        Schema::create('important_dates', function (Blueprint $table) {
+        Schema::create('events', function (Blueprint $table) {
             $table->id();
             $table->string('name');
             $table->date('date');
             $table->boolean('is_annual')->default(false);
             $table->boolean('is_monthly')->default(false);
-            $table->foreignId('category_id')->constrained('important_date_categories')->onDelete('cascade');
+            $table->foreignId('category_id')->constrained('event_categories')->onDelete('cascade');
             $table->enum('status', ['active', 'inactive']);
-            $table->integer('position');
+            $table->integer('position')->default(0)->nullable();
             $table->timestamps();
         });
     }
@@ -33,6 +33,6 @@ class CreateImportantDatesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('important_dates');
+        Schema::dropIfExists('events');
     }
 }
