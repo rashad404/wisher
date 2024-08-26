@@ -32,9 +32,9 @@
             <div>
                 <label for="recurrence" class="block text-sm font-medium text-gray-700">Recurrence</label>
                 <select name="recurrence" id="recurrence" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    <option value="">None</option>
-                    <option value="monthly">Monthly</option>
-                    <option value="yearly">Yearly</option>
+                    <option value="0">None</option>
+                    <option value="1">Monthly</option>
+                    <option value="2">Yearly</option>
                 </select>
             </div>
 
@@ -76,8 +76,13 @@
             @forelse($events as $event)
                 <li class="flex justify-between items-center bg-gray-50 p-4 rounded-lg shadow-sm">
                     <div>
-                        <span class="block text-gray-700">{{ $event->name }} ({{ \Carbon\Carbon::parse($event->date)->format('F j, Y') }})</span>
-                        <span class="block text-sm text-gray-500">{{ ucfirst($event->recurrence) }} | Status: {{ ucfirst($event->status) }}</span>
+                        <span class="block text-gray-700">
+                            {{ $event->name }} ({{ \Carbon\Carbon::parse($event->date)->format('F j, Y') }})
+                        </span>
+                        <span class="block text-sm text-gray-500">
+                            {{ ['None', 'Annually', 'Monthly'][$event->recurrence] ?? 'None' }} |
+                            Status: {{ ucfirst($event->status) }}
+                        </span>
                     </div>
                     <form action="{{ route('contacts.events.destroy', [$contact, $event]) }}" method="POST">
                         @csrf

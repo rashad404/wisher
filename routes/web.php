@@ -19,6 +19,7 @@ use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ContactInterestController;
+use App\Http\Controllers\ActivityController;
 
 /*
 |--------------------------------------------------------------------------
@@ -150,6 +151,7 @@ Route::middleware('auth')->prefix('user')->group(function () {
     });
 });
 
+//Adding events from Contacts
 Route::prefix('contacts/{contact}/events')->name('contacts.events.')->group(function () {
     Route::get('/', [ContactEventController::class, 'index'])->name('index');
     Route::get('/create', [ContactEventController::class, 'create'])->name('create');
@@ -159,3 +161,6 @@ Route::prefix('contacts/{contact}/events')->name('contacts.events.')->group(func
     Route::get('/{event}', [ContactEventController::class, 'show'])->name('show');
     Route::delete('/{event}', [ContactEventController::class, 'destroy'])->name('destroy');
 });
+
+//Activity Part
+Route::get('/user/dashboard', [ActivityController::class, 'index'])->name('user.index');
