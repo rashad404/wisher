@@ -20,6 +20,7 @@ use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ContactInterestController;
 use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\WishController;
 
 /*
 |--------------------------------------------------------------------------
@@ -164,3 +165,7 @@ Route::prefix('contacts/{contact}/events')->name('contacts.events.')->group(func
 
 //Activity Part
 Route::get('/user/dashboard', [ActivityController::class, 'index'])->name('user.index');
+
+// wishes
+Route::get('/wishes', [WishController::class, 'index'])->name('wishes.index');
+Route::get('/events-by-category', [WishController::class, 'getEventsByCategory'])->name('events.byCategory');
