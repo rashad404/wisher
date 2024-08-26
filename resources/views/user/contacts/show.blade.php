@@ -60,7 +60,12 @@
 
             <!-- Related Events Section -->
             <div class="mb-8">
-                <h3 class="text-xl font-bold text-gray-900 mb-4">Related Events</h3>
+                <div class="flex justify-between items-center mb-4">
+                    <h3 class="text-xl font-bold text-gray-900 mb-4">Related Events</h3>
+                    <a href="{{ route('contacts.events.index', $contact->id) }}" class="text-indigo-600 hover:text-indigo-900 text-sm font-medium">
+                        Manage Events
+                    </a>
+                </div>
                 @if($contact->events->isNotEmpty())
                     <ul class="space-y-2">
                         @foreach($contact->events as $event)
@@ -185,7 +190,7 @@
             <!-- SMS and Email Forms -->
             <div class="mb-8">
                 <h3 class="text-xl font-bold text-gray-900 mb-4">Send Message</h3>
-                
+
                 <!-- SMS Form -->
                 <form action="{{ route('contacts.sendSms', $contact->id) }}" method="POST" class="mb-4">
                     @csrf

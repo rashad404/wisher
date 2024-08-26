@@ -1,23 +1,24 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BlogController;
-use App\Http\Controllers\CalendarController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\ForgotPasswordController;
-use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\GiftController;
 use App\Http\Controllers\MainController;
-use App\Http\Controllers\ContactController;
-use App\Http\Controllers\GroupController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\GroupController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
-use App\Http\Controllers\SubscriptionController;
-use App\Http\Controllers\TestimonialController;
-use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\UserEventController;
-use App\Http\Controllers\ChatController;
-use App\Http\Controllers\ContactInterestController;
+use App\Http\Controllers\TestimonialController;
+use App\Http\Controllers\ContactEventController;
+use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\ContactInterestController;
 
 /*
 |--------------------------------------------------------------------------
@@ -120,7 +121,7 @@ Route::get('/testimonials', [TestimonialController::class, 'index'])->name('test
 
 
 Route::middleware('auth')->prefix('user')->group(function () {
-    
+
     Route::get('/dashboard', [UserController::class, 'index'])->name('user.index');
 
     // Chat
@@ -132,10 +133,10 @@ Route::middleware('auth')->prefix('user')->group(function () {
     Route::post('/chat/create', [ChatController::class, 'create'])->name('chat.create');
     // New route for creating/finding conversation by user ID
     Route::get('/chat/user/{id}', [ChatController::class, 'chatWithUser'])->name('chat.withUser');
-    
+
     Route::get('/profile', [ProfileController::class, 'index'])->name('user.profile');
     Route::put('/profile', [ProfileController::class, 'update'])->name('user.profile.update');
-    
+
     Route::get('/settings', [ProfileController::class, 'index'])->name('user.settings');
     Route::get('/calendar', [CalendarController::class, 'index'])->name('user.calendar.index');
 
@@ -147,4 +148,14 @@ Route::middleware('auth')->prefix('user')->group(function () {
         Route::post('email', [ContactController::class, 'sendEmail'])->name('contacts.sendEmail');
 
     });
+});
+
+Route::prefix('contacts/{contact}/events')->name('contacts.events.')->group(function () {
+    Route::get('/', [ContactEventController::class, 'index'])->name('index');
+    Route::get('/create', [ContactEventController::class, 'create'])->name('create');
+    Route::post('/', [ContactEventController::class, 'store'])->name('store');
+    Route::get('/{event}/edit', [ContactEventController::class, 'edit'])->name('edit');
+    Route::put('/{event}', [ContactEventController::class, 'update'])->name('update');
+    Route::get('/{event}', [ContactEventController::class, 'show'])->name('show');
+    Route::delete('/{event}', [ContactEventController::class, 'destroy'])->name('destroy');
 });

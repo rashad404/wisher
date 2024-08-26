@@ -10,14 +10,19 @@ class CreateUserEventsTable extends Migration
     {
         Schema::create('user_events', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id'); // Add user_id field
             $table->string('name');
             $table->date('date');
-            $table->tinyInteger('recurrence')->default(0);
-            $table->tinyInteger('status')->default(0);
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->foreignId('contact_id')->nullable()->constrained()->onDelete('set null');
-            $table->foreignId('group_id')->nullable()->constrained()->onDelete('set null');
+            $table->string('recurrence')->nullable();
+            $table->string('status');
+            $table->unsignedBigInteger('group_id')->nullable();
+            $table->unsignedBigInteger('contact_id');
             $table->timestamps();
+
+            // Foreign key constraints
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade'); // Foreign key for user_id
+            $table->foreign('group_id')->references('id')->on('groups')->onDelete('set null');
+            $table->foreign('contact_id')->references('id')->on('contacts')->onDelete('cascade');
         });
     }
 
