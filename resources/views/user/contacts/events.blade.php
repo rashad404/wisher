@@ -80,7 +80,7 @@
                             {{ $event->name }} ({{ \Carbon\Carbon::parse($event->date)->format('F j, Y') }})
                         </span>
                         <span class="block text-sm text-gray-500">
-                            {{ ['None', 'Annually', 'Monthly'][$event->recurrence] ?? 'None' }} |
+                            {{ ['None', 'Monthly', 'Yearly'][$event->recurrence] ?? 'None' }} |
                             Status: {{ ucfirst($event->status) }}
                         </span>
                     </div>

@@ -12,8 +12,7 @@ class UserEvent extends Model
     protected $fillable = [
         'name',
         'date',
-        'is_annual',
-        'is_monthly',
+        'recurrence',
         'status',
         'user_id',
         'contact_id',
