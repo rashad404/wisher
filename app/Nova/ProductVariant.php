@@ -24,6 +24,8 @@ class ProductVariant extends Resource
      */
     public static $title = 'id';
 
+    public static $group = 'Products';
+    
     /**
      * The columns that should be searched.
      *

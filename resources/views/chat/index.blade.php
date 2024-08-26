@@ -19,6 +19,7 @@
             @php
                 $contact = $conversation->user1->id === auth()->id() ? $conversation->user2 : $conversation->user1;
                 $lastMessage = $conversation->messages()->orderBy('id', 'desc')->first();
+                $lastMessage = $lastMessage ? $lastMessage : (object) ['body' => 'No messages yet', 'created_at' => now()];
             @endphp
             <li class="mb-2 p-2 border-b">
                 <a href="{{ route('chat.show', $conversation) }}" class="flex justify-between items-center">

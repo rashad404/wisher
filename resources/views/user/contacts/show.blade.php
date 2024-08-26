@@ -1,6 +1,34 @@
 @extends('layouts.user.app')
 
 @section('content')
+
+@if (session('error'))
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <strong class="font-bold">Error!</strong>
+        <span class="block sm:inline">{{ session('error') }}</span>
+    </div>
+@endif
+
+@if ($errors->any())
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <strong class="font-bold">Whoops! Something went wrong.</strong>
+        <ul class="mt-2">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+
+@if (session('success'))
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+        <strong class="font-bold">Success!</strong>
+        <span class="block sm:inline">{{ session('success') }}</span>
+    </div>
+@endif
+
+
     <!-- Breadcrumbs -->
     <div class="py-4">
         <x-breadcrumbs :links="[
@@ -30,7 +58,6 @@
                 </a>
             </div>
 
-
             <!-- Related Events Section -->
             <div class="mb-8">
                 <h3 class="text-xl font-bold text-gray-900 mb-4">Related Events</h3>
@@ -47,8 +74,7 @@
                     <p class="text-gray-500 text-sm">No events found for this contact.</p>
                 @endif
             </div>
-            
-            
+
             <!-- Contact Information -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8">
                 <div>
@@ -156,14 +182,48 @@
                 @endif
             </div>
 
+            <!-- SMS and Email Forms -->
+            <div class="mb-8">
+                <h3 class="text-xl font-bold text-gray-900 mb-4">Send Message</h3>
+                
+                <!-- SMS Form -->
+                <form action="{{ route('contacts.sendSms', $contact->id) }}" method="POST" class="mb-4">
+                    @csrf
+                    <div>
+                        <label for="sms-message" class="block text-sm font-semibold text-gray-900">SMS Message</label>
+                        <textarea id="sms-message" name="message" class="w-full border border-gray-300 rounded-md p-2" required></textarea>
+                    </div>
+                    <button type="submit" class="mt-4 bg-blue-500 text-white py-2 px-4 rounded-md">Send SMS</button>
+                </form>
+
+                <!-- Email Form -->
+                <form action="{{ route('contacts.sendEmail', $contact->id) }}" method="POST">
+                    @csrf
+                    <div>
+                        <label for="email-message" class="block text-sm font-semibold text-gray-900">Email Message</label>
+                        <textarea id="email-message" name="message" class="w-full border border-gray-300 rounded-md p-2" required></textarea>
+                    </div>
+                    <button type="submit" class="mt-4 bg-blue-500 text-white py-2 px-4 rounded-md">Send Email</button>
+                </form>
+            </div>
+
             <!-- Action Buttons -->
             <div class="flex gap-6 justify-center">
-                <button type="button" class="flex items-center justify-center w-48 rounded-md bg-green-600 px-6 py-3 text-sm font-semibold text-white shadow-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600">
-                    <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4m-2-2v4m0 0v6a2 2 0 01-2 2H8a2 2 0 01-2-2v-6m6 6V6a2 2 0 012-2h6a2 2 0 012 2v6" />
-                    </svg>
-                    Send Congrats
-                </button>
+                @if($contact->registered_user_id)
+                    <a href="{{ route('chat.withUser', $contact->registered_user_id) }}" class="flex items-center justify-center w-48 rounded-md bg-green-600 px-6 py-3 text-sm font-semibold text-white shadow-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600">
+                        <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4m-2-2v4m0 0v6a2 2 0 01-2 2H8a2 2 0 01-2-2v-6m6 6V6a2 2 0 012-2h6a2 2 0 012 2v6" />
+                        </svg>
+                        Send Message
+                    </a>
+                @else
+                    <button type="button" disabled class="flex items-center justify-center w-48 rounded-md bg-gray-400 px-6 py-3 text-sm font-semibold text-white shadow-md">
+                        <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4m-2-2v4m0 0v6a2 2 0 01-2 2H8a2 2 0 01-2-2v-6m6 6V6a2 2 0 012-2h6a2 2 0 012 2v6" />
+                        </svg>
+                        Not Registered
+                    </button>
+                @endif
                 <button type="button" class="flex items-center justify-center w-48 rounded-md bg-yellow-600 px-6 py-3 text-sm font-semibold text-white shadow-md hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-600">
                     <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8V6m0 12v-2m8-10H4m16 10H4m5-8a4 4 0 00-8 0h2a2 2 0 114 0h6a2 2 0 114 0h2a4 4 0 00-8 0h-2zM5 16v2m10-2v2" />
@@ -171,8 +231,6 @@
                     Send Gift
                 </button>
             </div>
-
-
+        </div>
     </div>
-</div>
 @endsection

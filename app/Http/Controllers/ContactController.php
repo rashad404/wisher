@@ -2,19 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\ContactMessage;
+use App\Models\Activity;
 use Carbon\Carbon;
 use App\Models\Group;
 use App\Models\Contact;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Twilio\Rest\Client;
+use Illuminate\Support\Facades\Mail;
+
 
 class ContactController extends Controller
 {
     public function index(Request $request)
     {
         $search = $request->input('search');
-    
+
         // Retrieve contacts based on search query or retrieve all contacts if no search query is provided
         $contacts = Contact::query()
             ->when($search, function ($query, $search) {
@@ -25,16 +30,13 @@ class ContactController extends Controller
                 });
             })
             ->get();
-    
+
         return view('user.contacts.index', compact('contacts', 'search'));
     }
-    
 
     public function create()
     {
-        // Retrieve the groups that belong to the authenticated user
         $groups = Group::where('user_id', Auth::id())->get();
-        //dd($groups);
         return view('user.contacts.create', compact('groups'));
     }
 
@@ -50,12 +52,10 @@ class ContactController extends Controller
             'address' => 'nullable|string|max:500',
         ]);
 
-        // Combine birthdate fields if all are present
         if ($validatedData['birth_day'] && $validatedData['birth_month'] && $validatedData['birth_year']) {
             $validatedData['birthdate'] = Carbon::createFromDate($validatedData['birth_year'], $validatedData['birth_month'], $validatedData['birth_day'])->format('Y-m-d');
         }
 
-        // Remove individual birthdate fields
         unset($validatedData['birth_day'], $validatedData['birth_month'], $validatedData['birth_year']);
 
         $validatedData['user_id'] = Auth::id();
@@ -63,14 +63,14 @@ class ContactController extends Controller
         $contact = Contact::create($validatedData);
 
         // Sync the groups
-        $contact->groups()->sync($request->input('groups', [])); // Ensure groups are synced
+        $contact->groups()->sync($request->input('groups', []));
 
         return redirect()->route('user.contacts.index')->with('success', 'Contact created successfully.');
     }
 
     public function show($id)
     {
-        $contact = Contact::with('events')->findOrFail($id);
+        $contact = Contact::with(['events', 'registeredUser'])->findOrFail($id);
         return view('user.contacts.show', compact('contact'));
     }
 
@@ -83,7 +83,6 @@ class ContactController extends Controller
     {
         $contact = Contact::findOrFail($id);
 
-        // Validate the request
         $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'nullable|email',
@@ -92,20 +91,16 @@ class ContactController extends Controller
             'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:10240',
         ]);
 
-        // Update contact details
         $contact->name = $request->input('name');
         $contact->email = $request->input('email');
         $contact->phone_number = $request->input('phone_number');
         $contact->birthdate = $request->input('birthdate');
 
-        // Handle photo upload
         if ($request->hasFile('photo')) {
-            // Delete old photo if exists
             if ($contact->photo) {
-                Storage::disk('public')->delete($contact->photo); // Ensure to use the correct disk
+                Storage::disk('public')->delete($contact->photo);
             }
 
-            // Store new photo and update contact model
             $path = $request->file('photo')->store('photos', 'public');
             $contact->photo = $path;
         }
@@ -115,11 +110,104 @@ class ContactController extends Controller
         return redirect()->route('user.contacts.index')->with('success', 'Contact updated successfully.');
     }
 
-
     public function destroy(Contact $contact)
     {
         $contact->delete();
-
         return redirect()->route('user.contacts.index')->with('success', 'Contact deleted successfully.');
     }
+
+    public function sendSms(Request $request, $contactId)
+    {
+        $contact = Contact::findOrFail($contactId);
+    
+        // Validate that the contact has a phone number
+        if (!$contact->phone_number) {
+            return redirect()->back()->with('error', 'This contact does not have a phone number.');
+        }
+    
+        // Additional Validations
+        $request->validate([
+            'message' => 'required|string|max:160',
+        ]);
+    
+        // Example: Check rate limiting
+        $sentMessagesCount = Activity::where('user_id', auth()->id())
+                                ->where('type', 'sms')
+                                ->where('created_at', '>=', now()->subDay())
+                                ->count();
+    
+        if ($sentMessagesCount >= 10) {
+            return redirect()->back()->with('error', 'You have reached the limit of SMS messages you can send today.');
+        }
+    
+        // Twilio setup
+        $sid = env('TWILIO_SID');
+        $token = env('TWILIO_AUTH_TOKEN');
+        $twilio = new Client($sid, $token);
+    
+        $message = $request->input('message'); // The message text from the request
+    
+        try {
+            $twilio->messages->create($contact->phone_number, [
+                'from' => env('TWILIO_PHONE_NUMBER'),
+                'body' => $message
+            ]);
+    
+            // Log the SMS activity in the database
+            Activity::create([
+                'user_id' => auth()->id(),
+                'type' => 'sms',
+                'description' => "Sent SMS to {$contact->phone_number}: {$message}",
+            ]);
+    
+            return redirect()->back()->with('success', 'SMS sent successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to send SMS: ' . $e->getMessage());
+        }
+    }
+    
+
+
+    public function sendEmail(Request $request, $contactId)
+    {
+        $contact = Contact::findOrFail($contactId);
+    
+        // Validate that the contact has an email address
+        if (!$contact->email) {
+            return redirect()->back()->with('error', 'This contact does not have an email address.');
+        }
+    
+        // Additional Validations
+        $request->validate([
+            'message' => 'required|string|max:1000',
+        ]);
+    
+        // Example: Check rate limiting
+        $sentEmailsCount = Activity::where('user_id', auth()->id())
+                              ->where('type', 'email')
+                              ->where('created_at', '>=', now()->subDay())
+                              ->count();
+    
+        if ($sentEmailsCount >= 20) {
+            return redirect()->back()->with('error', 'You have reached the limit of emails you can send today.');
+        }
+    
+        $messageText = $request->input('message'); // The message text from the request
+    
+        try {
+            Mail::to($contact->email)->send(new ContactMessage($contact, $messageText));
+    
+            // Log the email activity in the database
+            Activity::create([
+                'user_id' => auth()->id(),
+                'type' => 'email',
+                'description' => "Sent email to {$contact->email}: {$messageText}",
+            ]);
+    
+            return redirect()->back()->with('success', 'Email sent successfully.');
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'Failed to send email: ' . $e->getMessage());
+        }
+    }
+    
 }

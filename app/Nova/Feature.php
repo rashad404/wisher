@@ -12,6 +12,8 @@ class Feature extends Resource
 {
     public static $model = 'App\\Models\\Feature';
 
+    public static $group = 'Main';
+    
     public function fields(NovaRequest $request)
     {
         return [

@@ -13,6 +13,8 @@ class Blog extends Resource
 {
     public static $model = 'App\\Models\\Blog';
 
+    public static $group = 'Main';
+
     public function fields(NovaRequest $request)
     {
         return [

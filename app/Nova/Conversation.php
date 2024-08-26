@@ -11,6 +11,8 @@ class Conversation extends Resource
 {
     public static $model = \App\Models\Conversation::class;
 
+    public static $group = 'Messages';
+    
     public function fields(NovaRequest $request)
     {
         return [

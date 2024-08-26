@@ -13,6 +13,8 @@ class Category extends Resource
     public static $model = 'App\Models\Category';
     public static $title = 'name';
     
+    public static $group = 'Products';
+    
     public function fields(Request $request)
     {
         return [

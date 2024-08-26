@@ -24,6 +24,8 @@ class Size extends Resource
      */
     public static $title = 'name';
 
+    public static $group = 'Products';
+    
     /**
      * The columns that should be searched.
      *

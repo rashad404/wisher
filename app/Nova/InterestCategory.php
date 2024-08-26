@@ -15,6 +15,8 @@ class InterestCategory extends Resource
 
     public static $title = 'name';
 
+    public static $group = 'Interests';
+    
     public static $search = ['id', 'name'];
 
     public function fields(NovaRequest $request)

@@ -13,6 +13,8 @@ class Testimonial extends Resource
 {
     public static $model = 'App\\Models\\Testimonial';
 
+    public static $group = 'Main';
+    
     /**
      * Get the fields displayed by the resource.
      *
