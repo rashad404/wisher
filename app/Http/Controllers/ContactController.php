@@ -12,14 +12,18 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Twilio\Rest\Client;
 use Illuminate\Support\Facades\Mail;
+use JeroenDesloovere\VCard\VCardParser;
+use JeroenDesloovere\VCard\VCard;
+
+
 
 class ContactController extends Controller
 {
     public function index(Request $request)
     {
         $search = $request->input('search');
-
-        // Retrieve contacts based on search query or retrieve all contacts if no search query is provided
+    
+        // Retrieve contacts based on search query or retrieve all contacts if no search query is provided, with pagination
         $contacts = Contact::query()
             ->when($search, function ($query, $search) {
                 return $query->where(function ($query) use ($search) {
@@ -28,10 +32,11 @@ class ContactController extends Controller
                         ->orWhere('phone_number', 'like', '%' . $search . '%');
                 });
             })
-            ->get();
-
+            ->paginate(10); // Adjust the number to control how many contacts are shown per page
+    
         return view('user.contacts.index', compact('contacts', 'search'));
     }
+    
 
     public function create()
     {
@@ -228,4 +233,63 @@ class ContactController extends Controller
             return redirect()->back()->with('error', 'Failed to send email: ' . $e->getMessage());
         }
     }
+
+    public function importFromIos(Request $request)
+    {
+        // Validate the uploaded file
+        $request->validate([
+            'contacts_file' => 'required|file|mimetypes:text/x-vcard,text/vcard,text/plain,application/octet-stream',
+        ]);
+    
+        // Retrieve the uploaded file
+        $file = $request->file('contacts_file');
+    
+        // Parse the vCard file
+        $parser = VCardParser::parseFromFile($file->getRealPath());
+    
+        $contacts = [];
+    
+        // Iterate through each vCard contact in the file
+        foreach ($parser as $vcard) {
+            // Extract full name (fallback to firstname if fullname is not present)
+            $fullname = $vcard->fullname ?? trim(($vcard->firstname ?? '') . ' ' . ($vcard->lastname ?? ''));
+    
+            // Handle phone numbers (using the first available phone number)
+            $phone_number = null;
+            if (isset($vcard->phone) && is_array($vcard->phone)) {
+                $firstPhoneType = array_key_first($vcard->phone);
+                $phone_number = $vcard->phone[$firstPhoneType][0] ?? null;
+            }
+    
+            // Since other fields like email, address, birthday, and photo are not in the provided structure, they will be skipped.
+            // Prepare the contact data for insertion
+            $contacts[] = [
+                'name' => $fullname,
+                'email' => null,  // Set to null since it's not present
+                'phone_number' => $phone_number,
+                'birthdate' => null, // Set to null since it's not present
+                'address' => null,  // Set to null since it's not present
+                'photo' => null,  // Set to null since it's not present
+            ];
+        }
+    
+        // Save each contact to the database
+        foreach ($contacts as $contactData) {
+            Contact::create([
+                'user_id' => Auth::id(),
+                'name' => $contactData['name'],
+                'email' => $contactData['email'],
+                'phone_number' => $contactData['phone_number'],
+                'birthdate' => $contactData['birthdate'],
+                'address' => $contactData['address'],
+                'photo' => $contactData['photo'],
+            ]);
+        }
+    
+        // Redirect back with a success message
+        return redirect()->route('user.contacts.index')->with('success', 'Contacts imported successfully!');
+    }
+    
+    
+
 }

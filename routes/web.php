@@ -169,3 +169,7 @@ Route::get('/user/dashboard', [ActivityController::class, 'index'])->name('user.
 // wishes
 Route::get('/wishes', [WishController::class, 'index'])->name('wishes.index');
 Route::get('/events-by-category', [WishController::class, 'getEventsByCategory'])->name('events.byCategory');
+
+
+// Contact import
+Route::post('/contacts/import/ios', [ContactController::class, 'importFromIos'])->name('contacts.import.ios');

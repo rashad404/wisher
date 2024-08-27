@@ -16,13 +16,22 @@
             <h1 class="text-base font-semibold leading-6 text-gray-900">Əlaqələrim</h1>
             <p class="mt-2 text-sm text-gray-700">Əlaqə siyahınız</p>
         </div>
-        <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none">
+        <div class="mt-4 sm:ml-16 sm:mt-0 sm:flex-none flex space-x-2">
             <a href="{{ route('user.contacts.create') }}" class="block rounded-md bg-indigo-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
                 Əlavə et
             </a>
+
+            <!-- Import Contacts from iPhone -->
+            <form action="{{ route('contacts.import.ios') }}" method="POST" enctype="multipart/form-data" class="inline">
+                @csrf
+                <label for="contacts_file" class="block rounded-md bg-blue-600 px-3 py-2 text-center text-sm font-semibold text-white shadow-sm hover:bg-blue-500 cursor-pointer">
+                    Import Contacts from iPhone
+                </label>
+                <input type="file" id="contacts_file" name="contacts_file" accept=".vcf" style="display: none;" required onchange="this.form.submit()">
+            </form>
         </div>
     </div>
-    
+
     <!-- Search Form -->
     <div class="mt-4">
         <form action="{{ route('user.contacts.index') }}" method="GET" class="relative">
@@ -31,11 +40,9 @@
                 <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
                 </svg>
-                  
             </button>
         </form>
     </div>
-    
 
     <div class="mt-8 flow-root">
         <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
@@ -44,7 +51,10 @@
                     <thead>
                         <tr>
                             <th scope="col" class="py-3.5 pl-4 pr-3 text-left text-sm font-semibold text-gray-900 sm:pl-0">Ad</th>
-                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Nömrə</th>
+                            <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">
+                                Nömrə
+                                <button id="toggle-phone-numbers" class="ml-2 text-blue-600 text-xs underline">Hide</button>
+                            </th>
                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Status</th>
                             <th scope="col" class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Qrup</th>
                             <th scope="col" class="relative py-3.5 pl-3 pr-4 sm:pr-0">
@@ -72,15 +82,16 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
+                                <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500 phone-number" data-phone-number="{{ $contact->phone_number }}">
                                     <div class="text-gray-900">{{ $contact->phone_number }}</div>
                                 </td>
+                                
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                                     <span class="inline-flex items-center rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-700 ring-1 ring-inset ring-green-600/20">Active</span>
                                 </td>
                                 <td class="whitespace-nowrap px-3 py-5 text-sm text-gray-500">
                                     @if($contact->groups->isEmpty())
-                                        <div class="text-gray-900">Unknown</div>
+                                        <div class="text-gray-900">-</div>
                                     @else
                                         <div class="text-gray-900">
                                             @foreach($contact->groups as $group)
@@ -110,6 +121,31 @@
             </div>
         </div>
     </div>
+
+    <!-- Pagination Links -->
+    <div class="mt-6 flex justify-center">
+        {{ $contacts->links('vendor.pagination.custom') }}
+    </div>
 </div>
+
+<!-- Add JavaScript at the bottom of the blade file -->
+<script>
+    document.getElementById('toggle-phone-numbers').addEventListener('click', function() {
+    const phoneNumbers = document.querySelectorAll('.phone-number');
+    phoneNumbers.forEach(phone => {
+        const actualNumber = phone.getAttribute('data-phone-number');
+        if (phone.textContent.trim() === actualNumber) {
+            phone.textContent = '(***) ***-***';
+        } else {
+            phone.textContent = actualNumber;
+        }
+    });
+
+    // Toggle the button text between "Hide" and "Show"
+    this.textContent = this.textContent === 'Hide' ? 'Show' : 'Hide';
+
+});
+
+</script>
 
 @endsection
