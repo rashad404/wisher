@@ -2,6 +2,7 @@
 
 return [
     'home' => 'Ana səhifə',
+    'wishes' => 'Təbrik mesajları',
     'features' => 'Xüsusiyyətlər',
     'how_it_works' => 'Necə İşləyir',
     'pricing' => 'Qiymətlər',
@@ -168,4 +169,12 @@ return [
     'continue' => 'Davam et',
     'already_member' => 'Artıq üzvüsünüz?',
     'log_in' => 'Daxil ol',
+
+    // wishes
+    'wish_templates' => 'Təbrik Şablonları',
+    'all_categories' => 'Bütün Kateqoriyalar',
+    'all_events' => 'Bütün Tədbirlər',
+    'filter' => 'Filtr',
+    'event' => 'Tədbir',
+    'no_wishes_found' => 'Seçilmiş filtrlər üçün təbrik tapılmadı.',
 ];

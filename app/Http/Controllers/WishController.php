@@ -17,7 +17,7 @@ class WishController extends Controller
         // Get selected filters
         $categoryId = $request->get('category_id');
         $eventId = $request->get('event_id');
-        $language = $request->get('lang', 'en');
+        $language = $request->get('lang', app()->getLocale());
 
         // Fetch events based on selected category
         $events = Event::where('status', 'active')
