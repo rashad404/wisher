@@ -148,32 +148,28 @@ class ContactController extends Controller
     {
         $contact = Contact::findOrFail($contactId);
 
-        // Validate that the contact has a phone number
         if (!$contact->phone_number) {
-            return redirect()->back()->with('error', 'This contact does not have a phone number.');
+            return false; // Indicate failure
         }
 
-        // Additional Validations
         $request->validate([
             'message' => 'required|string|max:160',
         ]);
 
-        // Example: Check rate limiting
         $sentMessagesCount = Activity::where('user_id', auth()->id())
-                                ->where('type', 'sms')
-                                ->where('created_at', '>=', now()->subDay())
-                                ->count();
+                                     ->where('type', 'sms')
+                                     ->where('created_at', '>=', now()->subDay())
+                                     ->count();
 
         if ($sentMessagesCount >= 10) {
-            return redirect()->back()->with('error', 'You have reached the limit of SMS messages you can send today.');
+            return false; // Indicate failure
         }
 
-        // Twilio setup
         $sid = env('TWILIO_SID');
         $token = env('TWILIO_AUTH_TOKEN');
         $twilio = new Client($sid, $token);
 
-        $message = $request->input('message'); // The message text from the request
+        $message = $request->input('message');
 
         try {
             $twilio->messages->create($contact->phone_number, [
@@ -181,16 +177,15 @@ class ContactController extends Controller
                 'body' => $message
             ]);
 
-            // Log the SMS activity in the database
             Activity::create([
                 'user_id' => auth()->id(),
                 'type' => 'sms',
                 'description' => "Sent SMS to {$contact->phone_number}: {$message}",
             ]);
 
-            return redirect()->back()->with('success', 'SMS sent successfully.');
+            return true; // Indicate success
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to send SMS: ' . $e->getMessage());
+            return false; // Indicate failure
         }
     }
 
@@ -198,43 +193,40 @@ class ContactController extends Controller
     {
         $contact = Contact::findOrFail($contactId);
 
-        // Validate that the contact has an email address
         if (!$contact->email) {
-            return redirect()->back()->with('error', 'This contact does not have an email address.');
+            return false; // Indicate failure
         }
 
-        // Additional Validations
         $request->validate([
             'message' => 'required|string|max:1000',
         ]);
 
-        // Example: Check rate limiting
         $sentEmailsCount = Activity::where('user_id', auth()->id())
-                              ->where('type', 'email')
-                              ->where('created_at', '>=', now()->subDay())
-                              ->count();
+                                  ->where('type', 'email')
+                                  ->where('created_at', '>=', now()->subDay())
+                                  ->count();
 
         if ($sentEmailsCount >= 20) {
-            return redirect()->back()->with('error', 'You have reached the limit of emails you can send today.');
+            return false; // Indicate failure
         }
 
-        $messageText = $request->input('message'); // The message text from the request
+        $messageText = $request->input('message');
 
         try {
             Mail::to($contact->email)->send(new ContactMessage($contact, $messageText));
 
-            // Log the email activity in the database
             Activity::create([
                 'user_id' => auth()->id(),
                 'type' => 'email',
                 'description' => "Sent email to {$contact->email}: {$messageText}",
             ]);
 
-            return redirect()->back()->with('success', 'Email sent successfully.');
+            return true; // Indicate success
         } catch (\Exception $e) {
-            return redirect()->back()->with('error', 'Failed to send email: ' . $e->getMessage());
+            return false; // Indicate failure
         }
     }
+
 
     public function sendMessage(Request $request, $contactId)
     {
@@ -245,47 +237,36 @@ class ContactController extends Controller
             'message' => 'required|string|max:1000',
         ]);
 
-        $message = $request->input('message'); // The message text from the request
-        $errors = [];
-        $successMessages = [];
+        $message = $request->input('message');
+        $smsSent = false;
+        $emailSent = false;
+        $chatInitiated = false;
 
-        // Check if 'sendSms' checkbox is checked
-        if ($request->has('sendSms')) {
-            // Validate that the contact has a phone number
-            if (!$contact->phone_number) {
-                $errors[] = 'This contact does not have a phone number.';
+        // Handle SMS
+        if ($request->input('sendSms') === '1') {
+            $smsSent = $this->sendSms($request, $contactId);
+        }
+
+        // Handle Email
+        if ($request->input('sendEmail') === '1') {
+            $emailSent = $this->sendEmail($request, $contactId);
+        }
+
+        // Handle Chat
+        if ($request->input('sendChat') === '1') {
+            if ($contact->registered_user_id) {
+                $chatInitiated = $this->chatWithUser($contact->registered_user_id);
             } else {
-                // SMS sending logic
-                try {
-                    $this->sendSms($request, $contactId);
-                    $successMessages[] = 'SMS sent successfully.';
-                } catch (\Exception $e) {
-                    $errors[] = 'Failed to send SMS: ' . $e->getMessage();
-                }
+                return redirect()->back()->with('error', 'This contact is not linked to a registered user for chat.');
             }
         }
 
-        // Check if 'sendEmail' checkbox is checked
-        if ($request->has('sendEmail')) {
-            // Validate that the contact has an email address
-            if (!$contact->email) {
-                $errors[] = 'This contact does not have an email address.';
-            } else {
-                // Email sending logic
-                try {
-                    $this->sendEmail($request, $contactId);
-                    $successMessages[] = 'Email sent successfully.';
-                } catch (\Exception $e) {
-                    $errors[] = 'Failed to send email: ' . $e->getMessage();
-                }
-            }
+        // Determine success or error based on what was processed
+        if ($smsSent || $emailSent || $chatInitiated) {
+            return redirect()->back()->with('success', 'Message sent successfully.');
+        } else {
+            return redirect()->back()->with('error', 'No communication channel selected.');
         }
-
-        if (!empty($errors)) {
-            return redirect()->back()->withErrors($errors);
-        }
-
-        return redirect()->back()->with('success', implode(' ', $successMessages));
     }
 
     public function getEventsByCategory($categoryId)
@@ -307,4 +288,16 @@ class ContactController extends Controller
         }
     }
 
+    public function getMessages(Request $request)
+    {
+        $eventId = $request->input('event_id');
+
+        if (!$eventId) {
+            return response()->json(['messages' => []]);
+        }
+
+        $messages = Wish::where('event_id', $eventId)->get(['id', 'title', 'text']);
+
+        return response()->json(['messages' => $messages]);
+    }
 }

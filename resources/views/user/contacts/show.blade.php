@@ -193,25 +193,32 @@
 
                 <form action="{{ route('send.message', ['contactId' => $contact->id]) }}" method="POST">
                     @csrf
+                    <!-- Hidden Inputs for Checkboxes -->
+                    <input type="hidden" name="sendSms" value="0">
+                    <input type="hidden" name="sendEmail" value="0">
+                    <input type="hidden" name="sendChat" value="0">
+
                     <div class="mt-4">
                         <label class="block text-sm font-semibold text-gray-900">Send via</label>
                         <div class="flex items-center mt-2">
-                            <input type="checkbox" id="sendSms" name="sendSms" class="mr-2" />
-                            <label for="sendSms" class="text-sm font-medium text-gray-900">Send SMS</label>
-                            <input type="checkbox" id="sendEmail" name="sendEmail" class="ml-4 mr-2" />
-                            <label for="sendEmail" class="text-sm font-medium text-gray-900">Send Email</label>
-                            <input type="checkbox" id="sendEmail" name="sendEmail" class="ml-4 mr-2" />
-                            <label for="sendChat" class="text-sm font-medium text-gray-900">Send in the Chat</label>
+                            <input type="checkbox" id="sendSms" name="sendSms" value="1" class="ml-4 mr-2" />
+                            <label for="sendSms" class="text-sm font-medium text-gray-900">SMS</label>
+
+                            <input type="checkbox" id="sendEmail" name="sendEmail" value="1" class="ml-4 mr-2" />
+                            <label for="sendEmail" class="text-sm font-medium text-gray-900">Email</label>
+
+                            <input type="checkbox" id="sendChat" name="sendChat" value="1" class="ml-4 mr-2" />
+                            <label for="sendChat" class="text-sm font-medium text-gray-900">In the Chat</label>
                         </div>
-                        <button type="submit" id="useTemplate" class="mt-2 w-full bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600">
+                        <button type="button" id="useTemplate" class="mt-2 w-full bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600">
                             Use Template
                         </button>
                     </div>
 
                     <!-- Message Input -->
                     <div class="mt-4">
-                        <label for="message" class="block text-sm font-semibold text-gray-900">Message</label>
-                        <textarea id="message" name="message" class="w-full border border-gray-300 rounded-md p-2" required></textarea>
+                        <label for="messageTextArea" class="block text-sm font-semibold text-gray-900">Message</label>
+                        <textarea id="messageTextArea" name="message" class="w-full border border-gray-300 rounded-md p-2" required></textarea>
                     </div>
 
                     <!-- Submit Button -->
@@ -222,6 +229,7 @@
                     </div>
                 </form>
 
+
                 <div class="flex gap-6 justify-center mt-4">
                     @if($contact->registered_user_id)
                         <a href="{{ route('chat.withUser', $contact->registered_user_id) }}" class="flex items-center justify-center w-48 rounded-md bg-green-600 px-6 py-3 text-sm font-semibold text-white shadow-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600">
@@ -230,6 +238,7 @@
                             </svg>
                             Chat with User
                         </a>
+                </div>
                     @else
                         <button type="button" disabled class="flex items-center justify-center w-48 rounded-md bg-gray-400 px-6 py-3 text-sm font-semibold text-white shadow-md">
                             <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -254,86 +263,92 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
-$(document).ready(function() {
-    // Function to load events based on selected category
-    function loadEventsBasedOnCategory(categorySelector, eventDropdown) {
-        $(categorySelector).change(function() {
-            var categoryId = $(this).val();
+    $(document).ready(function() {
+        // Function to load events based on selected category
+        function loadEventsBasedOnCategory(categorySelector, eventDropdown) {
+            $(categorySelector).change(function() {
+                var categoryId = $(this).val();
 
-            console.log("Category selected:", categoryId); // Debugging log
+                console.log("Category selected:", categoryId); // Debugging log
 
-            if (categoryId) {
-                $.ajax({
-                    url: '/events/category/' + categoryId,
-                    type: 'GET',
-                    dataType: 'json',
-                    success: function(events) {
-                        $(eventDropdown).empty().append('<option value="">Select Event</option>');
-                        $.each(events, function(index, event) {
-                            $(eventDropdown).append('<option value="' + event.id + '">' + event.name + '</option>');
-                        });
-                        console.log("Events loaded:", events); // Debugging log
-                    },
-                    error: function(xhr, status, error) {
-                        console.log("Error loading events:", status, error); // Debugging log
-                        $(eventDropdown).empty().append('<option value="">Error loading events</option>');
-                    }
-                });
-            } else {
-                $(eventDropdown).empty().append('<option value="">Select Event</option>');
-            }
-        });
-    }
-
-    // Load events for the unified form
-    loadEventsBasedOnCategory('#event-category', '#event');
-
-    // Function to load the wish message based on selected event
-    function loadWishMessage(eventSelector, smsMessageTextarea, emailMessageTextarea) {
-        $(eventSelector).change(function() {
-            var eventId = $(this).val();
-
-            console.log("Event selected:", eventId); // Debugging log
-
-            if (eventId) {
-                $.ajax({
-                    url: '/load-wish-message',
-                    type: 'POST',
-                    data: {
-                        event_id: eventId,
-                        _token: '{{ csrf_token() }}'
-                    },
-                    success: function(response) {
-                        console.log("Message loaded:", response.message); // Debugging log
-                        if (response.message) {
-                            $(smsMessageTextarea).val(response.message);
-                            $(emailMessageTextarea).val(response.message);
-                        } else {
-                            $(smsMessageTextarea).val('No message available');
-                            $(emailMessageTextarea).val('No message available');
+                if (categoryId) {
+                    $.ajax({
+                        url: '/events/category/' + categoryId,
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(events) {
+                            $(eventDropdown).empty().append('<option value="">Select Event</option>');
+                            $.each(events, function(index, event) {
+                                $(eventDropdown).append('<option value="' + event.id + '">' + event.name + '</option>');
+                            });
+                            console.log("Events loaded:", events); // Debugging log
+                        },
+                        error: function(xhr, status, error) {
+                            console.log("Error loading events:", status, error); // Debugging log
+                            $(eventDropdown).empty().append('<option value="">Error loading events</option>');
                         }
-                    },
-                    error: function(xhr, status, error) {
-                        console.log("Error loading message:", status, error); // Debugging log
-                        $(smsMessageTextarea).val('');
-                        $(emailMessageTextarea).val('');
-                        if (xhr.status === 404) {
-                            alert('No wish message found for the selected event.');
-                        } else {
-                            alert('An error occurred while loading the message.');
-                        }
-                    }
-                });
-            } else {
-                $(smsMessageTextarea).val('');
-                $(emailMessageTextarea).val('');
-            }
-        });
-    }
+                    });
+                } else {
+                    $(eventDropdown).empty().append('<option value="">Select Event</option>');
+                }
+            });
+        }
 
-    // Load the wish message for the unified form
-    loadWishMessage('#event', '#message', '#message');
-});
+        // Function to load messages based on selected event
+        function loadMessagesBasedOnEvent(eventSelector, messageDropdown) {
+            $(eventSelector).change(function() {
+                var eventId = $(this).val();
+
+                console.log("Event selected:", eventId); // Debugging log
+
+                if (eventId) {
+                    $.ajax({
+                        url: '/get-messages',
+                        type: 'GET',
+                        data: { event_id: eventId },
+                        success: function(response) {
+                            console.log("Messages loaded:", response.messages); // Debugging log
+                            if (response.messages && response.messages.length > 0) {
+                                $(messageDropdown).empty().append('<option value="">Select Message</option>');
+                                $.each(response.messages, function(index, message) {
+                                    $(messageDropdown).append(
+                                        '<option value="' + message.id + '" data-content="' + message.content + '">' + message.title + '</option>'
+                                    );
+                                });
+                            } else {
+                                $(messageDropdown).empty().append('<option value="">No messages available</option>');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error loading messages:", error);
+                            $(messageDropdown).empty().append('<option value="">Error loading messages</option>');
+                        }
+                    });
+                } else {
+                    $(messageDropdown).empty().append('<option value="">Select Message</option>');
+                }
+            });
+        }
+
+        // Function to load the wish message based on selected message title
+        function loadWishMessage(messageDropdown, messageTextarea) {
+            $(messageDropdown).change(function() {
+                var selectedOption = $(this).find('option:selected');
+                var messageContent = selectedOption.data('content');
+                if (messageContent !== undefined) {
+                    $(messageTextarea).val(messageContent);
+                } else {
+                    console.error('Message content is undefined');
+                    $(messageTextarea).val('');
+                }
+            });
+        }
+
+        // Initialize functions
+        loadEventsBasedOnCategory('#event-category', '#event');
+        loadMessagesBasedOnEvent('#event', '#message');
+        loadWishMessage('#message', '#messageTextArea');
+    });
 </script>
 
 <script>
@@ -368,6 +383,7 @@ document.addEventListener('DOMContentLoaded', function () {
 </script>
 
 <script>
+    /*Opening Modal*/
     $(document).ready(function() {
         // Function to open the modal
         function openEventModal() {
@@ -424,3 +440,59 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 </script>
+
+
+<script>
+    $(document).ready(function() {
+        // Function to load messages based on selected event
+        function loadMessage(eventSelector, messageDropdown) {
+            $(eventSelector).change(function() {
+                var eventId = $(this).val();
+                if (eventId) {
+                    $.ajax({
+                        url: '/get-messages',
+                        type: 'GET',
+                        data: { event_id: eventId },
+                        success: function(response) {
+                            console.log("Response from server:", response); // Debugging log
+                            if (response.messages && response.messages.length > 0) {
+                                $(messageDropdown).empty().append('<option value="">Select Message</option>');
+                                $.each(response.messages, function(index, message) {
+                                    console.log("Appending message:", message); // Debugging log
+                                    $(messageDropdown).append(
+                                        '<option value="' + message.id + '" data-content="' + message.text + '">' + message.text + '</option>'
+                                    );
+                                });
+                            } else {
+                                $(messageDropdown).empty().append('<option value="">No messages available</option>');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error("Error loading messages:", error);
+                            $(messageDropdown).empty().append('<option value="">Error loading messages</option>');
+                        }
+                    });
+                } else {
+                    $(messageDropdown).empty().append('<option value="">Select Message</option>');
+                }
+            });
+        }
+
+        // Populate textarea when a message is selected
+        $('#message').change(function() {
+            var selectedOption = $(this).find('option:selected');
+            console.log("Selected option:", selectedOption); // Debugging log
+            var messageContent = selectedOption.data('content');
+            console.log("Message content:", messageContent); // Debugging log
+            if (messageContent !== undefined && messageContent !== null) {
+                $('#messageTextArea').val(messageContent);
+            } else {
+                console.error('Message content is undefined');
+                $('#messageTextArea').val(''); // Clear textarea if no content found
+            }
+        });
+
+        // Initialize message loading
+        loadMessage('#event', '#message');
+    });
+    </script>
