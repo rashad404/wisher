@@ -179,4 +179,11 @@ return [
     'already_member' => 'Already a member?',
     'log_in' => 'Log in',
 
+    // wishes
+    'wish_templates' => 'Wish Templates',
+    'all_categories' => 'All Categories',
+    'all_events' => 'All Events',
+    'filter' => 'Filter',
+    'event' => 'Event',
+    'no_wishes_found' => 'No wishes found for the selected filters.',
 ];
