@@ -59,6 +59,7 @@
             </div>
 
             <!-- Related Events Section -->
+            <!-- Related Events Section -->
             <div class="mb-8">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-xl font-bold text-gray-900 mb-4">Related Events</h3>
@@ -187,55 +188,239 @@
                 @endif
             </div>
 
-            <!-- SMS and Email Forms -->
             <div class="mb-8">
                 <h3 class="text-xl font-bold text-gray-900 mb-4">Send Message</h3>
 
-                <!-- SMS Form -->
-                <form action="{{ route('contacts.sendSms', $contact->id) }}" method="POST" class="mb-4">
+                <form action="{{ route('send.message', ['contactId' => $contact->id]) }}" method="POST">
                     @csrf
-                    <div>
-                        <label for="sms-message" class="block text-sm font-semibold text-gray-900">SMS Message</label>
-                        <textarea id="sms-message" name="message" class="w-full border border-gray-300 rounded-md p-2" required></textarea>
+                    <div class="mt-4">
+                        <label class="block text-sm font-semibold text-gray-900">Send via</label>
+                        <div class="flex items-center mt-2">
+                            <input type="checkbox" id="sendSms" name="sendSms" class="mr-2" />
+                            <label for="sendSms" class="text-sm font-medium text-gray-900">Send SMS</label>
+                            <input type="checkbox" id="sendEmail" name="sendEmail" class="ml-4 mr-2" />
+                            <label for="sendEmail" class="text-sm font-medium text-gray-900">Send Email</label>
+                            <input type="checkbox" id="sendEmail" name="sendEmail" class="ml-4 mr-2" />
+                            <label for="sendChat" class="text-sm font-medium text-gray-900">Send in the Chat</label>
+                        </div>
+                        <button type="submit" id="useTemplate" class="mt-2 w-full bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600">
+                            Use Template
+                        </button>
                     </div>
-                    <button type="submit" class="mt-4 bg-blue-500 text-white py-2 px-4 rounded-md">Send SMS</button>
+
+                    <!-- Message Input -->
+                    <div class="mt-4">
+                        <label for="message" class="block text-sm font-semibold text-gray-900">Message</label>
+                        <textarea id="message" name="message" class="w-full border border-gray-300 rounded-md p-2" required></textarea>
+                    </div>
+
+                    <!-- Submit Button -->
+                    <div class="flex justify-center mt-4">
+                        <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600">
+                            Send Message
+                        </button>
+                    </div>
                 </form>
 
-                <!-- Email Form -->
-                <form action="{{ route('contacts.sendEmail', $contact->id) }}" method="POST">
-                    @csrf
-                    <div>
-                        <label for="email-message" class="block text-sm font-semibold text-gray-900">Email Message</label>
-                        <textarea id="email-message" name="message" class="w-full border border-gray-300 rounded-md p-2" required></textarea>
-                    </div>
-                    <button type="submit" class="mt-4 bg-blue-500 text-white py-2 px-4 rounded-md">Send Email</button>
-                </form>
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="flex gap-6 justify-center">
-                @if($contact->registered_user_id)
-                    <a href="{{ route('chat.withUser', $contact->registered_user_id) }}" class="flex items-center justify-center w-48 rounded-md bg-green-600 px-6 py-3 text-sm font-semibold text-white shadow-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600">
+                <div class="flex gap-6 justify-center mt-4">
+                    @if($contact->registered_user_id)
+                        <a href="{{ route('chat.withUser', $contact->registered_user_id) }}" class="flex items-center justify-center w-48 rounded-md bg-green-600 px-6 py-3 text-sm font-semibold text-white shadow-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600">
+                            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4m-2-2v4m0 0v6a2 2 0 01-2 2H8a2 2 0 01-2-2v-6m6 6V6a2 2 0 012-2h6a2 2 0 012 2v6" />
+                            </svg>
+                            Chat with User
+                        </a>
+                    @else
+                        <button type="button" disabled class="flex items-center justify-center w-48 rounded-md bg-gray-400 px-6 py-3 text-sm font-semibold text-white shadow-md">
+                            <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4m-2-2v4m0 0v6a2 2 0 01-2 2H8a2 2 0 01-2-2v-6m6 6V6a2 2 0 012-2h6a2 2 0 012 2v6" />
+                            </svg>
+                            Not Registered
+                        </button>
+                    @endif
+                    <button type="button" class="flex items-center justify-center w-48 rounded-md bg-yellow-600 px-6 py-3 text-sm font-semibold text-white shadow-md hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-600">
                         <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4m-2-2v4m0 0v6a2 2 0 01-2 2H8a2 2 0 01-2-2v-6m6 6V6a2 2 0 012-2h6a2 2 0 012 2v6" />
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8V6m0 12v-2m8-10H4m16 10H4m5-8a4 4 0 00-8 0h2a2 2 0 114 0h6a2 2 0 114 0h2a4 4 0 00-8 0h-2zM5 16v2m10-2v2" />
                         </svg>
-                        Send Message
-                    </a>
-                @else
-                    <button type="button" disabled class="flex items-center justify-center w-48 rounded-md bg-gray-400 px-6 py-3 text-sm font-semibold text-white shadow-md">
-                        <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 10h4m-2-2v4m0 0v6a2 2 0 01-2 2H8a2 2 0 01-2-2v-6m6 6V6a2 2 0 012-2h6a2 2 0 012 2v6" />
-                        </svg>
-                        Not Registered
+                        Send Gift
                     </button>
-                @endif
-                <button type="button" class="flex items-center justify-center w-48 rounded-md bg-yellow-600 px-6 py-3 text-sm font-semibold text-white shadow-md hover:bg-yellow-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-600">
-                    <svg class="h-5 w-5 mr-2" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8V6m0 12v-2m8-10H4m16 10H4m5-8a4 4 0 00-8 0h2a2 2 0 114 0h6a2 2 0 114 0h2a4 4 0 00-8 0h-2zM5 16v2m10-2v2" />
-                    </svg>
-                    Send Gift
-                </button>
+                </div>
             </div>
         </div>
     </div>
+
+@include('modals.event-modal')
 @endsection
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+$(document).ready(function() {
+    // Function to load events based on selected category
+    function loadEventsBasedOnCategory(categorySelector, eventDropdown) {
+        $(categorySelector).change(function() {
+            var categoryId = $(this).val();
+
+            console.log("Category selected:", categoryId); // Debugging log
+
+            if (categoryId) {
+                $.ajax({
+                    url: '/events/category/' + categoryId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(events) {
+                        $(eventDropdown).empty().append('<option value="">Select Event</option>');
+                        $.each(events, function(index, event) {
+                            $(eventDropdown).append('<option value="' + event.id + '">' + event.name + '</option>');
+                        });
+                        console.log("Events loaded:", events); // Debugging log
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("Error loading events:", status, error); // Debugging log
+                        $(eventDropdown).empty().append('<option value="">Error loading events</option>');
+                    }
+                });
+            } else {
+                $(eventDropdown).empty().append('<option value="">Select Event</option>');
+            }
+        });
+    }
+
+    // Load events for the unified form
+    loadEventsBasedOnCategory('#event-category', '#event');
+
+    // Function to load the wish message based on selected event
+    function loadWishMessage(eventSelector, smsMessageTextarea, emailMessageTextarea) {
+        $(eventSelector).change(function() {
+            var eventId = $(this).val();
+
+            console.log("Event selected:", eventId); // Debugging log
+
+            if (eventId) {
+                $.ajax({
+                    url: '/load-wish-message',
+                    type: 'POST',
+                    data: {
+                        event_id: eventId,
+                        _token: '{{ csrf_token() }}'
+                    },
+                    success: function(response) {
+                        console.log("Message loaded:", response.message); // Debugging log
+                        if (response.message) {
+                            $(smsMessageTextarea).val(response.message);
+                            $(emailMessageTextarea).val(response.message);
+                        } else {
+                            $(smsMessageTextarea).val('No message available');
+                            $(emailMessageTextarea).val('No message available');
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log("Error loading message:", status, error); // Debugging log
+                        $(smsMessageTextarea).val('');
+                        $(emailMessageTextarea).val('');
+                        if (xhr.status === 404) {
+                            alert('No wish message found for the selected event.');
+                        } else {
+                            alert('An error occurred while loading the message.');
+                        }
+                    }
+                });
+            } else {
+                $(smsMessageTextarea).val('');
+                $(emailMessageTextarea).val('');
+            }
+        });
+    }
+
+    // Load the wish message for the unified form
+    loadWishMessage('#event', '#message', '#message');
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    // Get the modal and button elements
+    const eventModal = document.getElementById('eventModal');
+    const useTemplateButton = document.getElementById('useTemplate');
+
+    // Ensure the modal and button exist
+    if (eventModal && useTemplateButton) {
+        // Show the modal when the button is clicked
+        useTemplateButton.addEventListener('click', function () {
+            eventModal.classList.remove('hidden');
+        });
+
+        // Close the modal when the close button is clicked
+        const closeModalButton = eventModal.querySelector('.close');
+        if (closeModalButton) {
+            closeModalButton.addEventListener('click', function () {
+                eventModal.classList.add('hidden');
+            });
+        }
+
+        // Close the modal if clicking outside of the modal content
+        eventModal.addEventListener('click', function (event) {
+            if (event.target === eventModal) {
+                eventModal.classList.add('hidden');
+            }
+        });
+    }
+});
+</script>
+
+<script>
+    $(document).ready(function() {
+        // Function to open the modal
+        function openEventModal() {
+            $('#eventModal').removeClass('hidden');
+        }
+
+        // Function to close the modal
+        function closeEventModal() {
+            $('#eventModal').addClass('hidden');
+        }
+
+        // Open the modal
+        $('#openEventModalButton').click(function() {
+            openEventModal();
+        });
+
+        // Close the modal when clicking the close button
+        $('#closeEventModal, #closeEventModalButton').click(function() {
+            closeEventModal();
+        });
+
+        // Handle event category change
+        $('#event-category').change(function() {
+            var categoryId = $(this).val();
+            if (categoryId) {
+                $.ajax({
+                    url: '/events/category/' + categoryId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(events) {
+                        $('#event').empty().append('<option value="">Select Event</option>');
+                        $.each(events, function(index, event) {
+                            $('#event').append('<option value="' + event.id + '">' + event.name + '</option>');
+                        });
+                    }
+                });
+            } else {
+                $('#event').empty().append('<option value="">Select Event</option>');
+            }
+        });
+
+        // Handle modal form submission
+        $('#submitEventForm').click(function(e) {
+            e.preventDefault(); // Prevent default form submission
+            var selectedEvent = $('#event').val();
+            if (selectedEvent) {
+                // Perform any required action with the selected event
+                console.log("Selected Event ID:", selectedEvent);
+                // Close the modal after submission
+                closeEventModal();
+            } else {
+                alert('Please select an event.');
+            }
+        });
+    });
+</script>

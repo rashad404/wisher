@@ -2,16 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Mail\ContactMessage;
-use App\Models\Activity;
 use Carbon\Carbon;
+use App\Models\Wish;
+use App\Models\Event;
 use App\Models\Group;
 use App\Models\Contact;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Twilio\Rest\Client;
+use App\Models\Activity;
+use App\Mail\ContactMessage;
+use Illuminate\Http\Request;
+use App\Models\EventCategory;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Storage;
 
 class ContactController extends Controller
 {
@@ -77,7 +80,11 @@ class ContactController extends Controller
     public function show($id)
     {
         $contact = Contact::with(['events', 'registeredUser'])->findOrFail($id);
-        return view('user.contacts.show', compact('contact'));
+
+        $eventCategories = EventCategory::all();
+        $events = Event::all();
+
+        return view('user.contacts.show', compact('contact', 'eventCategories', 'events'));
     }
 
     public function edit(Contact $contact)
@@ -137,7 +144,7 @@ class ContactController extends Controller
         return redirect()->route('user.contacts.index')->with('success', 'Contact deleted successfully.');
     }
 
-    public function sendSms(Request $request, $contactId)
+    private function sendSms(Request $request, $contactId)
     {
         $contact = Contact::findOrFail($contactId);
 
@@ -187,7 +194,7 @@ class ContactController extends Controller
         }
     }
 
-    public function sendEmail(Request $request, $contactId)
+    private function sendEmail(Request $request, $contactId)
     {
         $contact = Contact::findOrFail($contactId);
 
@@ -228,4 +235,76 @@ class ContactController extends Controller
             return redirect()->back()->with('error', 'Failed to send email: ' . $e->getMessage());
         }
     }
+
+    public function sendMessage(Request $request, $contactId)
+    {
+        $contact = Contact::findOrFail($contactId);
+
+        // Validate the message field
+        $request->validate([
+            'message' => 'required|string|max:1000',
+        ]);
+
+        $message = $request->input('message'); // The message text from the request
+        $errors = [];
+        $successMessages = [];
+
+        // Check if 'sendSms' checkbox is checked
+        if ($request->has('sendSms')) {
+            // Validate that the contact has a phone number
+            if (!$contact->phone_number) {
+                $errors[] = 'This contact does not have a phone number.';
+            } else {
+                // SMS sending logic
+                try {
+                    $this->sendSms($request, $contactId);
+                    $successMessages[] = 'SMS sent successfully.';
+                } catch (\Exception $e) {
+                    $errors[] = 'Failed to send SMS: ' . $e->getMessage();
+                }
+            }
+        }
+
+        // Check if 'sendEmail' checkbox is checked
+        if ($request->has('sendEmail')) {
+            // Validate that the contact has an email address
+            if (!$contact->email) {
+                $errors[] = 'This contact does not have an email address.';
+            } else {
+                // Email sending logic
+                try {
+                    $this->sendEmail($request, $contactId);
+                    $successMessages[] = 'Email sent successfully.';
+                } catch (\Exception $e) {
+                    $errors[] = 'Failed to send email: ' . $e->getMessage();
+                }
+            }
+        }
+
+        if (!empty($errors)) {
+            return redirect()->back()->withErrors($errors);
+        }
+
+        return redirect()->back()->with('success', implode(' ', $successMessages));
+    }
+
+    public function getEventsByCategory($categoryId)
+    {
+        $events = Event::where('category_id', $categoryId)->get();
+        return response()->json($events);
+    }
+
+    public function loadWishMessage(Request $request)
+    {
+        $eventId = $request->input('event_id');
+
+        $wish = Wish::where('event_id', $eventId)->first();
+
+        if ($wish) {
+            return response()->json(['message' => $wish->text]);
+        } else {
+            return response()->json(['message' => 'No message available for this event.']);
+        }
+    }
+
 }

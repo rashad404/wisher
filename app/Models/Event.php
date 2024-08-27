@@ -27,4 +27,9 @@ class Event extends Model
     {
         return $this->belongsTo(EventCategory::class);
     }
+
+    public function wishes()
+    {
+        return $this->hasMany(Wish::class);
+    }
 }
