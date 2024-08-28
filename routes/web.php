@@ -23,8 +23,8 @@ use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ContactInterestController;
 
-use App\Http\Controllers\ActivityController;
-use App\Http\Controllers\WishController;
+//use App\Http\Controllers\ActivityController;
+//use App\Http\Controllers\WishController;
 
 
 /*
@@ -66,6 +66,8 @@ Route::get('/products', [ProductController::class, 'index'])->name('products.ind
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
 Route::post('/products/variant/quantity', [ProductController::class, 'getVariantQuantity']);
 Route::post('/products/variant/sizes', [ProductController::class, 'getAvailableSizes']);
+Route::post('/products/variant/sizes', [ProductController::class, 'getSizes'])->name('product.getSizes');
+
 
 // User Panel
 Route::get('/user/contacts', [ContactController::class, 'index'])->name('user.contacts.index');
