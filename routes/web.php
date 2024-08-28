@@ -23,6 +23,10 @@ use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ContactInterestController;
 
+use App\Http\Controllers\ActivityController;
+use App\Http\Controllers\WishController;
+
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -165,7 +169,7 @@ Route::prefix('contacts/{contact}/events')->name('contacts.events.')->group(func
 });
 
 //Activity Part
-Route::get('/user/dashboard', [ActivityController::class, 'index'])->name('user.index');
+
 Route::get('/user/dashboard', [ActivityController::class, 'index'])->name('user.index');
 
 Route::get('/events/{categoryId}', [ContactController::class, 'getEventsByCategory']);
@@ -179,5 +183,6 @@ Route::get('/messages/{event}', [ContactController::class, 'getMessages'])->name
 
 Route::get('/get-messages', [ContactController::class, 'getMessages']);
 
+// wishes
 Route::get('/wishes', [WishController::class, 'index'])->name('wishes.index');
 Route::get('/events-by-category', [WishController::class, 'getEventsByCategory'])->name('events.byCategory');
