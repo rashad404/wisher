@@ -1,10 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Models\Product;
-use App\Models\ProductVariant;
 use App\Models\Size;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Models\ProductVariant;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -12,7 +13,7 @@ class ProductController extends Controller
         $products = Product::with('variants')->get();
         return view('products.index', compact('products'));
     }
-    
+
     public function show($id) {
         $product = Product::with('variants')->findOrFail($id);
         $uniqueColors = $product->variants->unique('color_id')->pluck('color_id')->toArray();
@@ -22,11 +23,11 @@ class ProductController extends Controller
     public function getVariantQuantity(Request $request) {
         $colorId = $request->input('colorId');
         $sizeId = $request->input('sizeId');
-    
+
         $variant = ProductVariant::where('color_id', $colorId)
             ->where('size_id', $sizeId)
             ->first();
-    
+
         return response()->json([
             'quantity' => $variant ? $variant->quantity : 0
         ]);
@@ -34,20 +35,40 @@ class ProductController extends Controller
 
     public function getAvailableSizes(Request $request) {
         $colorId = $request->input('colorId');
-    
+
         // Fetch available sizes based on the selected color
         $sizes = ProductVariant::where('color_id', $colorId)
             ->where('quantity', '>', 0) // Filter sizes with available quantity
             ->distinct('size_id')
             ->pluck('size_id')
             ->toArray();
-    
+
         // Fetch the size names based on the IDs
         $sizeNames = Size::whereIn('id', $sizes)->get();
-    
+
         return response()->json([
             'sizes' => $sizeNames
         ]);
     }
-    
+
+    public function getSizes(Request $request)
+    {
+        $productId = $request->input('productId');
+        $colorId = $request->input('colorId');
+
+        // Retrieve sizes based on the selected product and color
+        $sizes = DB::table('product_variants')
+            ->where('product_id', $productId)
+            ->where('color_id', $colorId)
+            ->pluck('size_id');
+
+        $availableSizes = DB::table('sizes')
+            ->whereIn('id', $sizes)
+            ->get();
+
+        return response()->json([
+            'sizes' => $availableSizes
+        ]);
+    }
+
 }
