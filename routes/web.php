@@ -6,11 +6,14 @@ use App\Http\Controllers\ChatController;
 use App\Http\Controllers\GiftController;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\TestController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\WishController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\UserEventController;
 use App\Http\Controllers\TestimonialController;
@@ -19,8 +22,10 @@ use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ContactInterestController;
+
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\WishController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -164,7 +169,19 @@ Route::prefix('contacts/{contact}/events')->name('contacts.events.')->group(func
 });
 
 //Activity Part
+
 Route::get('/user/dashboard', [ActivityController::class, 'index'])->name('user.index');
+
+Route::get('/events/{categoryId}', [ContactController::class, 'getEventsByCategory']);
+Route::get('/contacts/events', [ContactController::class, 'getEventsByCategory'])->name('contacts.events');
+Route::get('/events/category', [ContactController::class, 'getEventsByCategory']);
+Route::get('/events/category/{categoryId}', [ContactController::class, 'getEventsByCategory']);
+Route::post('/load-wish-message', [ContactController::class, 'loadWishMessage'])->name('loadWishMessage');
+Route::get('/chat/{user}', [ChatController::class, 'show'])->name('chat.withUser');
+Route::post('/send-message/{contactId}', [ContactController::class, 'sendMessage'])->name('send.message');
+Route::get('/messages/{event}', [ContactController::class, 'getMessages'])->name('get-messages');
+
+Route::get('/get-messages', [ContactController::class, 'getMessages']);
 
 // wishes
 Route::get('/wishes', [WishController::class, 'index'])->name('wishes.index');
