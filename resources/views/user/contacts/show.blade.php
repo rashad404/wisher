@@ -193,11 +193,6 @@
 
                 <form action="{{ route('send.message', ['contactId' => $contact->id]) }}" method="POST">
                     @csrf
-                    <!-- Hidden Inputs for Checkboxes -->
-                    <input type="hidden" name="sendSms" value="0">
-                    <input type="hidden" name="sendEmail" value="0">
-                    <input type="hidden" name="sendChat" value="0">
-
                     <div class="mt-4">
                         <label class="block text-sm font-semibold text-gray-900">Send via</label>
                         <div class="flex items-center mt-2">
@@ -228,7 +223,6 @@
                         </button>
                     </div>
                 </form>
-
 
                 <div class="flex gap-6 justify-center mt-4">
                     @if($contact->registered_user_id)
