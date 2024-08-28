@@ -39,7 +39,7 @@
             </div>
             <div class="mt-4 flex justify-end gap-4">
                 <button type="button" id="submitEventForm" class="bg-blue-500 text-white py-2 px-4 rounded-md hover:bg-blue-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-600">
-                    Okey
+                    Okay
                 </button>
                 <button type="button" id="closeEventModalButton" class="bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600">
                     Cancel

@@ -144,32 +144,58 @@ class ContactController extends Controller
         return redirect()->route('user.contacts.index')->with('success', 'Contact deleted successfully.');
     }
 
-    private function sendSms(Request $request, $contactId)
+    public function sendMessage(Request $request, $contactId)
     {
         $contact = Contact::findOrFail($contactId);
 
-        if (!$contact->phone_number) {
-            return false; // Indicate failure
+        // Validate message input
+        $request->validate([
+            'message' => 'required|string',
+        ]);
+
+        $message = $request->input('message');
+
+        if ($request->has('sendSms')) {
+            return $this->sendSms($request, $contactId);
         }
 
+        if ($request->has('sendEmail')) {
+            return $this->sendEmail($request, $contactId);
+        }
+
+        return redirect()->back()->with('error', 'No message type selected.');
+    }
+    public function sendSms(Request $request, $contactId)
+    {
+        $contact = Contact::findOrFail($contactId);
+
+        // Validate that the contact has a phone number
+        if (!$contact->phone_number) {
+            return redirect()->back()->with('error', 'This contact does not have a phone number.');
+        }
+
+        // Additional Validations
         $request->validate([
             'message' => 'required|string|max:160',
         ]);
 
-        $sentMessagesCount = Activity::where('user_id', auth()->id())
-                                     ->where('type', 'sms')
-                                     ->where('created_at', '>=', now()->subDay())
-                                     ->count();
-
-        if ($sentMessagesCount >= 10) {
-            return false; // Indicate failure
-        }
-
+        // Twilio setup
         $sid = env('TWILIO_SID');
         $token = env('TWILIO_AUTH_TOKEN');
+
+        // Debug output
+        if (!$sid || !$token) {
+            \Log::error('Twilio SID or Auth Token is missing.');
+            return redirect()->back()->with('error', 'Twilio credentials are missing.');
+        }
+
+        // Check values
+        \Log::info('Twilio SID: ' . $sid);
+        \Log::info('Twilio Token: ' . $token);
+
         $twilio = new Client($sid, $token);
 
-        $message = $request->input('message');
+        $message = $request->input('message'); // The message text from the request
 
         try {
             $twilio->messages->create($contact->phone_number, [
@@ -177,95 +203,49 @@ class ContactController extends Controller
                 'body' => $message
             ]);
 
+            // Log the SMS activity in the database
             Activity::create([
                 'user_id' => auth()->id(),
                 'type' => 'sms',
                 'description' => "Sent SMS to {$contact->phone_number}: {$message}",
             ]);
 
-            return true; // Indicate success
+            return redirect()->back()->with('success', 'SMS sent successfully.');
         } catch (\Exception $e) {
-            return false; // Indicate failure
+            \Log::error('Failed to send SMS: ' . $e->getMessage());
+            return redirect()->back()->with('error', 'Failed to send SMS: ' . $e->getMessage());
         }
     }
 
-    private function sendEmail(Request $request, $contactId)
+    public function sendEmail(Request $request, $contactId)
     {
         $contact = Contact::findOrFail($contactId);
 
+        // Validate that the contact has an email address
         if (!$contact->email) {
-            return false; // Indicate failure
+            return redirect()->back()->with('error', 'This contact does not have an email address.');
         }
 
+        // Validate message input
         $request->validate([
             'message' => 'required|string|max:1000',
         ]);
 
-        $sentEmailsCount = Activity::where('user_id', auth()->id())
-                                  ->where('type', 'email')
-                                  ->where('created_at', '>=', now()->subDay())
-                                  ->count();
-
-        if ($sentEmailsCount >= 20) {
-            return false; // Indicate failure
-        }
-
-        $messageText = $request->input('message');
+        $messageText = $request->input('message'); // The message text from the request
 
         try {
             Mail::to($contact->email)->send(new ContactMessage($contact, $messageText));
 
+            // Log the email activity in the database
             Activity::create([
                 'user_id' => auth()->id(),
                 'type' => 'email',
                 'description' => "Sent email to {$contact->email}: {$messageText}",
             ]);
 
-            return true; // Indicate success
+            return redirect()->back()->with('success', 'Email sent successfully.');
         } catch (\Exception $e) {
-            return false; // Indicate failure
-        }
-    }
-
-
-    public function sendMessage(Request $request, $contactId)
-    {
-        $contact = Contact::findOrFail($contactId);
-
-        // Validate the message field
-        $request->validate([
-            'message' => 'required|string|max:1000',
-        ]);
-
-        $message = $request->input('message');
-        $smsSent = false;
-        $emailSent = false;
-        $chatInitiated = false;
-
-        // Handle SMS
-        if ($request->input('sendSms') === '1') {
-            $smsSent = $this->sendSms($request, $contactId);
-        }
-
-        // Handle Email
-        if ($request->input('sendEmail') === '1') {
-            $emailSent = $this->sendEmail($request, $contactId);
-        }
-
-        // Handle Chat
-        if ($request->input('sendChat') === '1') {
-            if ($contact->registered_user_id) {
-                $chatInitiated = $this->chatWithUser($contact->registered_user_id);
-            } else {
-                return redirect()->back()->with('error', 'This contact is not linked to a registered user for chat.');
-            }
-        }
-
-        // Determine success or error based on what was processed
-        if ($smsSent || $emailSent || $chatInitiated) {
-            return redirect()->back()->with('success', 'Message sent successfully.');
-        } else {
-            return redirect()->back()->with('error', 'No communication channel selected.');
+            return redirect()->back()->with('error', 'Failed to send email: ' . $e->getMessage());
         }
     }
 
