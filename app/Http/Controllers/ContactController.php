@@ -252,65 +252,6 @@ class ContactController extends Controller
         }
     }
 
-
-    public function importFromIos(Request $request)
-    {
-        // Validate the uploaded file
-        $request->validate([
-            'contacts_file' => 'required|file|mimetypes:text/x-vcard,text/vcard,text/plain,application/octet-stream',
-        ]);
-    
-        // Retrieve the uploaded file
-        $file = $request->file('contacts_file');
-    
-        // Parse the vCard file
-        $parser = VCardParser::parseFromFile($file->getRealPath());
-    
-        $contacts = [];
-    
-        // Iterate through each vCard contact in the file
-        foreach ($parser as $vcard) {
-            // Extract full name (fallback to firstname if fullname is not present)
-            $fullname = $vcard->fullname ?? trim(($vcard->firstname ?? '') . ' ' . ($vcard->lastname ?? ''));
-    
-            // Handle phone numbers (using the first available phone number)
-            $phone_number = null;
-            if (isset($vcard->phone) && is_array($vcard->phone)) {
-                $firstPhoneType = array_key_first($vcard->phone);
-                $phone_number = $vcard->phone[$firstPhoneType][0] ?? null;
-            }
-    
-            // Since other fields like email, address, birthday, and photo are not in the provided structure, they will be skipped.
-            // Prepare the contact data for insertion
-            $contacts[] = [
-                'name' => $fullname,
-                'email' => null,  // Set to null since it's not present
-                'phone_number' => $phone_number,
-                'birthdate' => null, // Set to null since it's not present
-                'address' => null,  // Set to null since it's not present
-                'photo' => null,  // Set to null since it's not present
-            ];
-        }
-    
-        // Save each contact to the database
-        foreach ($contacts as $contactData) {
-            Contact::create([
-                'user_id' => Auth::id(),
-                'name' => $contactData['name'],
-                'email' => $contactData['email'],
-                'phone_number' => $contactData['phone_number'],
-                'birthdate' => $contactData['birthdate'],
-                'address' => $contactData['address'],
-                'photo' => $contactData['photo'],
-            ]);
-        }
-    
-        // Redirect back with a success message
-        return redirect()->route('user.contacts.index')->with('success', 'Contacts imported successfully!');
-    }
-    
-    
-
     public function getEventsByCategory($categoryId)
     {
         $events = Event::where('category_id', $categoryId)->get();
@@ -341,6 +282,115 @@ class ContactController extends Controller
         $messages = Wish::where('event_id', $eventId)->get(['id', 'title', 'text']);
 
         return response()->json(['messages' => $messages]);
+    }
+
+
+    public function importFromIos(Request $request)
+    {
+        return $this->importContacts($request, 'iOS');
+    }
+
+    public function importFromAndroid(Request $request)
+    {
+        // Validate the uploaded file
+        $request->validate([
+            'contacts_file' => 'required|file|mimes:csv,txt',
+        ]);
+
+        $file = $request->file('contacts_file');
+        $contacts = $this->parseAndroidCsv($file);
+
+        // Save contacts to database
+        foreach ($contacts as $contactData) {
+            Contact::create(array_merge(['user_id' => Auth::id()], $contactData));
+        }
+
+        return redirect()->route('user.contacts.index')->with('success', 'Contacts imported successfully from Android!');
+    }
+
+    private function importContacts(Request $request, $source)
+    {
+        // Validate the uploaded file
+        $request->validate([
+            'contacts_file' => 'required|file|mimetypes:text/x-vcard,text/vcard,text/plain,application/octet-stream',
+        ]);
+
+        // Retrieve the uploaded file
+        $file = $request->file('contacts_file');
+
+        // Parse the vCard file
+        $parser = VCardParser::parseFromFile($file->getRealPath());
+
+        $contacts = [];
+
+        // Iterate through each vCard contact in the file
+        foreach ($parser as $vcard) {
+            // Extract full name (fallback to firstname if fullname is not present)
+            $fullname = $vcard->fullname ?? trim(($vcard->firstname ?? '') . ' ' . ($vcard->lastname ?? ''));
+
+            // Handle phone numbers (using the first available phone number)
+            $phone_number = null;
+            if (isset($vcard->phone) && is_array($vcard->phone)) {
+                $firstPhoneType = array_key_first($vcard->phone);
+                $phone_number = $vcard->phone[$firstPhoneType][0] ?? null;
+            }
+
+            // Prepare the contact data for insertion
+            $contacts[] = [
+                'name' => $fullname,
+                'email' => null,  // Set to null since it's not present
+                'phone_number' => $phone_number,
+                'birthdate' => null, // Set to null since it's not present
+                'address' => null,  // Set to null since it's not present
+                'photo' => null,  // Set to null since it's not present
+            ];
+        }
+
+        // Save each contact to the database
+        foreach ($contacts as $contactData) {
+            Contact::create([
+                'user_id' => Auth::id(),
+                'name' => $contactData['name'],
+                'email' => $contactData['email'],
+                'phone_number' => $contactData['phone_number'],
+                'birthdate' => $contactData['birthdate'],
+                'address' => $contactData['address'],
+                'photo' => $contactData['photo'],
+            ]);
+        }
+
+        // Redirect back with a success message
+        return redirect()->route('user.contacts.index')->with('success', "Contacts imported successfully from {$source}!");
+    }
+
+    private function parseAndroidCsv($file)
+    {
+        $contacts = [];
+        $handle = fopen($file->getRealPath(), 'r');
+        $headers = fgetcsv($handle); // Get the headers
+
+        while (($data = fgetcsv($handle)) !== false) {
+            $contact = [];
+            foreach ($headers as $index => $header) {
+                $contact[$this->sanitizeHeader($header)] = $data[$index] ?? null;
+            }
+
+            $contacts[] = [
+                'name' => trim($contact['first_name'] . ' ' . $contact['last_name']),
+                'email' => $contact['email_1_value'] ?? null,
+                'phone_number' => $contact['phone_1_-_value'] ?? null,
+                'birthdate' => $contact['birthday'] ? date('Y-m-d', strtotime($contact['birthday'])) : null,
+                'address' => $contact['address_1_formatted'] ?? null,
+                'photo' => null, // CSV doesn't typically include photo data
+            ];
+        }
+        fclose($handle);
+        return $contacts;
+    }
+
+    private function sanitizeHeader($header)
+    {
+        return strtolower(str_replace(' ', '_', $header));
     }
 
 }

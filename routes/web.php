@@ -198,6 +198,7 @@ Route::get('/events-by-category', [WishController::class, 'getEventsByCategory']
 
 // Contact import
 Route::post('/contacts/import/ios', [ContactController::class, 'importFromIos'])->name('contacts.import.ios');
+Route::post('/contacts/import/android', [ContactController::class, 'importFromAndroid'])->name('contacts.import.android');
 
 // Reviews
 Route::middleware(['auth'])->group(function () {
