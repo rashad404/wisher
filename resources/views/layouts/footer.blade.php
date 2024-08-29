@@ -15,7 +15,7 @@
               </li>
               <li>
                 <!--The products section may change in the future-->
-                <a href="{{ route('products.index') }}" class="text-sm leading-6 text-gray-300 hover:text-white">{{ __('messages.gifts') }}</a>
+                <a href="{{ route('gifts.index') }}" class="text-sm leading-6 text-gray-300 hover:text-white">{{ __('messages.gifts') }}</a>
               </li>
               <!--
               <li>
