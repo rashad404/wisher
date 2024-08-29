@@ -66,6 +66,7 @@ Route::get('/gifts/view/{id}', [GiftController::class, 'view'])->name('gifts.vie
 */
 
 // Products
+Route::get('/gifts', [ProductController::class, 'index'])->name('gifts.index');
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
 Route::post('/products/variant/quantity', [ProductController::class, 'getVariantQuantity']);
