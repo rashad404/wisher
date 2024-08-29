@@ -117,7 +117,24 @@
       </div>
     </div>
 
-
+    {{-- Gift --}}
+    <div class="bg-gray-50 py-16">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="max-w-2xl mx-auto text-center">
+          <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('messages.giftsTitle') }}</h2>
+          <p class="mt-2 text-lg leading-8 text-gray-600">{{ __('messages.giftsSubTitle') }}</p>
+        </div>
+        <div class="mt-10 grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 lg:gap-x-8">
+          
+          @foreach ($products as $product)
+            <x-product-card :product="$product" />
+          @endforeach
+        </div>
+        <div class="mt-10 text-center">
+          <a href="/products" class="text-indigo-600 font-semibold">{{ __('messages.viewAllGifts') }} &rarr;</a>
+        </div>
+      </div>
+    </div>
     
     {{-- Blog --}}
     <div class="bg-gray-50 py-16">
