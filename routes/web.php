@@ -195,6 +195,10 @@ Route::get('/wishes', [WishController::class, 'index'])->name('wishes.index');
 Route::get('/events-by-category', [WishController::class, 'getEventsByCategory'])->name('events.byCategory');
 
 
+
+// Contact import
+Route::post('/contacts/import/ios', [ContactController::class, 'importFromIos'])->name('contacts.import.ios');
+
 // Reviews
 Route::middleware(['auth'])->group(function () {
     Route::get('products/{product}/reviews', [ReviewController::class, 'index'])->name('reviews.index');
