@@ -186,4 +186,9 @@ return [
     'filter' => 'Filter',
     'event' => 'Event',
     'no_wishes_found' => 'No wishes found for the selected filters.',
+
+    // gifts
+    'giftsTitle' => 'Thoughtful Gifts for Every Occasion',
+    'giftsSubTitle' => 'Explore our curated selection of gifts perfect for your loved ones. From birthdays to anniversaries, find something special for everyone.',
+    'viewAllGifts' => 'View All Gifts',
 ];

@@ -1,2 +1,4 @@
 *
+!default_photos
+!default_photos/**
 !.gitignore

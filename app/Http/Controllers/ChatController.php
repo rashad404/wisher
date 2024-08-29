@@ -17,13 +17,13 @@ class ChatController extends Controller
                             $query->orderBy('created_at', 'desc')->limit(1);
                         }])
                         ->get();
-    
+
         // Get all users except the authenticated user
         $users = User::where('id', '!=', Auth::id())->get();
-    
+
         return view('chat.index', compact('conversations', 'users'));
     }
-    
+
 
     public function show(Conversation $conversation)
     {
@@ -85,10 +85,8 @@ class ChatController extends Controller
 
     public function chatWithUser($id)
     {
-        // Ensure the user exists
         $user = User::findOrFail($id);
 
-        // Find or create a conversation between the authenticated user and the specified user
         $conversation = Conversation::firstOrCreate(
             [
                 'user1_id' => Auth::id(),
@@ -100,7 +98,6 @@ class ChatController extends Controller
             ]
         );
 
-        // Redirect to the conversation
         return redirect()->route('chat.show', $conversation);
     }
 }
