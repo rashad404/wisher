@@ -89,7 +89,7 @@
           <div class="mt-8 lg:col-span-7 lg:col-start-1 lg:row-span-3 lg:row-start-1 lg:mt-0">
             <h2 class="sr-only">Images</h2>
             <div class="relative aspect-w-1 aspect-h-1 overflow-hidden">
-              <img id="product-image" src="{{ asset('storage/' . $product->main_image) }}" alt="{{ $product->name }}" class="object-cover w-full h-full">
+              <img id="product-image" src="{{ Storage::url($product->main_image) }}" alt="{{ $product->name }}" class="object-cover w-full h-full">
             </div>
           </div>
 
