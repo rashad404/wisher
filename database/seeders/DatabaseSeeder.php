@@ -39,6 +39,7 @@ class DatabaseSeeder extends Seeder
             MessageSeeder::class,
             ActivitySeeder::class,
             WishSeeder::class,
+            ReviewSeeder::class,
         ]);
     }
 }

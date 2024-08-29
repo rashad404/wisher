@@ -23,7 +23,7 @@ class Product extends Model
     public function variants() {
         return $this->hasMany(ProductVariant::class);
     }
-    
+
     public function category()
     {
         return $this->belongsTo(Category::class);
@@ -37,5 +37,15 @@ class Product extends Model
     public function productModel()
     {
         return $this->belongsTo(ProductModel::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    public function reviewCount()
+    {
+        return $this->reviews()->count();
     }
 }

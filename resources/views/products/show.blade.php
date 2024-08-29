@@ -34,27 +34,55 @@
               <h1 class="text-xl font-medium text-gray-900">{{ $product->name }}</h1>
               <p class="text-xl font-medium text-gray-900">${{ $product->price }}</p>
             </div>
+
             <!-- Reviews -->
             <div class="mt-4">
-              <h2 class="sr-only">Reviews</h2>
-              <div class="flex items-center">
-                <p class="text-sm text-gray-700">
-                  3.9
-                  <span class="sr-only"> out of 5 stars</span>
-                </p>
-                <div class="ml-1 flex items-center">
-                    <svg class="w-5 h-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27l5.18 3.43-1.39-6.06L22 9.24l-6.16-.53L12 2 8.16 8.71 2 9.24l4.21 4.4-1.39 6.06L12 17.27z"/></svg>
-                    <svg class="w-5 h-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27l5.18 3.43-1.39-6.06L22 9.24l-6.16-.53L12 2 8.16 8.71 2 9.24l4.21 4.4-1.39 6.06L12 17.27z"/></svg>
-                    <svg class="w-5 h-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27l5.18 3.43-1.39-6.06L22 9.24l-6.16-.53L12 2 8.16 8.71 2 9.24l4.21 4.4-1.39 6.06L12 17.27z"/></svg>
-                    <svg class="w-5 h-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27l5.18 3.43-1.39-6.06L22 9.24l-6.16-.53L12 2 8.16 8.71 2 9.24l4.21 4.4-1.39 6.06L12 17.27z"/></svg>
-                    <svg class="w-5 h-5 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M12 17.27l5.18 3.43-1.39-6.06L22 9.24l-6.16-.53L12 2 8.16 8.71 2 9.24l4.21 4.4-1.39 6.06L12 17.27z"/></svg>
-                </div>
-                <div aria-hidden="true" class="ml-4 text-sm text-gray-300">·</div>
-                <div class="ml-4 flex">
-                  <a href="#" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">See all 512 reviews</a>
+                <h2 class="sr-only">Reviews</h2>
+                <div class="flex items-center">
+                  <p class="text-sm text-gray-700">
+                    {{ number_format($product->reviews->avg('rating'), 1) }}
+                    <span class="sr-only"> out of 5 stars</span>
+                  </p>
+                  <div class="ml-1 flex items-center">
+                    @php
+                      $averageRating = $product->reviews->avg('rating');
+                      $fullStars = floor($averageRating);
+                      $halfStar = ($averageRating - $fullStars) >= 0.5 ? 1 : 0;
+                      $emptyStars = 5 - $fullStars - $halfStar;
+                    @endphp
+
+                    @for($i = 0; $i < $fullStars; $i++)
+                      <svg class="w-5 h-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 17.27l5.18 3.43-1.39-6.06L22 9.24l-6.16-.53L12 2 8.16 8.71 2 9.24l4.21 4.4-1.39 6.06L12 17.27z"/>
+                      </svg>
+                    @endfor
+
+                    @if($halfStar)
+                      <svg class="w-5 h-5 text-yellow-400" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <defs>
+                          <mask id="half-mask">
+                            <rect x="0" y="0" width="100%" height="100%" fill="white"/>
+                            <rect x="50%" y="0" width="50%" height="100%" fill="black"/>
+                          </mask>
+                        </defs>
+                        <path d="M12 17.27l5.18 3.43-1.39-6.06L22 9.24l-6.16-.53L12 2 8.16 8.71 2 9.24l4.21 4.4-1.39 6.06L12 17.27z" mask="url(#half-mask)" />
+                      </svg>
+                    @endif
+
+                    @for($i = 0; $i < $emptyStars; $i++)
+                      <svg class="w-5 h-5 text-gray-300" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M12 17.27l5.18 3.43-1.39-6.06L22 9.24l-6.16-.53L12 2 8.16 8.71 2 9.24l4.21 4.4-1.39 6.06L12 17.27z"/>
+                      </svg>
+                    @endfor
+                  </div>
+                  <div aria-hidden="true" class="ml-4 text-sm text-gray-300">·</div>
+                  <div class="ml-4 flex">
+                    <button type="button" id="seeAllReviewsBtn" class="text-sm font-medium text-indigo-600 hover:text-indigo-500">
+                      See all {{ $product->reviews->count() }} reviews
+                    </button>
+                  </div>
                 </div>
               </div>
-            </div>
           </div>
 
           <!-- Image gallery -->
@@ -117,7 +145,9 @@
         </div>
       </div>
     </div>
+@include('modals.reviews-modal')
 </div>
+
 
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 <script>
@@ -249,5 +279,30 @@
             `;
         });
     }
+</script>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    // Open the modal
+    $('#seeAllReviewsBtn').click(function() {
+      $('#reviewsModal').removeClass('hidden');
+      $('body').addClass('overflow-hidden'); // Disable scrolling on the body
+    });
+
+    // Close the modal
+    $('#closeModal, #closeModalFooter').click(function() {
+      $('#reviewsModal').addClass('hidden');
+      $('body').removeClass('overflow-hidden'); // Enable scrolling on the body
+    });
+
+    // Close the modal when clicking outside of it
+    $(window).click(function(event) {
+      if ($(event.target).is('#reviewsModal')) {
+        $('#reviewsModal').addClass('hidden');
+        $('body').removeClass('overflow-hidden'); // Enable scrolling on the body
+      }
+    });
+  });
 </script>
 @endsection
