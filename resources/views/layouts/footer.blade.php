@@ -14,11 +14,14 @@
                 <a href="{{ route('main.howItWorks') }}" class="text-sm leading-6 text-gray-300 hover:text-white">{{ __('messages.how_it_works') }}</a>
               </li>
               <li>
-                <a href="{{ route('gifts.index') }}" class="text-sm leading-6 text-gray-300 hover:text-white">{{ __('messages.gifts') }}</a>
+                <!--The products section may change in the future-->
+                <a href="{{ route('products.index') }}" class="text-sm leading-6 text-gray-300 hover:text-white">{{ __('messages.gifts') }}</a>
               </li>
+              <!--
               <li>
                 <a href="{{ route('products.index') }}" class="text-sm leading-6 text-gray-300 hover:text-white">{{ __('messages.products') }}</a>
               </li>
+               -->
               <li>
                 <a href="{{ route('testimonials.index') }}" class="text-sm leading-6 text-gray-300 hover:text-white">{{ __('messages.testimonials') }}</a>
               </li>
