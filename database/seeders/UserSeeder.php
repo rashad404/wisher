@@ -30,7 +30,7 @@ class UserSeeder extends Seeder
             'zip' => '12345',
             'country' => 'Admin Country',
             'phone_number' => '123-456-7890',
-            'profile_photo' => fake()->imageUrl(100, 100, 'people', true, 'Faker'), // Set a default or specific profile photo for admin
+            'profile_photo' => 'default_photos/profile.png',
         ]);
 
         // Create additional random users using the factory
@@ -50,7 +50,7 @@ class UserSeeder extends Seeder
                     'zip' => fake()->postcode(),
                     'country' => fake()->country(),
                     'phone_number' => fake()->phoneNumber(),
-                    'profile_photo' => fake()->imageUrl(100, 100, 'people', true, 'Faker'), // Generate a random profile photo
+                    'profile_photo' => 'default_photos/profile.png',
                 ]);
             });
     }

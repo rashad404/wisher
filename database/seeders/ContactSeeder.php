@@ -30,6 +30,7 @@ class ContactSeeder extends Seeder
                 'interests' => json_encode([$faker->word, $faker->word]), // Ensure it's a valid JSON format
                 'likes' => json_encode([$faker->word, $faker->word]),
                 'dislikes' => json_encode([$faker->word, $faker->word]),
+                'photo' => 'default_photos/profile.png',
             ]);
 
             $contact->groups()->attach($item['group']);

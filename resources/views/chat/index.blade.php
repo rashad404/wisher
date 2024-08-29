@@ -25,7 +25,7 @@
                 <a href="{{ route('chat.show', $conversation) }}" class="flex justify-between items-center">
                     <div class="flex items-center">
                         <!-- User's Profile Photo -->
-                        <img src="{{ asset($contact->profile->profile_photo ?? 'images/user.png') }}" class="w-10 h-10 rounded-full mr-3">
+                        <img src="{{ Storage::url($contact->profile->profile_photo) }}" class="w-10 h-10 rounded-full mr-3">
                         <div>
                             <p class="font-semibold">{{ $contact->name }}</p>
                             <p class="text-sm text-gray-600">{{ Str::limit($lastMessage->body, 30) }}</p>
