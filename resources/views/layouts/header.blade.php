@@ -232,11 +232,13 @@
         mobileMenu.classList.add('hidden');
     });
 
-    // Dropdown toggle for user menu
-    document.getElementById('userDropdownButton').addEventListener('click', function() {
-        var dropdown = document.getElementById('userDropdownMenu');
-        dropdown.classList.toggle('hidden');
-    });
+    @auth
+        // Dropdown toggle for user menu
+        document.getElementById('userDropdownButton').addEventListener('click', function() {
+            var dropdown = document.getElementById('userDropdownMenu');
+            dropdown.classList.toggle('hidden');
+        });
+    @endauth
 
     // Close dropdown when clicking outside
     document.addEventListener('click', function(event) {
