@@ -12,40 +12,40 @@ class MenuSeeder extends Seeder
         // Top-level menus with descriptions
         $menus = [
             [
-                'name' => json_encode(['en' => 'Home']),
-                'desc' => json_encode(['en' => 'Back to the homepage']),
+                'name' => json_encode(['en' => 'Home', 'az' => 'Əsas Səhifə']),
+                'desc' => json_encode(['en' => 'Back to the homepage', 'az' => 'Əsas səhifəyə qayıt']),
                 'url' => '/',
                 'status' => true,
                 'sort_order' => 1,
                 'parent_id' => null,
             ],
             [
-                'name' => json_encode(['en' => 'Our Services']),
-                'desc' => json_encode(['en' => 'Discover our range of services']),
+                'name' => json_encode(['en' => 'Our Services', 'az' => 'Xidmətlər']),
+                'desc' => json_encode(['en' => 'Discover our range of services', 'az' => 'Təklif etdiyimiz xidmətlərlə tanış olun']),
                 'url' => null,
                 'status' => true,
                 'sort_order' => 2,
                 'parent_id' => null,
             ],
             [
-                'name' => json_encode(['en' => 'Features']),
-                'desc' => json_encode(['en' => 'Learn about our features']),
+                'name' => json_encode(['en' => 'Features', 'az' => 'Üstünlüklər']),
+                'desc' => json_encode(['en' => 'Learn about our features', 'az' => 'Platformanın imkanları']),
                 'url' => '/features',
                 'status' => true,
                 'sort_order' => 3,
                 'parent_id' => null,
             ],
             [
-                'name' => json_encode(['en' => 'Pricing']),
-                'desc' => json_encode(['en' => 'View our pricing plans']),
+                'name' => json_encode(['en' => 'Pricing', 'az' => 'Tariflər']),
+                'desc' => json_encode(['en' => 'View our pricing plans', 'az' => 'Qiymət planlarımız']),
                 'url' => '/pricing',
                 'status' => true,
                 'sort_order' => 4,
                 'parent_id' => null,
             ],
             [
-                'name' => json_encode(['en' => 'About']),
-                'desc' => json_encode(['en' => 'Get to know more about us']),
+                'name' => json_encode(['en' => 'About', 'az' => 'Haqqımızda']),
+                'desc' => json_encode(['en' => 'Get to know more about us', 'az' => 'Bizi daha yaxından tanıyın']),
                 'url' => null,
                 'status' => true,
                 'sort_order' => 5,
@@ -63,45 +63,44 @@ class MenuSeeder extends Seeder
         // Submenus for "Our Services" with descriptions
         $ourServicesSubmenus = [
             [
-                'name' => json_encode(['en' => 'Wishes']),
-                'desc' => json_encode(['en' => 'Send personalized wishes']),
+                'name' => json_encode(['en' => 'Wishes', 'az' => 'Təbriklər']),
+                'desc' => json_encode(['en' => 'Send personalized wishes', 'az' => 'Şəxsi təbriklər göndərin']),
                 'url' => '/wishes',
                 'status' => true,
                 'sort_order' => 1,
                 'parent_id' => $ourServicesMenuId,
             ],
             [
-                'name' => json_encode(['en' => 'Gifts']),
-                'desc' => json_encode(['en' => 'Choose and send gifts']),
+                'name' => json_encode(['en' => 'Gifts', 'az' => 'Hədiyyələr']),
+                'desc' => json_encode(['en' => 'Choose and send gifts', 'az' => 'Hədiyyə seçin və göndərin']),
                 'url' => '/gifts',
                 'status' => true,
                 'sort_order' => 2,
                 'parent_id' => $ourServicesMenuId,
             ],
-            // Additional submenus for "Gifts" can be added here
         ];
 
         // Submenus for "About" with descriptions
         $aboutSubmenus = [
             [
-                'name' => json_encode(['en' => 'About Us']),
-                'desc' => json_encode(['en' => 'Learn more about Wisher']),
+                'name' => json_encode(['en' => 'About Us', 'az' => 'Biz Kimik']),
+                'desc' => json_encode(['en' => 'Learn more about Wisher', 'az' => 'Wisher haqqında ətraflı məlumat']),
                 'url' => '/about',
                 'status' => true,
                 'sort_order' => 1,
                 'parent_id' => $aboutMenuId,
             ],
             [
-                'name' => json_encode(['en' => 'Blog']),
-                'desc' => json_encode(['en' => 'Read our latest articles']),
+                'name' => json_encode(['en' => 'Blog', 'az' => 'Bloq']),
+                'desc' => json_encode(['en' => 'Read our latest articles', 'az' => 'Ən son məqalələrimiz']),
                 'url' => '/blog',
                 'status' => true,
                 'sort_order' => 2,
                 'parent_id' => $aboutMenuId,
             ],
             [
-                'name' => json_encode(['en' => 'Contact Us']),
-                'desc' => json_encode(['en' => 'Get in touch with us']),
+                'name' => json_encode(['en' => 'Contact Us', 'az' => 'Əlaqə']),
+                'desc' => json_encode(['en' => 'Get in touch with us', 'az' => 'Bizimlə əlaqə saxlayın']),
                 'url' => '/contact',
                 'status' => true,
                 'sort_order' => 3,
