@@ -21,11 +21,12 @@ class Menu extends Model
 
     protected $fillable = [
         'name',
+        'desc',
         'url',
         'parent_id',
         'status',
     ];
-    public $translatable = ['name']; // Specify the translatable attribute
+    public $translatable = ['name', 'desc']; // Specify the translatable attribute
 
     // Define relationship for parent menu
     public function parent()

@@ -34,6 +34,9 @@ class Menu extends Resource
                 Text::make('Name')
                     ->sortable()
                     ->rules('required', 'max:255'),
+                Text::make('Desc')
+                    ->sortable()
+                    ->rules('required', 'max:255'),
             ]),
 
             Text::make('URL')
