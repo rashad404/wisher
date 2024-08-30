@@ -11,7 +11,11 @@ class CreateCategoriesTable extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->json('name'); // Storing name in JSON format for multi-language support
+            $table->json('desc')->nullable(); // Optional description in JSON format
+            $table->boolean('status')->default(1); // Active status by default
+            $table->integer('sort_order')->default(0); // Default sort order
+            $table->foreignId('parent_id')->nullable()->constrained('categories')->onDelete('cascade'); // Parent ID for subcategories
             $table->timestamps();
         });
     }
