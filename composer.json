@@ -14,6 +14,7 @@
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.5",
         "mostafaznv/nova-ckeditor": "^7.3",
+        "outl1ne/nova-sortable": "^3.4",
         "spatie/laravel-translatable": "^6.8",
         "twilio/sdk": "^8.2"
     },

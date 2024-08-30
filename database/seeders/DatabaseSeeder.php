@@ -40,6 +40,7 @@ class DatabaseSeeder extends Seeder
             ActivitySeeder::class,
             WishSeeder::class,
             ReviewSeeder::class,
+            MenuSeeder::class,
         ]);
     }
 }

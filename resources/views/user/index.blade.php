@@ -1,9 +1,6 @@
 @extends('layouts.user.app')
 
 @section('content')
-@extends('layouts.user.app')
-
-@section('content')
 <div class="py-6">
     <h2 class="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
         Welcome, {{ $firstName }} {{ $lastName }}
