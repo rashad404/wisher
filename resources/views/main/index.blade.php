@@ -71,9 +71,9 @@
           <div class="mt-10 grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8">
               @foreach($features as $feature)
               <div class="text-center">
-                  <img class="mx-auto h-12 w-12" src="{{ $feature->icon }}" alt="{{ $feature->getTranslation('title', app()->getLocale()) }} Icon">
-                  <h3 class="mt-6 text-lg font-semibold text-gray-900">{{ $feature->getTranslation('title', app()->getLocale()) }}</h3>
-                  <p class="mt-4 text-sm text-gray-600">{{ $feature->getTranslation('text', app()->getLocale()) }}</p>
+                  <img class="mx-auto h-12 w-12" src="{{ Storage::url($feature->image) }}" alt="{{ $feature->trans('title')}} Icon">
+                  <h3 class="mt-6 text-lg font-semibold text-gray-900">{{ $feature->trans('title')}}</h3>
+                  <p class="mt-4 text-sm text-gray-600">{{ $feature->trans('text')}}</p>
               </div>
               @endforeach
           </div>
@@ -94,22 +94,22 @@
           </div>
           <div class="mt-10 grid grid-cols-1 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-x-8">
               <div class="text-center">
-                  <img class="mx-auto h-12 w-12" src="/images/icons/signup.svg" alt="{{ __('messages.how_it_works_step1_title') }} Icon">
+                  <img class="mx-auto h-12 w-12" src="{{Storage::url("default_images/how.jpg")}}" alt="{{ __('messages.how_it_works_step1_title') }} Icon">
                   <h3 class="mt-6 text-lg font-semibold text-gray-900">{{ __('messages.how_it_works_step1_title') }}</h3>
                   <p class="mt-4 text-sm text-gray-600">{{ __('messages.how_it_works_step1_description') }}</p>
               </div>
               <div class="text-center">
-                  <img class="mx-auto h-12 w-12" src="/images/icons/organize.svg" alt="{{ __('messages.how_it_works_step2_title') }} Icon">
+                  <img class="mx-auto h-12 w-12" src="{{Storage::url("default_images/how.jpg")}}" alt="{{ __('messages.how_it_works_step2_title') }} Icon">
                   <h3 class="mt-6 text-lg font-semibold text-gray-900">{{ __('messages.how_it_works_step2_title') }}</h3>
                   <p class="mt-4 text-sm text-gray-600">{{ __('messages.how_it_works_step2_description') }}</p>
               </div>
               <div class="text-center">
-                  <img class="mx-auto h-12 w-12" src="/images/icons/gift.svg" alt="{{ __('messages.how_it_works_step3_title') }} Icon">
+                  <img class="mx-auto h-12 w-12" src="{{Storage::url("default_images/how.jpg")}}" alt="{{ __('messages.how_it_works_step3_title') }} Icon">
                   <h3 class="mt-6 text-lg font-semibold text-gray-900">{{ __('messages.how_it_works_step3_title') }}</h3>
                   <p class="mt-4 text-sm text-gray-600">{{ __('messages.how_it_works_step3_description') }}</p>
               </div>
               <div class="text-center">
-                  <img class="mx-auto h-12 w-12" src="/images/icons/track.svg" alt="{{ __('messages.how_it_works_step4_title') }} Icon">
+                  <img class="mx-auto h-12 w-12" src="{{Storage::url("default_images/how.jpg")}}" alt="{{ __('messages.how_it_works_step4_title') }} Icon">
                   <h3 class="mt-6 text-lg font-semibold text-gray-900">{{ __('messages.how_it_works_step4_title') }}</h3>
                   <p class="mt-4 text-sm text-gray-600">{{ __('messages.how_it_works_step4_description') }}</p>
               </div>
@@ -148,7 +148,7 @@
           @foreach($blogs as $blog)
             <article>
               <div class="aspect-w-4 aspect-h-3">
-                <img class="object-cover shadow-lg rounded-lg" src="{{ $blog->image }}" alt="{{ $blog->title }}">
+                <img class="object-cover shadow-lg rounded-lg" src="{{ Storage::url($blog->image ?? "default_images/blog.jpg") }}" alt="{{ $blog->title }}">
               </div>
               <div class="mt-4">
                 <h3 class="text-lg font-semibold text-gray-900">
@@ -178,7 +178,7 @@
               @foreach($testimonials as $testimonial)
                   <blockquote class="rounded-lg bg-gray-100 p-8">
                       <div class="flex items-center gap-x-4">
-                          <img class="h-12 w-12 rounded-full" src="{{ $testimonial->image ? asset('storage/' . $testimonial->image) : '/images/default-user.jpg' }}" alt="{{ $testimonial->name }}">
+                          <img class="h-12 w-12 rounded-full" src="{{Storage::url($testimonial->image)}}" alt="{{ $testimonial->name }}">
                           <div>
                               <p class="text-lg font-semibold text-gray-900">{{ $testimonial->name }}</p>
                               <p class="text-sm text-gray-500">{{ $testimonial->role ?? __('User') }}</p>

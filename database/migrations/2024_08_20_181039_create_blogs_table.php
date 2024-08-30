@@ -11,7 +11,7 @@ class CreateBlogsTable extends Migration
             $table->id();
             $table->json('title');  // Multilingual title
             $table->json('content');  // Multilingual content
-            $table->string('image')->nullable();
+            $table->string('image')->nullable()->default('default_images/blog.jpg');
             $table->string('author')->nullable();
             $table->date('published_at')->nullable();
             $table->timestamps();

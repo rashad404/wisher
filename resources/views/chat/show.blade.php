@@ -10,7 +10,7 @@
 <div class="container mx-auto pt-6">
     <div class="flex justify-between items-center mb-4">
         <div class="flex items-center">
-            <img src="{{ $conversation->user1->id === auth()->id() ? Storage::url($conversation->user2->profile->profile_photo ?? 'default_photos/profile.png') : Storage::url($conversation->user1->profile->profile_photo ?? 'default_photos/profile.png') }}" class="w-10 h-10 rounded-full mr-3">
+            <img src="{{ $conversation->user1->id === auth()->id() ? Storage::url($conversation->user2->profile->profile_photo ?? 'default_images/profile.png') : Storage::url($conversation->user1->profile->profile_photo ?? 'default_images/profile.png') }}" class="w-10 h-10 rounded-full mr-3">
             <h2 class="text-xl font-bold">{{ $conversation->user1->id === auth()->id() ? $conversation->user2->name : $conversation->user1->name }}</h2>
         </div>
         <div>

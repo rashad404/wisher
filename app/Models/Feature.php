@@ -11,7 +11,7 @@ class Feature extends Model
 {
     use HasFactory, HasTranslations, HasTranslatable;
 
-    protected $fillable = ['title', 'text'];
+    protected $fillable = ['title', 'text', 'image'];
 
     public $translatable = ['title', 'text'];
 }
