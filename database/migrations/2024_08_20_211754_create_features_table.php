@@ -12,6 +12,7 @@ class CreateFeaturesTable extends Migration
             $table->id();
             $table->json('title'); // For storing the multi-language titles
             $table->json('text');  // For storing the multi-language text
+            $table->string('image')->nullable()->default('default_images/automation.jpg');
             $table->timestamps();
         });
     }

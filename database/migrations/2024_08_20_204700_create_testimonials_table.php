@@ -13,7 +13,7 @@ class CreateTestimonialsTable extends Migration
             $table->string('name');
             $table->string('role')->nullable();
             $table->json('message');  // Change 'text' to 'json' for translations
-            $table->string('image')->nullable();
+            $table->string('image')->nullable()->default("default_images/user.jpg");
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });

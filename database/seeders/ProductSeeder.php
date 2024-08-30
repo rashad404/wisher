@@ -9,7 +9,7 @@ class ProductSeeder extends Seeder
 {
     public function run()
     {
-        $defaultMainImage = 'default_photos/laptop.jpg';
+        $defaultMainImage = 'default_images/laptop.jpg';
         $defaultExtraImages = json_encode(['default1.jpg', 'default2.jpg']);
 
         $products = [
