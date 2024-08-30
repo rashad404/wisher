@@ -11,6 +11,7 @@ class CreateMenusTable extends Migration
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
             $table->json('name');
+            $table->json('desc');
             $table->string('url')->nullable(); // URL can be local or external
             $table->boolean('status')->default(1); // Active by default
             $table->integer('sort_order')->default(0); // For sorting

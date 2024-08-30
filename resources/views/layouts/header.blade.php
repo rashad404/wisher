@@ -44,7 +44,7 @@
                                       {{ $submenu->trans("name") }}
                                       <span class="absolute inset-0"></span>
                                     </a>
-                                    <p class="mt-1 text-gray-600">{{ __('Some description here') }}</p> <!-- Adjust or remove as needed -->
+                                    <p class="mt-1 text-gray-600">{{ $submenu->trans("desc") }}</p>
                                   </div>
                                 </div>
                                 @endforeach
