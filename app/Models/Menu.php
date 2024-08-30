@@ -40,8 +40,4 @@ class Menu extends Model
         return $this->hasMany(Menu::class, 'parent_id');
     }
 
-    public function trans($attribute)
-    {
-        return $this->getTranslation($attribute, app()->getLocale());
-    }
 }
