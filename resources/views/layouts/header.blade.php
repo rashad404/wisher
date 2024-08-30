@@ -7,16 +7,69 @@
             </a>
         </div>
         <div class="hidden lg:flex lg:gap-x-12">
-            <a href="/" class="text-sm font-semibold leading-6 text-white">{{ __('messages.home') }}</a>
-            <a href="/wishes" class="text-sm font-semibold leading-6 text-white">{{ __('messages.wishes') }}</a>
-            <!--The /products section may change in the future-->
-            <a href="/gifts" class="text-sm font-semibold leading-6 text-white">{{ __('messages.gifts') }}</a>
-            <a href="/features" class="text-sm font-semibold leading-6 text-white">{{ __('messages.features') }}</a>
-            <a href="/how-it-works" class="text-sm font-semibold leading-6 text-white">{{ __('messages.how_it_works') }}</a>
-            <a href="/pricing" class="text-sm font-semibold leading-6 text-white">{{ __('messages.pricing') }}</a>
-            <a href="/about" class="text-sm font-semibold leading-6 text-white">{{ __('messages.about_us') }}</a>
-            <a href="/contact" class="text-sm font-semibold leading-6 text-white">{{ __('messages.contact_us') }}</a>
-            <a href="/blog" class="text-sm font-semibold leading-6 text-white">{{ __('messages.blog') }}</a>
+            @php
+                
+
+            @endphp
+            @foreach ($menus as $menu)
+                @if ($menu->children->isEmpty())
+                    <!-- Render top-level menu item if no children -->
+                    <a href="{{ $menu->url }}" class="text-sm font-semibold leading-6 text-white">{{ $menu->trans("name") }}</a>
+                @else
+                    <!-- Render menu with submenu -->
+                    <div class="relative">
+                        <button type="button" class="inline-flex items-center gap-x-1 text-sm font-semibold leading-6 text-white flyout-toggle" aria-expanded="false">
+
+                            <span>{{ $menu->trans("name") }}</span>
+                            <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+
+                        <!-- Submenu -->
+                        <div class="absolute left-1/2 z-10 mt-5 flex w-screen max-w-max -translate-x-1/2 px-4 flyout-menu hidden">
+                            <div class="w-screen max-w-md flex-auto overflow-hidden rounded-3xl bg-white text-sm leading-6 shadow-lg ring-1 ring-gray-900/5">
+                              <div class="p-4">
+                                @foreach ($menu->children as $submenu)
+                                <div class="group relative flex gap-x-6 rounded-lg p-4 hover:bg-gray-50">
+                                  <div class="mt-1 flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                                    <svg class="h-6 w-6 text-gray-600 group-hover:text-indigo-600" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                      <!-- Example SVG, replace as needed -->
+                                      <path stroke-linecap="round" stroke-linejoin="round" d="M10.5 6a7.5 7.5 0 107.5 7.5h-7.5V6z" />
+                                      <path stroke-linecap="round" stroke-linejoin="round" d="M13.5 10.5H21A7.5 7.5 0 0013.5 3v7.5z" />
+                                    </svg>
+                                  </div>
+                                  <div>
+                                    <a href="{{ $submenu->url }}" class="font-semibold text-gray-900">
+                                      {{ $submenu->trans("name") }}
+                                      <span class="absolute inset-0"></span>
+                                    </a>
+                                    <p class="mt-1 text-gray-600">{{ __('Some description here') }}</p> <!-- Adjust or remove as needed -->
+                                  </div>
+                                </div>
+                                @endforeach
+                              </div>
+                              <div class="grid grid-cols-2 divide-x divide-gray-900/5 bg-gray-50">
+                                <a href="#" class="flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-gray-100">
+                                  <!-- Additional flyout footer links or actions -->
+                                  <svg class="h-5 w-5 flex-none text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M2 10a8 8 0 1116 0 8 8 0 01-16 0zm6.39-2.908a.75.75 0 01.766.027l3.5 2.25a.75.75 0 010 1.262l-3.5 2.25A.75.75 0 018 12.25v-4.5a.75.75 0 01.39-.658z" clip-rule="evenodd" />
+                                  </svg>
+                                  Watch demo
+                                </a>
+                                <a href="/contact" class="flex items-center justify-center gap-x-2.5 p-3 font-semibold text-gray-900 hover:bg-gray-100">
+                                  <svg class="h-5 w-5 flex-none text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                    <path fill-rule="evenodd" d="M2 3.5A1.5 1.5 0 013.5 2h1.148a1.5 1.5 0 011.465 1.175l.716 3.223a1.5 1.5 0 01-1.052 1.767l-.933.267c-.41.117-.643.555-.48.95a11.542 11.542 0 006.254 6.254c.395.163.833-.07.95-.48l.267-.933a1.5 1.5 0 011.767-1.052l3.223.716A1.5 1.5 0 0118 15.352V16.5a1.5 1.5 0 01-1.5 1.5H15c-1.149 0-2.263-.15-3.326-.43A13.022 13.022 0 012.43 8.326 13.019 13.019 0 012 5V3.5z" clip-rule="evenodd" />
+                                  </svg>
+                                  Contact sales
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                          
+                    </div>
+                @endif
+            @endforeach
         </div>
         <div class="flex flex-1 items-center justify-end gap-x-6">
             <!-- Language Dropdown -->
@@ -26,45 +79,14 @@
                 </button>
                 <div class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden" id="languageDropdown">
                     <div class="py-1">
-                        <a href="{{ route('switchLang', 'en') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                            {{ __('messages.english') }}
-                        </a>
-                        <a href="{{ route('switchLang', 'az') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                            {{ __('messages.azerbaijani') }}
-                        </a>
-                        <a href="{{ route('switchLang', 'es') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                            {{ __('messages.spanish') }}
-                        </a>
-                        <a href="{{ route('switchLang', 'fr') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                            {{ __('messages.french') }}
-                        </a>
-                        <a href="{{ route('switchLang', 'de') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                            {{ __('messages.german') }}
-                        </a>
-                        <a href="{{ route('switchLang', 'pt') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                            {{ __('messages.portuguese') }}
-                        </a>
-                        <a href="{{ route('switchLang', 'ru') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                            {{ __('messages.russian') }}
-                        </a>
-                        <a href="{{ route('switchLang', 'zh-CN') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                            {{ __('messages.chinese') }}
-                        </a>
-                        <a href="{{ route('switchLang', 'ar') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                            {{ __('messages.arabic') }}
-                        </a>
-                        <a href="{{ route('switchLang', 'hi') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                            {{ __('messages.hindi') }}
-                        </a>
-                        <a href="{{ route('switchLang', 'ja') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                            {{ __('messages.japanese') }}
-                        </a>
-                        <a href="{{ route('switchLang', 'it') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                            {{ __('messages.italian') }}
-                        </a>
+                        <!-- Language options -->
+                        @foreach (['en', 'az', 'es', 'fr', 'de', 'pt', 'ru', 'zh-CN', 'ar', 'hi', 'ja', 'it'] as $lang)
+                            <a href="{{ route('switchLang', $lang) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                {{ __('messages.' . $lang) }}
+                            </a>
+                        @endforeach
                     </div>
                 </div>
-
             </div>
 
             @auth
@@ -111,6 +133,7 @@
             </button>
         </div>
     </nav>
+
     <!-- Mobile menu -->
     <div class="hidden lg:hidden z-50" role="dialog" aria-modal="true" id="mobileMenu">
         <div class="absolute inset-0 bg-black opacity-50 z-10" id="menuOverlay"></div>
@@ -127,18 +150,11 @@
                     </svg>
                 </button>
             </div>
-            <div class="mt-6 flow-root  px-6 py-6">
+            
+            <div class="mt-6 flow-root px-6 py-6">
                 <div class="-my-6 divide-y divide-gray-500/10">
-                    <div class="space-y-2 py-6">
-                        <a href="/" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('messages.home') }}</a>
-                        <a href="/features" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('messages.features') }}</a>
-                        <a href="/how-it-works" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('messages.how_it_works') }}</a>
-                        <a href="/pricing" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('messages.pricing') }}</a>
-                        <a href="/about" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('messages.about_us') }}</a>
-                        <a href="/contact" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('messages.contact_us') }}</a>
-                        <a href="/blog" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('messages.blog') }}</a>
-                    </div>
-                    <div class="py-6">
+
+                    <div class="pb-6">
                         @auth
                             <div class="flex items-center space-x-4">
                                 <!-- Profile Photo -->
@@ -159,36 +175,40 @@
                             <a href="/login" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">{{ __('messages.log_in') }}</a>
                         @endauth
                     </div>
+                    <div class="space-y-2 py-6">
+                        @foreach ($menus as $menu)
+                            <!-- Main Menu Item -->
+                            <div class="relative">
+                                <button type="button" class="-mx-3 flex w-full items-center justify-between rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50 menu-toggle">
+                                    {{ $menu->trans('name') }}
+                                    @if ($menu->children->isNotEmpty())
+                                        <svg class="h-5 w-5 transition-transform transform menu-arrow" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                                            <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />
+                                        </svg>
+                                    @endif
+                                </button>
+                                <!-- Submenus -->
+                                @if ($menu->children->isNotEmpty())
+                                    <div class="hidden submenu space-y-2 pl-6">
+                                        @foreach ($menu->children as $submenu)
+                                            <a href="{{ $submenu->url }}" class="block rounded-lg px-3 py-2 text-sm font-medium leading-7 text-gray-700 hover:bg-gray-50">
+                                                {{ $submenu->trans('name') }}
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                @endif
+                            </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+
 </header>
 
-{{-- Notification Messages --}}
-@if(session('success') || session('error'))
-    <div class="rounded-md p-4 {{ session('success') ? 'bg-green-50' : 'bg-red-50' }}">
-        <div class="flex">
-            <div class="flex-shrink-0">
-                <svg class="h-5 w-5 {{ session('success') ? 'text-green-400' : 'text-red-400' }}" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z" clip-rule="evenodd" />
-                </svg>
-            </div>
-            <div class="ml-3">
-                <p class="text-sm font-medium {{ session('success') ? 'text-green-800' : 'text-red-800' }}">{{ session('success') ?? session('error') }}</p>
-            </div>
-            <div class="ml-auto pl-3">
-                <button type="button" class="inline-flex rounded-md p-1.5 {{ session('success') ? 'bg-green-50 text-green-500 hover:bg-green-100 focus:ring-green-600' : 'bg-red-50 text-red-500 hover:bg-red-100 focus:ring-red-600' }} focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-{{ session('success') ? 'green-50' : 'red-50' }}">
-                    <span class="sr-only">Dismiss</span>
-                    <svg class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                        <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z" />
-                    </svg>
-                </button>
-            </div>
-        </div>
-    </div>
-@endif
-
+<!-- JavaScript for toggling menus -->
 <script>
     document.getElementById('languageButton').addEventListener('click', function() {
         var dropdown = document.getElementById('languageDropdown');
@@ -226,4 +246,35 @@
             dropdown.classList.add('hidden');
         }
     });
+
+    // Flyout menu
+    document.querySelectorAll('.flyout-toggle').forEach(button => {
+        button.addEventListener('click', function() {
+            const menu = this.nextElementSibling;
+            menu.classList.toggle('hidden'); // Show/Hide the menu
+        });
+    });
+
+    // Optional: Close the flyout when clicking outside
+    document.addEventListener('click', function(event) {
+        document.querySelectorAll('.flyout-menu').forEach(menu => {
+            if (!menu.contains(event.target) && !menu.previousElementSibling.contains(event.target)) {
+                menu.classList.add('hidden');
+            }
+        });
+    });
+
+    // Toggle submenu visibility and rotate arrow
+    document.querySelectorAll('.menu-toggle').forEach(button => {
+        button.addEventListener('click', function() {
+            const submenu = this.nextElementSibling;
+            const arrow = this.querySelector('.menu-arrow');
+
+            if (submenu) {
+                submenu.classList.toggle('hidden');
+                arrow.classList.toggle('rotate-180'); // Rotate arrow when submenu is opened/closed
+            }
+        });
+    });
+
 </script>

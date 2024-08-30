@@ -5,12 +5,12 @@ import dayGridPlugin from '@fullcalendar/daygrid'; // Import the day grid view p
 import interactionPlugin from '@fullcalendar/interaction'; // Import interaction plugin (for drag-and-drop, etc.)
 
 // Ensure that the DOM is fully loaded before running the script
-document.addEventListener('DOMContentLoaded', function() {
-    var calendarEl = document.getElementById('calendar');
-    var calendar = new Calendar(calendarEl, {
-        plugins: [dayGridPlugin, interactionPlugin], // Attach plugins to FullCalendar
-        initialView: 'dayGridMonth', // Set the initial view to the monthly grid
-        events: calendarEvents, // Use the events array defined in your Blade template
-    });
-    calendar.render(); // Render the calendar on the page
-});
+// document.addEventListener('DOMContentLoaded', function() {
+//     var calendarEl = document.getElementById('calendar');
+//     var calendar = new Calendar(calendarEl, {
+//         plugins: [dayGridPlugin, interactionPlugin], // Attach plugins to FullCalendar
+//         initialView: 'dayGridMonth', // Set the initial view to the monthly grid
+//         events: calendarEvents, // Use the events array defined in your Blade template
+//     });
+//     calendar.render(); // Render the calendar on the page
+// });
