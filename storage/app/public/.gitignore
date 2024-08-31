@@ -1,4 +1,6 @@
 *
 !default_images
 !default_images/**
+!wish_photo_templates
+!wish_photo_templates/**
 !.gitignore
