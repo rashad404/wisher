@@ -25,6 +25,11 @@ return [
     'ja' => '日本語',
     'it' => 'Italiano',
 
+    // Wish photos
+    'create_wish_photo_title' => 'Create Your Custom Wish Photo',
+    'create_wish_photo_description' => 'Make your wishes extra special with personalized wish photos. Start designing now!',
+    'create_your_wish_photo' => 'Create Your Wish Photo',
+    
     // Blog related
     'from_the_blog' => 'Latest Stories from Wisher.az',
     'blog_subtitle' => 'Discover tips, ideas, and inspiration for your celebrations.',

@@ -23,7 +23,8 @@ use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ContactInterestController;
 use App\Http\Controllers\ReviewController;
-
+use App\Http\Controllers\UserWishPhotoController;
+use App\Http\Controllers\WishPhotoTemplateController;
 
 //use App\Http\Controllers\ActivityController;
 //use App\Http\Controllers\WishController;
@@ -209,3 +210,14 @@ Route::middleware(['auth'])->group(function () {
     Route::put('reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
     Route::delete('reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 });
+
+// Wish photo editor
+Route::get('wish-photos', [WishPhotoTemplateController::class, 'index'])->name('wish-photos');
+Route::resource('user-wish-photos', UserWishPhotoController::class);
+Route::get('user-wish-photos/create/{templateId?}', [UserWishPhotoController::class, 'create'])->name('user-wish-photos.create');
+Route::get('user-wish-photos/{id}', [UserWishPhotoController::class, 'show'])->name('user-wish-photos.show');
+Route::get('user-wish-photos/{id}/download', [UserWishPhotoController::class, 'download'])->name('user-wish-photos.download');
+
+
+Route::get('api/wish-photo-templates', [WishPhotoTemplateController::class, 'apiIndex']);
+Route::post('/user-wish-photos', [UserWishPhotoController::class, 'store'])->name('user-wish-photos.store');
