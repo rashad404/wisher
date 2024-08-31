@@ -61,6 +61,34 @@
     </div>
 
 
+    {{-- New Section for Create Wish Photo --}}
+    <div class="bg-white py-16">
+      <div class="mx-auto max-w-7xl px-6 lg:px-8">
+        <div class="max-w-2xl mx-auto text-center">
+          <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('messages.create_wish_photo_title') }}</h2>
+          <p class="mt-4 text-lg text-gray-600">{{ __('messages.create_wish_photo_description') }}</p>
+        </div>
+        <div class="mt-10 flex items-center justify-center">
+          <a href="{{ route('wish-photos') }}" class="rounded-md bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+            {{ __('messages.create_your_wish_photo') }}
+          </a>
+        </div>
+        <div class="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <!-- Example images or thumbnails showing what can be created -->
+          <div class="rounded-lg shadow-lg overflow-hidden">
+            <img class="w-full h-56 object-cover" src="{{ asset('images/birthday.jpg') }}" alt="Birthday Wish Photo">
+          </div>
+          <div class="rounded-lg shadow-lg overflow-hidden">
+            <img class="w-full h-56 object-cover" src="{{ asset('images/christmas.jpg') }}" alt="Christmas Wish Photo">
+          </div>
+          <div class="rounded-lg shadow-lg overflow-hidden">
+            <img class="w-full h-56 object-cover" src="{{ asset('images/halloween.jpg') }}" alt="Halloween Wish Photo">
+          </div>
+        </div>
+        
+      </div>
+    </div>
+
     {{-- Key Features --}}
     <div class="bg-gray-50 py-16">
       <div class="mx-auto max-w-7xl px-6 lg:px-8">

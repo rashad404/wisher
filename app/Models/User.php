@@ -57,4 +57,9 @@ class User extends Authenticatable
 
         return '';
     }
+
+    public function userWishPhotos()
+    {
+        return $this->hasMany(UserWishPhoto::class);
+    }
 }

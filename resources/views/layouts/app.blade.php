@@ -24,5 +24,8 @@
     <footer>
         @include('/layouts/footer')
     </footer>
+
+    <!-- Scripts -->
+    @stack('scripts')
 </body>
 </html>

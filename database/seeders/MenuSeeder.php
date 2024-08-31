@@ -71,6 +71,14 @@ class MenuSeeder extends Seeder
                 'parent_id' => $ourServicesMenuId,
             ],
             [
+                'name' => json_encode(['en' => 'Wish Photos', 'az' => 'Hədiyyə Şəkilləri']),
+                'desc' => json_encode(['en' => 'Create and Send Wish Photos', 'az' => 'Hədiyyə Şəkilləri yaradın və göndərin']),
+                'url' => '/wish-photos',
+                'status' => true,
+                'sort_order' => 2,
+                'parent_id' => $ourServicesMenuId,
+            ],
+            [
                 'name' => json_encode(['en' => 'Gifts', 'az' => 'Hədiyyələr']),
                 'desc' => json_encode(['en' => 'Choose and send gifts', 'az' => 'Hədiyyə seçin və göndərin']),
                 'url' => '/gifts',
