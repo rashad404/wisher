@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\Size;
 use App\Models\Product;
+use App\Models\Category;
 use Illuminate\Http\Request;
 use App\Models\ProductVariant;
 use Illuminate\Support\Facades\DB;
@@ -11,7 +12,8 @@ class ProductController extends Controller
 {
     public function index() {
         $products = Product::with('variants')->get();
-        return view('products.index', compact('products'));
+        $categories = Category::all(); // Fetch all categories
+        return view('products.index', compact('products', 'categories'));
     }
 
     public function show($id) {
@@ -69,6 +71,18 @@ class ProductController extends Controller
         return response()->json([
             'sizes' => $availableSizes
         ]);
+    }
+
+    public function filterByCategory(Request $request)
+    {
+        $categoryId = $request->input('category_id');
+        $products = Product::with('variants')
+            ->when($categoryId, function ($query) use ($categoryId) {
+                return $query->where('category_id', $categoryId);
+            })
+            ->get();
+
+        return response()->json($products);
     }
 
 }

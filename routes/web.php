@@ -73,6 +73,7 @@ Route::get('/products/{id}', [ProductController::class, 'show'])->name('products
 Route::post('/products/variant/quantity', [ProductController::class, 'getVariantQuantity']);
 Route::post('/products/variant/sizes', [ProductController::class, 'getAvailableSizes']);
 Route::post('/products/variant/sizes', [ProductController::class, 'getSizes'])->name('product.getSizes');
+Route::get('/products/filter', [ProductController::class, 'filterByCategory']);
 
 
 // User Panel
