@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Size;
 use App\Models\Product;
 use App\Models\Category;
@@ -12,7 +13,8 @@ class ProductController extends Controller
 {
     public function index() {
         $products = Product::with('variants')->get();
-        $categories = Category::all(); // Fetch all categories
+        // Group categories by parent_id
+        $categories = Category::all()->groupBy('parent_id');
         return view('products.index', compact('products', 'categories'));
     }
 
@@ -53,8 +55,7 @@ class ProductController extends Controller
         ]);
     }
 
-    public function getSizes(Request $request)
-    {
+    public function getSizes(Request $request) {
         $productId = $request->input('productId');
         $colorId = $request->input('colorId');
 
@@ -73,16 +74,20 @@ class ProductController extends Controller
         ]);
     }
 
-    public function filterByCategory(Request $request)
-    {
+    public function filterByCategory(Request $request) {
         $categoryId = $request->input('category_id');
+
+        // Fetch products based on the category, including subcategories
         $products = Product::with('variants')
             ->when($categoryId, function ($query) use ($categoryId) {
-                return $query->where('category_id', $categoryId);
+                // Fetch products that belong to the selected category or its subcategories
+                return $query->where(function ($subQuery) use ($categoryId) {
+                    $subQuery->where('category_id', $categoryId)
+                             ->orWhereIn('category_id', Category::where('parent_id', $categoryId)->pluck('id'));
+                });
             })
             ->get();
 
         return response()->json($products);
     }
-
 }
