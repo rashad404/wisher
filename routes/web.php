@@ -130,6 +130,8 @@ Route::middleware('auth')->prefix('user')->group(function () {
     Route::put('groups/{group}', [GroupController::class, 'update'])->name('user.groups.update');
     Route::delete('groups/{group}', [GroupController::class, 'destroy'])->name('user.groups.destroy');
 
+    Route::post('/groups/bulk-delete', [GroupController::class, 'bulkDelete'])->name('user.groups.bulk-delete');
+    Route::post('/groups/bulk-status-update', [GroupController::class, 'bulkStatusUpdate'])->name('user.groups.bulk-status-update');
 
 
     // Chat
@@ -155,7 +157,10 @@ Route::middleware('auth')->prefix('user')->group(function () {
         Route::post('sms', [ContactController::class, 'sendSms'])->name('contacts.sendSms');
         Route::post('email', [ContactController::class, 'sendEmail'])->name('contacts.sendEmail');
 
+
     });
+    Route::post('contacts/bulk-delete', [ContactController::class, 'bulkDelete'])->name('user.contacts.bulk-delete');
+    Route::post('contacts/bulk-status-update', [ContactController::class, 'bulkStatusUpdate'])->name('user.contacts.bulk-status-update');
 
     //User Events part
     Route::get('events', [UserEventController::class, 'index'])->name('user.events.index');
