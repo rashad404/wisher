@@ -133,7 +133,7 @@ document.addEventListener('DOMContentLoaded', function() {
         var backgroundWidth = backgroundImage ? backgroundImage.width : canvasWidth;
         var backgroundHeight = backgroundImage ? backgroundImage.height : canvasHeight;
 
-        fetch('{{ route("user-wish-photos.store") }}', {
+        fetch('{{ route("user.wish-photos.store") }}', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -162,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(data => {
             if (data.success) {
-                window.location.href = '{{ route("user-wish-photos.index") }}';
+                window.location.href = '{{ route("user.wish-photos.index") }}';
             } else {
                 console.error('Server response:', data);
                 alert('Error saving wish photo: ' + (data.message || 'Unknown error'));

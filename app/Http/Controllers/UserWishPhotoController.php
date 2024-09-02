@@ -15,7 +15,7 @@ class UserWishPhotoController extends Controller
     public function index()
     {
         $userWishPhotos = auth()->user()->userWishPhotos()->latest()->get();
-        return view('user_wish_photos.index', compact('userWishPhotos'));
+        return view('user.wish_photos.index', compact('userWishPhotos'));
     }
 
     public function show($id)
@@ -24,7 +24,7 @@ class UserWishPhotoController extends Controller
         $userWishPhoto = UserWishPhoto::findOrFail($id);
 
         // Return the view and pass the UserWishPhoto object
-        return view('user_wish_photos.show', compact('userWishPhoto'));
+        return view('user.wish_photos.show', compact('userWishPhoto'));
     }
 
     public function download($id)
@@ -37,7 +37,7 @@ class UserWishPhotoController extends Controller
             return response()->download($filePath);
         }
     
-        return redirect()->route('user-wish-photos.index')->with('error', 'File not found.');
+        return redirect()->route('user.wish-photos.index')->with('error', 'File not found.');
     }
     
     public function create(Request $request, $templateId = null)
@@ -54,7 +54,7 @@ class UserWishPhotoController extends Controller
     
         $template->editable_areas = $template->editable_areas ?: [];
         
-        return view('user_wish_photos.create', compact('template'));
+        return view('user.wish_photos.create', compact('template'));
     }
 
     public function store(Request $request)
@@ -128,7 +128,7 @@ class UserWishPhotoController extends Controller
             Log::info('Customizations applied');
     
             // Save the customized image
-            $imagePath = 'user_wish_photos/' . uniqid() . '.png';
+            $imagePath = 'user.wish_photos/' . uniqid() . '.png';
             Storage::disk('public')->put($imagePath, $image->toPng());
     
             Log::info('Image saved', ['path' => $imagePath]);

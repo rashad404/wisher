@@ -75,29 +75,6 @@ Route::post('/products/variant/sizes', [ProductController::class, 'getAvailableS
 Route::post('/products/variant/sizes', [ProductController::class, 'getSizes'])->name('product.getSizes');
 
 
-// User Panel
-Route::get('/user/contacts', [ContactController::class, 'index'])->name('user.contacts.index');
-Route::get('/user/contacts/{id}', [ContactController::class, 'show'])->where('id', '[0-9]+')->name('contacts.show');
-
-// Contacts
-Route::get('/user/contacts/create', [ContactController::class, 'create'])->name('user.contacts.create');
-Route::post('/user/contacts', [ContactController::class, 'store'])->name('user.contacts.store');
-
-Route::get('/user/contacts/edit/{contact}', [ContactController::class, 'edit'])->name('user.contacts.edit');
-Route::put('/user/contacts/update/{contact}', [ContactController::class, 'update'])->name('user.contacts.update');
-Route::get('/user/contacts/{contact}', [ContactController::class, 'show'])->name('user.contacts.show');
-Route::delete('/user/contacts/{contact}', [ContactController::class, 'destroy'])->name('user.contacts.destroy');
-
-
-Route::get('/user/groups', [GroupController::class, 'index'])->name('user.groups.index');
-Route::get('/user/groups/create', [GroupController::class, 'create'])->name('user.groups.create');
-Route::post('/user/groups', [GroupController::class, 'store'])->name('user.groups.store');
-Route::get('/user/groups/{group}', [GroupController::class, 'show'])->name('user.groups.show');
-Route::get('/user/groups/{group}/edit', [GroupController::class, 'edit'])->name('user.groups.edit');
-Route::put('/user/groups/{group}', [GroupController::class, 'update'])->name('user.groups.update');
-Route::delete('/user/groups/{group}', [GroupController::class, 'destroy'])->name('user.groups.destroy');
-
-
 Route::post('groups/{group}/add-contact', [GroupController::class, 'addContact'])->name('user.groups.addContact');
 Route::delete('groups/{group}/remove-contact/{contact}', [GroupController::class, 'removeContact'])->name('user.groups.removeContact');
 
@@ -113,14 +90,6 @@ Route::post('/contact', [PageController::class, 'submitContactForm'])->name('con
 
 Route::get('/features', [PageController::class, 'features'])->name('features');
 
-//User Events part
-Route::get('/user/events', [UserEventController::class, 'index'])->name('user.events.index');
-Route::get('/user/events/create', [UserEventController::class, 'create'])->name('user.events.create');
-Route::post('/user/events', [UserEventController::class, 'store'])->name('user.events.store');
-Route::get('/user/events/edit/{event}', [UserEventController::class, 'edit'])->name('user.events.edit');
-Route::put('/user/events/{event}', [UserEventController::class, 'update'])->name('user.events.update');
-Route::get('/user/events/{event}', [UserEventController::class, 'show'])->name('user.events.show');
-Route::delete('/user/events/{event}', [UserEventController::class, 'destroy'])->name('user.events.delete');
 
 Route::get('/pricing', [PageController::class, 'pricing'])->name('pricing');
 
@@ -137,7 +106,31 @@ Route::get('/testimonials', [TestimonialController::class, 'index'])->name('test
 
 Route::middleware('auth')->prefix('user')->group(function () {
 
-    Route::get('/dashboard', [UserController::class, 'index'])->name('user.index');
+    Route::get('dashboard', [UserController::class, 'index'])->name('user.index');
+
+    // User Panel
+    Route::get('contacts', [ContactController::class, 'index'])->name('user.contacts.index');
+    Route::get('contacts/{id}', [ContactController::class, 'show'])->where('id', '[0-9]+')->name('contacts.show');
+
+    // Contacts
+    Route::get('contacts/create', [ContactController::class, 'create'])->name('user.contacts.create');
+    Route::post('contacts', [ContactController::class, 'store'])->name('user.contacts.store');
+
+    Route::get('contacts/edit/{contact}', [ContactController::class, 'edit'])->name('user.contacts.edit');
+    Route::put('contacts/update/{contact}', [ContactController::class, 'update'])->name('user.contacts.update');
+    Route::get('contacts/{contact}', [ContactController::class, 'show'])->name('user.contacts.show');
+    Route::delete('contacts/{contact}', [ContactController::class, 'destroy'])->name('user.contacts.destroy');
+
+
+    Route::get('groups', [GroupController::class, 'index'])->name('user.groups.index');
+    Route::get('groups/create', [GroupController::class, 'create'])->name('user.groups.create');
+    Route::post('groups', [GroupController::class, 'store'])->name('user.groups.store');
+    Route::get('groups/{group}', [GroupController::class, 'show'])->name('user.groups.show');
+    Route::get('groups/{group}/edit', [GroupController::class, 'edit'])->name('user.groups.edit');
+    Route::put('groups/{group}', [GroupController::class, 'update'])->name('user.groups.update');
+    Route::delete('groups/{group}', [GroupController::class, 'destroy'])->name('user.groups.destroy');
+
+
 
     // Chat
     Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
@@ -163,6 +156,25 @@ Route::middleware('auth')->prefix('user')->group(function () {
         Route::post('email', [ContactController::class, 'sendEmail'])->name('contacts.sendEmail');
 
     });
+
+    //User Events part
+    Route::get('events', [UserEventController::class, 'index'])->name('user.events.index');
+    Route::get('events/create', [UserEventController::class, 'create'])->name('user.events.create');
+    Route::post('events', [UserEventController::class, 'store'])->name('user.events.store');
+    Route::get('/events/edit/{event}', [UserEventController::class, 'edit'])->name('user.events.edit');
+    Route::put('events/{event}', [UserEventController::class, 'update'])->name('user.events.update');
+    Route::get('events/{event}', [UserEventController::class, 'show'])->name('user.events.show');
+    Route::delete('events/{event}', [UserEventController::class, 'destroy'])->name('user.events.delete');
+
+
+    // User wish photos
+    Route::resource('wish-photos', UserWishPhotoController::class);
+    Route::get('wish-photos', [UserWishPhotoController::class, 'index'])->name('user.wish-photos.index');
+    Route::get('wish-photos/create/{templateId?}', [UserWishPhotoController::class, 'create'])->name('user.wish-photos.create');
+    Route::get('wish-photos/{id}', [UserWishPhotoController::class, 'show'])->name('user.wish-photos.show');
+    Route::get('wish-photos/{id}/download', [UserWishPhotoController::class, 'download'])->name('user.wish-photos.download');
+    Route::post('wish-photos', [UserWishPhotoController::class, 'store'])->name('user.wish-photos.store');
+
 });
 
 //Adding events from Contacts
@@ -178,7 +190,6 @@ Route::prefix('contacts/{contact}/events')->name('contacts.events.')->group(func
 
 //Activity Part
 
-Route::get('/user/dashboard', [ActivityController::class, 'index'])->name('user.index');
 
 Route::get('/events/{categoryId}', [ContactController::class, 'getEventsByCategory']);
 Route::get('/contacts/events', [ContactController::class, 'getEventsByCategory'])->name('contacts.events');
@@ -213,11 +224,7 @@ Route::middleware(['auth'])->group(function () {
 
 // Wish photo editor
 Route::get('wish-photos', [WishPhotoTemplateController::class, 'index'])->name('wish-photos');
-Route::resource('user-wish-photos', UserWishPhotoController::class);
-Route::get('user-wish-photos/create/{templateId?}', [UserWishPhotoController::class, 'create'])->name('user-wish-photos.create');
-Route::get('user-wish-photos/{id}', [UserWishPhotoController::class, 'show'])->name('user-wish-photos.show');
-Route::get('user-wish-photos/{id}/download', [UserWishPhotoController::class, 'download'])->name('user-wish-photos.download');
 
 
 Route::get('api/wish-photo-templates', [WishPhotoTemplateController::class, 'apiIndex']);
-Route::post('/user-wish-photos', [UserWishPhotoController::class, 'store'])->name('user-wish-photos.store');
+
