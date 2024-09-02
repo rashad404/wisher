@@ -147,6 +147,21 @@ class ContactController extends Controller
         return redirect()->route('user.contacts.index')->with('success', 'Contact deleted successfully.');
     }
 
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('ids', []);
+        Contact::whereIn('id', $ids)->delete();
+        return response()->json(['success' => true]);
+    }
+    
+    public function bulkStatusUpdate(Request $request)
+    {
+        $ids = $request->input('ids', []);
+        $newStatus = $request->input('status');
+        Contact::whereIn('id', $ids)->update(['status' => $newStatus]);
+        return response()->json(['success' => true]);
+    }
+
     public function sendMessage(Request $request, $contactId)
     {
         $contact = Contact::findOrFail($contactId);

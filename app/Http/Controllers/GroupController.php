@@ -8,10 +8,21 @@ use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
+        $search = $request->input('search');
+
         // Retrieve only the groups that belong to the authenticated user
-        $groups = Group::where('user_id', Auth::id())->with('contacts')->get();
+        // $groups = Group::where('user_id', Auth::id())->with('contacts')->get();
+        $groups = Group::query()
+        ->when($search, function ($query, $search) {
+            return $query->where('user_id', Auth::id())->where(function ($query) use ($search) {
+                $query->where('name', 'like', '%' . $search . '%');
+            });
+        })
+        ->with('contacts')
+        ->paginate(10);
+
         return view('user.groups.index', compact('groups'));
     }
 
@@ -80,6 +91,21 @@ class GroupController extends Controller
 
         $group->delete();
         return redirect()->route('user.groups.index')->with('success', 'Group deleted successfully.');
+    }
+
+    public function bulkDelete(Request $request)
+    {
+        $ids = $request->input('ids', []);
+        Group::whereIn('id', $ids)->delete();
+        return response()->json(['success' => true]);
+    }
+    
+    public function bulkStatusUpdate(Request $request)
+    {
+        $ids = $request->input('ids', []);
+        $newStatus = $request->input('status');
+        Group::whereIn('id', $ids)->update(['status' => $newStatus]);
+        return response()->json(['success' => true]);
     }
 
     public function addContact(Request $request, Group $group)

@@ -21,6 +21,7 @@ class CreateContactsTable extends Migration
             $table->json('interests')->nullable();
             $table->json('likes')->nullable();
             $table->json('dislikes')->nullable();
+            $table->string('status')->default(1);
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
