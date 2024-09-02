@@ -25,7 +25,7 @@ class UserWishPhotoSeeder extends Seeder
                     'x' => 100,
                     'y' => 100
                 ]),
-                'final_image_path' => 'user_wish_photos/sample_' . $user->id . '.jpg',
+                'final_image_path' => 'user.wish_photos/sample_' . $user->id . '.jpg',
                 'is_public' => true,
                 'likes' => rand(0, 100),
                 'shares' => rand(0, 50)

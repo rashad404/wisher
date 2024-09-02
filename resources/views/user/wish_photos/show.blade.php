@@ -1,12 +1,12 @@
-@extends('layouts.app')
+@extends('layouts.user.app')
 
 @section('content')
 <div class="p-6">
     <!-- Add Breadcrumbs -->
     <x-breadcrumbs :links="[
-        ['url' => route('main.index'), 'label' => __('Home')],
-        ['url' => route('user-wish-photos.index'), 'label' => __('My Wish Photos')],
-        ['url' => route('user-wish-photos.show', ['id' => $userWishPhoto->id]), 'label' => __('Photo Details')]
+        ['url' => route('user.index'), 'label' => 'Home'],
+        ['url' => route('user.wish-photos.index'), 'label' => __('My Wish Photos')],
+        ['url' => route('user.wish-photos.show', ['id' => $userWishPhoto->id]), 'label' => __('Photo Details')]
     ]"/>
 
     <div class="container mx-auto px-4 py-8">
@@ -19,7 +19,7 @@
                 <p class="text-gray-600 mb-2">Likes: {{ $userWishPhoto->likes }} | Shares: {{ $userWishPhoto->shares }}</p>
                 <div class="mt-4">
                     <!-- Download link -->
-                    <a href="{{ route('user-wish-photos.download', $userWishPhoto->id) }}" class="text-green-500 hover:underline">Download Photo</a>
+                    <a href="{{ route('user.wish-photos.download', $userWishPhoto->id) }}" class="text-green-500 hover:underline">Download Photo</a>
                 </div>
             </div>
         </div>

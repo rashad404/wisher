@@ -15,7 +15,7 @@
     <x-breadcrumbs :links="[
         ['url' => route('main.index'), 'label' => __('Home')],
         ['url' => route('wish-photos'), 'label' => __('Wish Photos')],
-        ['url' => route('user-wish-photos.create'), 'label' => __('Create Wish Photo')],
+        ['url' => route('user.wish-photos.create'), 'label' => __('Create Wish Photo')],
     ]"/>
 </div>
 
@@ -109,7 +109,7 @@
                     </svg>
                     Reset
                 </button>
-                <a id="cancel-button" href="{{ route('user-wish-photos.index') }}" class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-md shadow-md flex items-center">
+                <a id="cancel-button" href="{{ route('user.wish-photos.index') }}" class="bg-gray-600 hover:bg-gray-700 text-white font-semibold py-3 px-6 rounded-md shadow-md flex items-center">
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>
@@ -122,5 +122,5 @@
     </div>
 </div>
 
-@include('user_wish_photos.js')
+@include('user.wish_photos.js')
 @endsection

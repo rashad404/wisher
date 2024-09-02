@@ -1,11 +1,11 @@
-@extends('layouts.app')
+@extends('layouts.user.app')
 
 @section('content')
 <div class="p-6">
     <!-- Add Breadcrumbs -->
     <x-breadcrumbs :links="[
-        ['url' => route('main.index'), 'label' => __('Home')],
-        ['url' => route('user-wish-photos.index'), 'label' => __('My Wish Photos')],
+        ['url' => route('user.index'), 'label' => 'Home'],
+        ['url' => route('user.wish-photos.index'), 'label' => __('My Wish Photos')],
     ]"/>
 </div>
 
@@ -26,7 +26,7 @@
                 <div class="p-4">
                     <p class="text-gray-600 mb-2">Created: {{ $photo->created_at->format('M d, Y') }}</p>
                     <p class="text-gray-600 mb-4">Likes: {{ $photo->likes }} | Shares: {{ $photo->shares }}</p>
-                    <a href="{{ route('user-wish-photos.show', $photo->id) }}" class="block w-full text-center bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors duration-200">
+                    <a href="{{ route('user.wish-photos.show', $photo->id) }}" class="block w-full text-center bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition-colors duration-200">
                         View
                     </a>
                 </div>

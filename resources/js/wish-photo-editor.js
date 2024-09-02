@@ -125,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
         })
         .then(data => {
             if (data.success) {
-                window.location.href = '{{ route("user-wish-photos.index") }}';
+                window.location.href = '{{ route("user.wish-photos.index") }}';
             } else {
                 console.error('Server response:', data);
                 alert('Error saving wish photo: ' + (data.message || 'Unknown error'));

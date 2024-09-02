@@ -31,7 +31,7 @@
                     <!-- Template Category -->
                     <p class="text-sm text-gray-500 mb-4">Category: {{ $template->category }}</p>
                     <!-- Use Template Button -->
-                    <a href="{{ route('user-wish-photos.create', ['templateId' => $template->id]) }}" class="block w-full text-center bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">
+                    <a href="{{ route('user.wish-photos.create', ['templateId' => $template->id]) }}" class="block w-full text-center bg-blue-600 text-white font-semibold py-2 rounded-lg hover:bg-blue-700 transition-colors duration-200">
                         Customize This Template
                     </a>
                 </div>
