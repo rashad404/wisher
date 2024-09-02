@@ -285,27 +285,11 @@ class ContactController extends Controller
     }
 
 
+    // IOS import
+
     public function importFromIos(Request $request)
     {
         return $this->importContacts($request, 'iOS');
-    }
-
-    public function importFromAndroid(Request $request)
-    {
-        // Validate the uploaded file
-        $request->validate([
-            'contacts_file' => 'required|file|mimes:csv,txt',
-        ]);
-
-        $file = $request->file('contacts_file');
-        $contacts = $this->parseAndroidCsv($file);
-
-        // Save contacts to database
-        foreach ($contacts as $contactData) {
-            Contact::create(array_merge(['user_id' => Auth::id()], $contactData));
-        }
-
-        return redirect()->route('user.contacts.index')->with('success', 'Contacts imported successfully from Android!');
     }
 
     private function importContacts(Request $request, $source)
@@ -363,34 +347,59 @@ class ContactController extends Controller
         return redirect()->route('user.contacts.index')->with('success', "Contacts imported successfully from {$source}!");
     }
 
-    private function parseAndroidCsv($file)
+    // Android import
+    public function importFromAndroid(Request $request)
     {
-        $contacts = [];
-        $handle = fopen($file->getRealPath(), 'r');
-        $headers = fgetcsv($handle); // Get the headers
-
-        while (($data = fgetcsv($handle)) !== false) {
-            $contact = [];
-            foreach ($headers as $index => $header) {
-                $contact[$this->sanitizeHeader($header)] = $data[$index] ?? null;
-            }
-
-            $contacts[] = [
-                'name' => trim($contact['first_name'] . ' ' . $contact['last_name']),
-                'email' => $contact['email_1_value'] ?? null,
-                'phone_number' => $contact['phone_1_-_value'] ?? null,
-                'birthdate' => $contact['birthday'] ? date('Y-m-d', strtotime($contact['birthday'])) : null,
-                'address' => $contact['address_1_formatted'] ?? null,
-                'photo' => null, // CSV doesn't typically include photo data
-            ];
-        }
-        fclose($handle);
-        return $contacts;
+        return $this->importContacts($request, 'Android');
     }
 
-    private function sanitizeHeader($header)
-    {
-        return strtolower(str_replace(' ', '_', $header));
-    }
+    // Android import CSV - OLD -not used anymore
+    // public function importFromAndroid(Request $request)
+    // {
+    //     // Validate the uploaded file
+    //     $request->validate([
+    //         'contacts_file' => 'required|file|mimes:csv,txt',
+    //     ]);
+
+    //     $file = $request->file('contacts_file');
+    //     $contacts = $this->parseAndroidCsv($file);
+
+    //     // Save contacts to database
+    //     foreach ($contacts as $contactData) {
+    //         Contact::create(array_merge(['user_id' => Auth::id()], $contactData));
+    //     }
+
+    //     return redirect()->route('user.contacts.index')->with('success', 'Contacts imported successfully from Android!');
+    // }
+
+    // private function parseAndroidCsv($file)
+    // {
+    //     $contacts = [];
+    //     $handle = fopen($file->getRealPath(), 'r');
+    //     $headers = fgetcsv($handle); // Get the headers
+
+    //     while (($data = fgetcsv($handle)) !== false) {
+    //         $contact = [];
+    //         foreach ($headers as $index => $header) {
+    //             $contact[$this->sanitizeHeader($header)] = $data[$index] ?? null;
+    //         }
+
+    //         $contacts[] = [
+    //             'name' => trim($contact['first_name'] . ' ' . $contact['last_name']),
+    //             'email' => $contact['email_1_value'] ?? null,
+    //             'phone_number' => $contact['phone_1_-_value'] ?? null,
+    //             'birthdate' => $contact['birthday'] ? date('Y-m-d', strtotime($contact['birthday'])) : null,
+    //             'address' => $contact['address_1_formatted'] ?? null,
+    //             'photo' => null, // CSV doesn't typically include photo data
+    //         ];
+    //     }
+    //     fclose($handle);
+    //     return $contacts;
+    // }
+
+    // private function sanitizeHeader($header)
+    // {
+    //     return strtolower(str_replace(' ', '_', $header));
+    // }
 
 }
