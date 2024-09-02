@@ -205,7 +205,7 @@
           <form action="{{ route('contacts.import.android') }}" method="POST" enctype="multipart/form-data" class="mt-5 sm:mt-6">
             @csrf
             <div class="mb-4">
-              <input type="file" name="contacts_file" accept=".csv,.txt" required class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
+              <input type="file" name="contacts_file" accept=".vcf" required class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-700 hover:file:bg-green-100">
             </div>
             <div class="sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
               <button type="submit" class="inline-flex w-full justify-center rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 sm:col-start-2">Import Android Contacts</button>
