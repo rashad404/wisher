@@ -18,7 +18,7 @@
                             <a href="#" class="block p-2 rounded-md hover:bg-gray-200">{{ $parentCategory->name }}</a>
 
                             <!-- Subcategory List -->
-                            <ul class="absolute left-full top-0 mt-0 hidden w-48 bg-white border border-gray-200 rounded-md shadow-lg group-hover:block z-10">
+                            <ul class="absolute left-full top-0 mt-0 hidden w-48 bg-white border border-gray-200 rounded-md shadow-lg group-hover:block z-10 ml-4"> <!-- Move to right side -->
                                 @if(isset($categories[$parentCategory->id]))
                                     @foreach ($categories[$parentCategory->id] as $subcategory)
                                         <li>
@@ -49,10 +49,16 @@
 <script>
     document.querySelectorAll('.relative').forEach(item => {
         item.addEventListener('mouseenter', () => {
-            item.querySelector('ul').classList.remove('hidden');
+            const subcategoryList = item.querySelector('ul');
+            if (subcategoryList) {
+                subcategoryList.classList.remove('hidden');
+            }
         });
         item.addEventListener('mouseleave', () => {
-            item.querySelector('ul').classList.add('hidden');
+            const subcategoryList = item.querySelector('ul');
+            if (subcategoryList) {
+                subcategoryList.classList.add('hidden');
+            }
         });
     });
 </script>
