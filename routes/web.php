@@ -73,7 +73,10 @@ Route::get('/products/{id}', [ProductController::class, 'show'])->name('products
 Route::post('/products/variant/quantity', [ProductController::class, 'getVariantQuantity']);
 Route::post('/products/variant/sizes', [ProductController::class, 'getAvailableSizes']);
 Route::post('/products/variant/sizes', [ProductController::class, 'getSizes'])->name('product.getSizes');
-
+Route::get('/products/filter', [ProductController::class, 'filterByCategory']);
+Route::post('/products/filter', [ProductController::class, 'filter'])->name('products.filter');
+Route::get('/category/{id}', [ProductController::class, 'showCategory'])->name('category');
+Route::post('/products/filter', [ProductController::class, 'filter'])->name('products.filter');
 
 Route::post('groups/{group}/add-contact', [GroupController::class, 'addContact'])->name('user.groups.addContact');
 Route::delete('groups/{group}/remove-contact/{contact}', [GroupController::class, 'removeContact'])->name('user.groups.removeContact');
