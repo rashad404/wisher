@@ -37,14 +37,14 @@
                 <ul class="mt-2 space-y-2 bg-white p-4 rounded-md shadow">
                     @foreach ($categories[null] as $parentCategory)
                         <li class="relative group">
-                            <a href="#" class="block p-2 rounded-md category-link hover:bg-gray-200">{{ $parentCategory->name }}</a>
+                            <a href="{{ route('category', ['id' => $parentCategory->id]) }}" class="block p-2 rounded-md category-link hover:bg-gray-200">{{ $parentCategory->name }}</a>
 
                             <!-- Subcategory List -->
                             <ul class="absolute left-full top-0 mt-0 hidden w-48 bg-white border border-gray-200 rounded-md shadow-lg group-hover:block z-10 ml-4">
                                 @if(isset($categories[$parentCategory->id]))
                                     @foreach ($categories[$parentCategory->id] as $subcategory)
                                         <li>
-                                            <a href="#" class="block p-2 rounded-md subcategory-link">{{ $subcategory->name }}</a>
+                                            <a href="{{ route('category', ['id' => $subcategory->id]) }}" class="block p-2 rounded-md subcategory-link">{{ $subcategory->name }}</a>
                                         </li>
                                     @endforeach
                                 @else

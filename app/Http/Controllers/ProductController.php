@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Size;
+use App\Models\Brand;
+use App\Models\Color;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
@@ -89,5 +91,15 @@ class ProductController extends Controller
             ->get();
 
         return response()->json($products);
+    }
+
+    public function showCategory($id)
+    {
+        $category = Category::findOrFail($id);
+        $products = Product::where('category_id', $id)->get();
+        $brands = Brand::all();
+        $colors = Color::all();
+
+        return view('products.category', compact('category', 'products', 'brands', 'colors'));
     }
 }
