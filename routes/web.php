@@ -74,7 +74,9 @@ Route::post('/products/variant/quantity', [ProductController::class, 'getVariant
 Route::post('/products/variant/sizes', [ProductController::class, 'getAvailableSizes']);
 Route::post('/products/variant/sizes', [ProductController::class, 'getSizes'])->name('product.getSizes');
 Route::get('/products/filter', [ProductController::class, 'filterByCategory']);
+Route::post('/products/filter', [ProductController::class, 'filter'])->name('products.filter');
 Route::get('/category/{id}', [ProductController::class, 'showCategory'])->name('category');
+Route::post('/products/filter', [ProductController::class, 'filter'])->name('products.filter');
 
 // User Panel
 Route::get('/user/contacts', [ContactController::class, 'index'])->name('user.contacts.index');
