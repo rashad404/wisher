@@ -142,8 +142,8 @@ class ProductController extends Controller
             ->withAvg('reviews', 'rating')
             ->get()
             ->map(function ($product) {
-                $product->number_of_reviews = $product->reviews_count;
-                $product->average_rating = $product->reviews_avg_rating;
+                $product->reviews_count = $product->reviews_count;
+                $product->reviews_avg_rating = $product->reviews_avg_rating;
                 return $product;
             });
 

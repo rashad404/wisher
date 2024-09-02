@@ -10,43 +10,66 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 'description', 'main_image', 'extra_images', 'condition',
-        'price', 'discounted_price', 'sku', 'category_id', 'brand', 'model', 'features'
+        'name', 
+        'description', 
+        'main_image', 
+        'extra_images', 
+        'condition', 
+        'price', 
+        'discounted_price', 
+        'sku', 
+        'category_id', 
+        'features', 
+        'brand_id', 
+        'product_model_id'
     ];
 
-    protected $casts = [
-        'extra_images' => 'array', // Casting to array
-        'features' => 'array',
-    ];
-
-    // Relationships
-    public function variants() {
-        return $this->hasMany(ProductVariant::class);
-    }
-
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
-
-    public function brand()
-    {
-        return $this->belongsTo(Brand::class);
-    }
-
-    public function productModel()
-    {
-        return $this->belongsTo(ProductModel::class);
-    }
-
+    // Relationship with Review
     public function reviews()
     {
         return $this->hasMany(Review::class);
     }
 
-    public function reviewCount()
+    // Relationship with ProductVariant
+    public function variants()
+    {
+        return $this->hasMany(ProductVariant::class);
+    }
+
+    // Relationship with Category
+    public function category()
+    {
+        return $this->belongsTo(Category::class);
+    }
+
+    // Relationship with Brand
+    public function brand()
+    {
+        return $this->belongsTo(Brand::class);
+    }
+
+    // Relationship with ProductModel
+    public function productModel()
+    {
+        return $this->belongsTo(ProductModel::class);
+    }
+
+    // Accessor to get average rating
+    public function getReviewsAvgRatingAttribute()
+    {
+        return $this->reviews()->avg('rating');
+    }
+
+    // Accessor to get number of reviews
+    public function getReviewsCountAttribute()
     {
         return $this->reviews()->count();
     }
 
+
+
+    public function reviewCount()
+    {
+        return $this->reviews()->count();
+    }
 }
