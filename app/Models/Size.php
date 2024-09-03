@@ -8,7 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Size extends Model
 {
     use HasFactory;
-    
+
+    public function products()
+    {
+        return $this->belongsToMany(Product::class);
+    }
+
     public function variants() {
         return $this->hasMany(ProductVariant::class);
     }

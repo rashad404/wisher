@@ -12,6 +12,7 @@
                     @csrf
                     <!-- Include category ID -->
                     <input type="hidden" name="category_id" value="{{ $category->id ?? '' }}">
+
                     <!-- Price Range Filter -->
                     <div class="mb-6">
                         <h4 class="text-md font-semibold mb-2">Price Range</h4>
@@ -21,6 +22,7 @@
                             <span id="priceRangeValue">$0</span>
                         </div>
                     </div>
+
                     <!-- Color Filter -->
                     <div class="mb-6">
                         <h4 class="text-md font-semibold mb-2">Color</h4>
@@ -33,6 +35,7 @@
                             @endforeach
                         </div>
                     </div>
+
                     <!-- Brand Filter -->
                     <div class="mb-6">
                         <h4 class="text-md font-semibold mb-2">Brand</h4>
@@ -42,6 +45,19 @@
                                 <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                             @endforeach
                         </select>
+                    </div>
+
+                    <!-- Size Filter -->
+                    <div class="mb-6">
+                        <h4 class="text-md font-semibold mb-2">Size</h4>
+                        <div class="space-y-2">
+                            @foreach ($sizes as $size)
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="mr-2" name="size[]" value="{{ $size->id }}">
+                                    <span>{{ $size->name }}</span>
+                                </label>
+                            @endforeach
+                        </div>
                     </div>
                 </form>
             </div>
@@ -60,100 +76,106 @@
 </div>
 
 <script>
-document.addEventListener('DOMContentLoaded', function() {
-    const priceRange = document.getElementById('priceRange');
-    const priceRangeValue = document.getElementById('priceRangeValue');
-    const filterForm = document.getElementById('filterForm');
+    document.addEventListener('DOMContentLoaded', function() {
+        const priceRange = document.getElementById('priceRange');
+        const priceRangeValue = document.getElementById('priceRangeValue');
+        const filterForm = document.getElementById('filterForm');
 
-    // Update price range display
-    priceRange.addEventListener('input', function() {
-        priceRangeValue.textContent = '$' + this.value;
-    });
+        // Update price range display
+        priceRange.addEventListener('input', function() {
+            priceRangeValue.textContent = '$' + this.value;
+        });
 
-    if (filterForm) {
-        filterForm.addEventListener('change', function() {
-            const formData = new FormData(filterForm);
+        if (filterForm) {
+            filterForm.addEventListener('change', function() {
+                const formData = new FormData(filterForm);
 
-            // Include price range in FormData
-            formData.set('priceRange', priceRange.value);
+                // Include price range in FormData
+                formData.set('priceRange', priceRange.value);
 
-            fetch("{{ route('products.filter') }}", {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json'
-                },
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                const productsGrid = document.getElementById('productsGrid');
-                productsGrid.innerHTML = ''; // Clear existing products
+                // Ensure size array is correctly captured
+                const sizeCheckboxes = document.querySelectorAll('input[name="size[]"]:checked');
+                formData.delete('size[]'); // Remove any existing size[] entries to avoid duplication
+                sizeCheckboxes.forEach((checkbox) => {
+                    formData.append('size[]', checkbox.value);
+                });
 
-                if (data.products && Array.isArray(data.products)) {
-                    data.products.forEach(product => {
-                        const averageRating = product.average_rating || 0;
-                        const numberOfReviews = product.number_of_reviews;
+                // Fetch filtered products
+                fetch("{{ route('products.filter') }}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const productsGrid = document.getElementById('productsGrid');
+                    productsGrid.innerHTML = ''; // Clear existing products
 
-                        // Generate star rating HTML
-                        const stars = Array.from({ length: 5 }, (_, index) => {
-                            const starClass = averageRating >= (index + 1) ? 'text-yellow-400' : 'text-gray-300';
-                            return `<svg class="${starClass} h-5 w-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                <path d="M12 17.27l5.18 3.07-1.39-6.09L21 9.24l-6.14-.53L12 3 9.14 8.71 3 9.24l4.21 4.04-1.39 6.09L12 17.27z"></path>
-                            </svg>`;
-                        }).join('');
+                    if (data.products && Array.isArray(data.products)) {
+                        data.products.forEach(product => {
+                            const averageRating = product.average_rating || 0;
+                            const numberOfReviews = product.number_of_reviews;
 
-                        // Create review HTML
-                        const reviewText = `
-                            <p class="mt-2 text-sm text-gray-600">${product.average_rating ? `Average Rating: ${averageRating.toFixed(1)} (${numberOfReviews} ${numberOfReviews === 1 ? 'review' : 'reviews'})` : 'No reviews yet'}</p>
-                        `;
+                            // Generate star rating HTML
+                            const stars = Array.from({ length: 5 }, (_, index) => {
+                                const starClass = averageRating >= (index + 1) ? 'text-yellow-400' : 'text-gray-300';
+                                return `<svg class="${starClass} h-5 w-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M12 17.27l5.18 3.07-1.39-6.09L21 9.24l-6.14-.53L12 3 9.14 8.71 3 9.24l4.21 4.04-1.39 6.09L12 17.27z"></path>
+                                </svg>`;
+                            }).join('');
 
-                        const productCard = `
-                            <div class="product-card bg-white group relative border-b border-r border-gray-200 p-4 sm:p-6 m-1">
-                                <!-- Image Section -->
-                                <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-200 group-hover:opacity-75">
-                                    <img
-                                        src="{{ asset('storage/') }}/${product.main_image}"
-                                        alt="${product.name}"
-                                        class="h-full w-full object-cover object-center"
-                                    >
-                                </div>
+                            // Create review HTML
+                            const reviewText = `
+                                <p class="mt-2 text-sm text-gray-600">${product.average_rating ? `Average Rating: ${averageRating.toFixed(1)} (${numberOfReviews} ${numberOfReviews === 1 ? 'review' : 'reviews'})` : 'No reviews yet'}</p>
+                            `;
 
-                                <!-- Details Section -->
-                                <div class="pb-4 pt-10 text-center">
-                                    <!-- Product Name -->
-                                    <h3 class="text-sm font-medium text-gray-900">
-                                        <a href="/products/${product.id}">
-                                            <span aria-hidden="true" class="absolute inset-0"></span>
-                                            ${product.name}
-                                        </a>
-                                    </h3>
-
-                                    <!-- Reviews and Stars -->
-                                    <div class="mt-3 flex flex-col items-center">
-                                        <div class="flex items-center">
-                                            ${stars}
-                                        </div>
-                                        ${reviewText}
+                            const productCard = `
+                                <div class="product-card bg-white group relative border-b border-r border-gray-200 p-4 sm:p-6 m-1">
+                                    <!-- Image Section -->
+                                    <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-200 group-hover:opacity-75">
+                                        <img
+                                            src="{{ asset('storage/') }}/${product.main_image}"
+                                            alt="${product.name}"
+                                            class="h-full w-full object-cover object-center"
+                                        >
                                     </div>
 
-                                    <!-- Price -->
-                                    <p class="mt-4 text-base font-medium text-gray-900">$${product.price}</p>
+                                    <!-- Details Section -->
+                                    <div class="pb-4 pt-10 text-center">
+                                        <!-- Product Name -->
+                                        <h3 class="text-sm font-medium text-gray-900">
+                                            <a href="/products/${product.id}">
+                                                <span aria-hidden="true" class="absolute inset-0"></span>
+                                                ${product.name}
+                                            </a>
+                                        </h3>
+
+                                        <!-- Reviews and Stars -->
+                                        <div class="mt-3 flex flex-col items-center">
+                                            <div class="flex items-center">
+                                                ${stars}
+                                            </div>
+                                            ${reviewText}
+                                        </div>
+
+                                        <!-- Price -->
+                                        <p class="mt-4 text-base font-medium text-gray-900">$${product.price}</p>
+                                    </div>
                                 </div>
-                            </div>
-                        `;
-                        productsGrid.insertAdjacentHTML('beforeend', productCard);
-                    });
-                } else {
-                    console.error('No products found or response is invalid:', data);
-                }
-            })
-            .catch(error => console.error('Error fetching products:', error));
-        });
-    }
-});
-
-</script>
-
+                            `;
+                            productsGrid.insertAdjacentHTML('beforeend', productCard);
+                        });
+                    } else {
+                        console.error('No products found or response is invalid:', data);
+                    }
+                })
+                .catch(error => console.error('Error fetching products:', error));
+            });
+        }
+    });
+    </script>
 
 @endsection

@@ -10,17 +10,17 @@ class Product extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name', 
-        'description', 
-        'main_image', 
-        'extra_images', 
-        'condition', 
-        'price', 
-        'discounted_price', 
-        'sku', 
-        'category_id', 
-        'features', 
-        'brand_id', 
+        'name',
+        'description',
+        'main_image',
+        'extra_images',
+        'condition',
+        'price',
+        'discounted_price',
+        'sku',
+        'category_id',
+        'features',
+        'brand_id',
         'product_model_id'
     ];
 
@@ -66,7 +66,10 @@ class Product extends Model
         return $this->reviews()->count();
     }
 
-
+    public function sizes()
+    {
+        return $this->belongsToMany(Size::class);
+    }
 
     public function reviewCount()
     {

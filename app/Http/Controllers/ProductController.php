@@ -94,12 +94,14 @@ class ProductController extends Controller
         $products = Product::where('category_id', $id)->get();
         $brands = Brand::all();
         $colors = Color::all();
+        $sizes = Size::all(); // Fetch sizes
 
-        return view('products.category', compact('category', 'products', 'brands', 'colors'));
+        return view('products.category', compact('category', 'products', 'brands', 'colors', 'sizes'));
     }
 
     public function filter(Request $request)
     {
+
         $priceRange = (int) $request->input('priceRange', 1000);
         $selectedColors = $request->input('color', []);
         $selectedBrand = $request->input('brand');
@@ -107,51 +109,36 @@ class ProductController extends Controller
         $subcategoryId = $request->input('subcategoryId');
         $categoryId = $request->input('category_id');
 
-        $query = Product::query();
+    $query = Product::query();
 
-        if ($categoryId) {
-            $categoryIds = Category::where('id', $categoryId)
-                ->orWhere('parent_id', $categoryId)
-                ->pluck('id')
-                ->toArray();
-            $query->whereIn('category_id', $categoryIds);
-        }
-
-        if ($subcategoryId) {
-            $query->where('subcategory_id', $subcategoryId);
-        }
-
-        if ($priceRange) {
-            $query->where('price', '<=', $priceRange);
-        }
-
-        if (!empty($selectedColors)) {
-            $query->whereIn('color_id', $selectedColors);
-        }
-
-        if ($selectedBrand) {
-            $query->where('brand_id', $selectedBrand);
-        }
-
-        if ($inStock) {
-            $query->where('stock', '>', 0);
-        }
-
-        // Fetch products with review count and average rating
-        $products = $query->withCount('reviews')
-            ->withAvg('reviews', 'rating')
-            ->get()
-            ->map(function ($product) {
-                $product->reviews_count = $product->reviews_count;
-                $product->reviews_avg_rating = $product->reviews_avg_rating;
-                return $product;
-            });
-
-
-
-        return response()->json(['products' => $products]);
+    if ($request->has('priceRange')) {
+        $priceRange = intval($request->input('priceRange'));
+        $query->where('price', '<=', $priceRange);
     }
 
+    if ($request->has('color')) {
+        $colors = $request->input('color');
+        $query->whereIn('color_id', $colors);
+    }
 
+    if ($request->has('brand')) {
+        $brand = $request->input('brand');
+        $query->where('brand_id', $brand);
+    }
 
+    if ($request->has('size')) {
+        $sizes = $request->input('size');
+
+        $query->whereHas('sizes', function ($q) use ($sizes) {
+            $q->whereIn('sizes.id', $sizes);
+        });
+    }
+
+    $products = $query->get();
+
+    return response()->json([
+        'success' => true,
+        'products' => $products
+    ]);
+    }
 }
