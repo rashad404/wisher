@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WishController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ActivityController;
@@ -18,12 +19,12 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\UserEventController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\ContactEventController;
+use App\Http\Controllers\ContactGroupController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\User\ProfileController;
+use App\Http\Controllers\UserWishPhotoController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ContactInterestController;
-use App\Http\Controllers\ReviewController;
-use App\Http\Controllers\UserWishPhotoController;
 use App\Http\Controllers\WishPhotoTemplateController;
 
 //use App\Http\Controllers\ActivityController;
@@ -194,6 +195,17 @@ Route::prefix('contacts/{contact}/events')->name('contacts.events.')->group(func
     Route::put('/{event}', [ContactEventController::class, 'update'])->name('update');
     Route::get('/{event}', [ContactEventController::class, 'show'])->name('show');
     Route::delete('/{event}', [ContactEventController::class, 'destroy'])->name('destroy');
+});
+
+// Adding groups from Contacts
+Route::prefix('contacts/{contact}/groups')->name('contacts.groups.')->group(function () {
+    Route::get('/', [ContactGroupController::class, 'index'])->name('index');
+    Route::get('/create', [ContactGroupController::class, 'create'])->name('create');
+    Route::post('/', [ContactGroupController::class, 'store'])->name('store');
+    Route::get('/{group}/edit', [ContactGroupController::class, 'edit'])->name('edit');
+    Route::put('/{group}', [ContactGroupController::class, 'update'])->name('update');
+    Route::get('/{group}', [ContactGroupController::class, 'show'])->name('show');
+    Route::delete('/{group}', [ContactGroupController::class, 'destroy'])->name('destroy');
 });
 
 //Activity Part
