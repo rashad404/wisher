@@ -94,15 +94,17 @@ class ProductController extends Controller
         $products = Product::where('category_id', $id)->get();
         $brands = Brand::all();
         $colors = Color::all();
+        $sizes = Size::all();
 
-        return view('products.category', compact('category', 'products', 'brands', 'colors'));
+        return view('products.category', compact('category', 'products', 'brands', 'colors', 'sizes'));
     }
 
     public function filter(Request $request)
     {
         $priceRange = (int) $request->input('priceRange', 1000);
-        $selectedColors = $request->input('color', []);
-        $selectedBrand = $request->input('brand');
+        $selectedColors = $request->input('colors', []);
+        $selectedSizes = $request->input('sizes', []);
+        $selectedBrands = $request->input('brands', []);
         $inStock = $request->input('in_stock');
         $subcategoryId = $request->input('subcategoryId');
         $categoryId = $request->input('category_id');
@@ -125,13 +127,33 @@ class ProductController extends Controller
             $query->where('price', '<=', $priceRange);
         }
 
-        if (!empty($selectedColors)) {
-            $query->whereIn('color_id', $selectedColors);
-        }
 
-        if ($selectedBrand) {
-            $query->where('brand_id', $selectedBrand);
+        // Filter by both color and size for exact match
+        if (!empty($selectedColors) && !empty($selectedSizes)) {
+            $query->whereHas('productVariants', function ($q) use ($selectedColors, $selectedSizes) {
+                $q->whereIn('color_id', $selectedColors)
+                ->whereIn('size_id', $selectedSizes);
+            });
+        } 
+        // Filter by color only
+        else if (!empty($selectedColors)) {
+            $query->whereHas('productVariants', function ($q) use ($selectedColors) {
+                $q->whereIn('color_id', $selectedColors);
+            });
         }
+        // Filter by size only
+        else if (!empty($selectedSizes)) {
+            $query->whereHas('productVariants', function ($q) use ($selectedSizes) {
+                $q->whereIn('size_id', $selectedSizes);
+            });
+        }
+        
+        if (!empty($selectedBrands)) {
+            $query->whereHas('productVariants', function ($q) use ($selectedBrands) {
+                $q->whereIn('size_id', $selectedBrands);
+            });
+        }
+        
 
         if ($inStock) {
             $query->where('stock', '>', 0);

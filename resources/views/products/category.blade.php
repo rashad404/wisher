@@ -27,21 +27,38 @@
                         <div class="space-y-2">
                             @foreach ($colors as $color)
                                 <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2" name="color[]" value="{{ $color->id }}">
+                                    <input type="checkbox" class="mr-2" name="colors[]" value="{{ $color->id }}">
                                     <span>{{ $color->name }}</span>
                                 </label>
                             @endforeach
                         </div>
                     </div>
+
+                    <!-- Size Filter -->
+                    <div class="mb-6">
+                        <h4 class="text-md font-semibold mb-2">Size</h4>
+                        <div class="space-y-2">
+                            @foreach ($sizes as $size)
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="mr-2" name="sizes[]" value="{{ $size->id }}">
+                                    <span>{{ $size->name }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+
+
                     <!-- Brand Filter -->
                     <div class="mb-6">
                         <h4 class="text-md font-semibold mb-2">Brand</h4>
-                        <select class="w-full border-gray-300 rounded-md" name="brand">
-                            <option value="">Select Brand</option>
+                        <div class="space-y-2">
                             @foreach ($brands as $brand)
-                                <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="mr-2" name="brands[]" value="{{ $brand->id }}">
+                                    <span>{{ $brand->name }}</span>
+                                </label>
                             @endforeach
-                        </select>
+                        </div>
                     </div>
                 </form>
             </div>
