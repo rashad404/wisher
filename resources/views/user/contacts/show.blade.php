@@ -41,7 +41,6 @@
             </div>
 
             <!-- Related Events Section -->
-            <!-- Related Events Section -->
             <div class="mb-8">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-xl font-bold text-gray-900 mb-4">Related Events</h3>
@@ -144,7 +143,7 @@
             <div class="mb-8">
                 <div class="flex justify-between items-center mb-4">
                     <h3 class="text-xl font-bold text-gray-900">Groups</h3>
-                    <a href="{{ route('user.groups.index') }}" class="text-indigo-600 hover:text-indigo-900 text-sm font-medium">
+                    <a href="{{ route('contacts.groups.index', $contact->id) }}" class="text-indigo-600 hover:text-indigo-900 text-sm font-medium">
                         Manage Groups
                     </a>
                 </div>
@@ -152,16 +151,9 @@
                     <ul class="space-y-2">
                         @foreach($contact->groups as $group)
                             <li class="flex justify-between items-center text-sm text-gray-700">
-                                <a href="{{ route('user.groups.show', $group->id) }}" class="font-semibold text-indigo-600 hover:text-indigo-900">
+                                <a href="{{ route('contacts.groups.show', [$contact->id, $group->id]) }}" class="font-semibold text-indigo-600 hover:text-indigo-900">
                                     {{ $group->name }}
                                 </a>
-                                <form action="{{ route('user.groups.removeContact', [$group->id, $contact->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to remove this contact from the group?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="text-red-600 hover:text-red-800">
-                                        Remove
-                                    </button>
-                                </form>
                             </li>
                         @endforeach
                     </ul>
