@@ -79,6 +79,10 @@ Route::post('/products/filter', [ProductController::class, 'filter'])->name('pro
 Route::get('/category/{id}', [ProductController::class, 'showCategory'])->name('category');
 Route::post('/products/filter', [ProductController::class, 'filter'])->name('products.filter');
 
+
+Route::get('/products/category/{id}', [ProductController::class, 'showCategory'])->name('products.category');
+Route::get('/products/brand/{id}', [ProductController::class, 'showBrand'])->name('products.brand');
+
 Route::post('groups/{group}/add-contact', [GroupController::class, 'addContact'])->name('user.groups.addContact');
 Route::delete('groups/{group}/remove-contact/{contact}', [GroupController::class, 'removeContact'])->name('user.groups.removeContact');
 

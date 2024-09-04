@@ -4,29 +4,29 @@
 
 <div class="bg-white">
     <div class="pb-8 pt-6 sm:pb-16">
-      <nav aria-label="Breadcrumb" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <ol role="list" class="flex items-center space-x-4">
-          <li>
-            <div class="flex items-center">
-              <a href="#" class="mr-4 text-sm font-medium text-gray-900">{{ $product->category->name }}</a>
-              <svg viewBox="0 0 6 20" aria-hidden="true" class="h-5 w-auto text-gray-300">
-                <path d="M4.878 4.34H3.551L.27 16.532h1.327l3.281-12.19z" fill="currentColor" />
-              </svg>
-            </div>
-          </li>
-          <li>
-            <div class="flex items-center">
-              <a href="#" class="mr-4 text-sm font-medium text-gray-900">{{ $product->brand->name }}</a>
-              <svg viewBox="0 0 6 20" aria-hidden="true" class="h-5 w-auto text-gray-300">
-                <path d="M4.878 4.34H3.551L.27 16.532h1.327l3.281-12.19z" fill="currentColor" />
-              </svg>
-            </div>
-          </li>
-          <li class="text-sm">
-            <a href="#" aria-current="page" class="font-medium text-gray-500 hover:text-gray-600">{{ $product->name }}</a>
-          </li>
-        </ol>
-      </nav>
+        <nav aria-label="Breadcrumb" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <ol role="list" class="flex items-center space-x-4">
+                <li>
+                    <div class="flex items-center">
+                        <a href="{{ route('products.category', $product->category->id) }}" class="mr-4 text-sm font-medium text-gray-900">{{ $product->category->name }}</a>
+                        <svg viewBox="0 0 6 20" aria-hidden="true" class="h-5 w-auto text-gray-300">
+                            <path d="M4.878 4.34H3.551L.27 16.532h1.327l3.281-12.19z" fill="currentColor" />
+                        </svg>
+                    </div>
+                </li>
+                <li>
+                    <div class="flex items-center">
+                        <a href="{{ route('products.brand', $product->brand->id) }}" class="mr-4 text-sm font-medium text-gray-900">{{ $product->brand->name }}</a>
+                        <svg viewBox="0 0 6 20" aria-hidden="true" class="h-5 w-auto text-gray-300">
+                            <path d="M4.878 4.34H3.551L.27 16.532h1.327l3.281-12.19z" fill="currentColor" />
+                        </svg>
+                    </div>
+                </li>
+                <li class="text-sm">
+                    <a href="#" aria-current="page" class="font-medium text-gray-500 hover:text-gray-600">{{ $product->name }}</a>
+                </li>
+            </ol>
+        </nav>
       <div class="mx-auto mt-4 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
         <div class="lg:grid lg:auto-rows-min lg:grid-cols-12 lg:gap-x-8">
           <div class="lg:col-span-5 lg:col-start-8">
