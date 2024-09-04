@@ -116,12 +116,12 @@ class ProductController extends Controller
         $selectedColors = $request->input('colors', []);
         $selectedSizes = $request->input('sizes', []);
         $selectedBrands = $request->input('brands', []);
-        $brandId = $request->input('brand_id');  // Get the brand_id from the request
+        $brandId = $request->input('brand_id');
         $inStock = $request->input('in_stock');
         $subcategoryId = $request->input('subcategoryId');
         $categoryId = $request->input('category_id');
 
-        $query = Product::query();
+        $query = Product::with('reviews');
 
         // Filter by brand ID
         if ($brandId) {
@@ -173,18 +173,16 @@ class ProductController extends Controller
             $query->where('stock', '>', 0);
         }
 
-        // Fetch products with review count and average rating
-        $products = $query->withCount('reviews')
-            ->withAvg('reviews', 'rating')
-            ->get()
-            ->map(function ($product) {
-                $product->reviews_count = $product->reviews_count;
-                $product->reviews_avg_rating = $product->reviews_avg_rating;
-                return $product;
-            });
+        // Fetch products and add average rating and review count
+        $products = $query->get()->map(function ($product) {
+            $product->average_rating = $product->reviews->avg('rating');
+            $product->number_of_reviews = $product->reviews->count();
+            return $product;
+        });
 
         return response()->json(['products' => $products]);
     }
+
 
 
 
