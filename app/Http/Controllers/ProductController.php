@@ -16,6 +16,12 @@ class ProductController extends Controller
     public function index() {
         $products = Product::with('variants')->get();
         $categories = Category::all()->groupBy('parent_id');
+
+        // Check if categories data is returned
+        if ($categories->isEmpty()) {
+            return 'No categories found!';
+        }
+
         return view('products.index', compact('products', 'categories'));
     }
 
@@ -182,9 +188,4 @@ class ProductController extends Controller
 
         return response()->json(['products' => $products]);
     }
-
-
-
-
-
 }

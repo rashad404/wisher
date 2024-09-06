@@ -130,104 +130,98 @@
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {
-        // Function to update price range display
-        function updatePriceRange(input, display) {
-            input.addEventListener('input', function() {
-                display.textContent = '$' + this.value;
+        const priceRange = document.getElementById('priceRange');
+        const priceRangeValue = document.getElementById('priceRangeValue');
+        const filterForm = document.getElementById('filterForm');
+
+        // Check if priceRange exists before adding event listener
+        if (priceRange && priceRangeValue) {
+            priceRange.addEventListener('input', function() {
+                priceRangeValue.textContent = '$' + this.value;
             });
         }
 
-        const priceRange = document.getElementById('priceRange');
-        const priceRangeValue = document.getElementById('priceRangeValue');
+        // Check for mobile price range
         const priceRangeMobile = document.getElementById('priceRangeMobile');
         const priceRangeValueMobile = document.getElementById('priceRangeValueMobile');
-        const filterForm = document.getElementById('filterForm');
-        const filterFormMobile = document.getElementById('filterFormMobile');
-        const productsGrid = document.getElementById('productsGrid');
 
-        // Set up price range listeners
-        if (priceRange && priceRangeValue) {
-            updatePriceRange(priceRange, priceRangeValue);
-        }
         if (priceRangeMobile && priceRangeValueMobile) {
-            updatePriceRange(priceRangeMobile, priceRangeValueMobile);
+            priceRangeMobile.addEventListener('input', function() {
+                priceRangeValueMobile.textContent = '$' + this.value;
+            });
         }
 
-        // Function to fetch products based on selected filters
-        function fetchProducts(form) {
-            const formData = new FormData(form);
-
-            fetch("{{ route('products.filter') }}", {
-                method: 'POST',
-                headers: {
-                    'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                    'Accept': 'application/json'
-                },
-                body: formData
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.products && Array.isArray(data.products)) {
-                    productsGrid.innerHTML = ''; // Clear existing products
-                    data.products.forEach(product => {
-                        const stars = generateStars(product.average_rating);
-                        const numberOfReviews = product.number_of_reviews || 0;
-
-                        const productCardHTML = `
-                            <div class="bg-white group relative border-b border-r border-gray-200 p-4 sm:p-6 m-1">
-                                <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-200 group-hover:opacity-75">
-                                    <img src="{{ asset('storage/') }}/${product.main_image}" alt="${product.name}" class="h-full w-full object-cover object-center">
-                                </div>
-                                <div class="pb-4 pt-10 text-center">
-                                    <h3 class="text-sm font-medium text-gray-900">
-                                        <a href="/products/${product.id}">
-                                            <span aria-hidden="true" class="absolute inset-0"></span>
-                                            ${product.name}
-                                        </a>
-                                    </h3>
-                                    <div class="mt-3 flex flex-col items-center">
-                                        <div class="flex items-center">
-                                            ${stars}
-                                        </div>
-                                        <p class="mt-1 text-sm text-gray-500">${numberOfReviews} reviews</p>
-                                    </div>
-                                    <p class="mt-4 text-base font-medium text-gray-900">$${parseFloat(product.price).toFixed(2)}</p>
-                                </div>
-                            </div>
-                        `;
-                        productsGrid.innerHTML += productCardHTML; // Append new product card
-                    });
+        // Check for filter form before adding change event
+        if (filterForm) {
+            filterForm.addEventListener('change', function() {
+                const formData = new FormData(filterForm);
+                if (priceRange) {
+                    formData.set('priceRange', priceRange.value);
                 }
-            })
-            .catch(error => console.error('Error fetching products:', error));
+
+                fetch("{{ route('products.filter') }}", {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}',
+                        'Accept': 'application/json'
+                    },
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const productsGrid = document.getElementById('productsGrid');
+                    if (productsGrid) {
+                        productsGrid.innerHTML = ''; // Clear existing products
+
+                        if (data.products && Array.isArray(data.products)) {
+                            data.products.forEach(product => {
+                                const averageRating = product.average_rating || 0; // Default to 0 if undefined
+                                const numberOfReviews = product.number_of_reviews || 0; // Default to 0 if undefined
+
+                                // Generate star rating HTML
+                                const stars = Array.from({ length: 5 }, (_, index) => {
+                                    const starClass = averageRating >= (index + 1) ? 'text-yellow-400' : 'text-gray-300';
+                                    return <svg class="${starClass} h-5 w-5" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M12 17.27l5.18 3.07-1.39-6.09L21 9.24l-6.14-.53L12 3 9.14 8.71 3 9.24l4.21 4.04-1.39 6.09L12 17.27z"/>
+                                    </svg>;
+                                }).join('');
+
+                                const productCardHTML =
+                                    <div class="bg-white shadow-md rounded-lg p-4">
+                                        <img src="${product.image_url}" alt="${product.title}" class="rounded-t-lg">
+                                        <h3 class="mt-2 text-lg font-semibold">${product.title}</h3>
+                                        <div class="flex items-center mb-2">
+                                            <div class="flex">${stars}</div>
+                                            <span class="text-gray-600 ml-2">(${numberOfReviews} reviews)</span>
+                                        </div>
+                                        <p class="text-gray-800">$${parseFloat(product.price).toFixed(2)}</p> <!-- Ensure price is a float -->
+                                        <a href="/products/${product.id}" class="mt-4 block text-center text-blue-600 hover:underline">View Product</a>
+                                    </div>
+                                ;
+                                productsGrid.insertAdjacentHTML('beforeend', productCardHTML);
+                            });
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            });
         }
 
-        // Event listeners for desktop and mobile filter forms
-        filterForm.addEventListener('change', function() {
-            fetchProducts(this);
-        });
+        // Toggle mobile filter menu
+        const hamburgerMenu = document.getElementById('hamburger-menu');
+        const mobileMenu = document.getElementById('mobile-menu');
 
-        filterFormMobile.addEventListener('change', function() {
-            fetchProducts(this);
-        });
-
-        // Toggle mobile menu
-        document.getElementById('hamburger-menu').addEventListener('click', function() {
-            const mobileMenu = document.getElementById('mobile-menu');
-            mobileMenu.classList.toggle('hidden');
-        });
+        if (hamburgerMenu) {
+            hamburgerMenu.addEventListener('click', function() {
+                if (mobileMenu) {
+                    mobileMenu.classList.toggle('hidden');
+                }
+            });
+        }
     });
-
-    // Function to generate star rating HTML
-    function generateStars(rating) {
-        let starsHTML = '';
-        for (let i = 0; i < 5; i++) {
-            starsHTML += i < rating ?
-                '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-yellow-400" fill="currentColor"><path d="M12 17.27L18.18 21 16.54 13.97 22 9.24l-9.19-.77L12 2 10.19 8.47 1 9.24l5.46 4.73L5.82 21z" /></svg>' :
-                '<svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-gray-400" fill="currentColor"><path d="M12 17.27L18.18 21 16.54 13.97 22 9.24l-9.19-.77L12 2 10.19 8.47 1 9.24l5.46 4.73L5.82 21z" /></svg>';
-        }
-        return starsHTML;
-    }
 </script>
+
 
 @endsection
