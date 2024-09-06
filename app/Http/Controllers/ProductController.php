@@ -17,12 +17,18 @@ class ProductController extends Controller
         $products = Product::with('variants')->get();
         $categories = Category::all()->groupBy('parent_id');
 
+        // Fetch brands, colors, and sizes for the filter
+        $brands = Brand::all();
+        $colors = Color::all();
+        $sizes = Size::all();
+
         // Check if categories data is returned
         if ($categories->isEmpty()) {
             return 'No categories found!';
         }
 
-        return view('products.index', compact('products', 'categories'));
+        // Pass the data to the view
+        return view('products.index', compact('products', 'categories', 'brands', 'colors', 'sizes'));
     }
 
     public function show($id) {

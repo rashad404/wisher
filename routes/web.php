@@ -23,6 +23,7 @@ use App\Http\Controllers\ContactGroupController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\UserWishPhotoController;
+use App\Http\Controllers\CardController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ContactInterestController;
 use App\Http\Controllers\WishPhotoTemplateController;
@@ -252,3 +253,6 @@ Route::get('wish-photos', [WishPhotoTemplateController::class, 'index'])->name('
 
 Route::get('api/wish-photo-templates', [WishPhotoTemplateController::class, 'apiIndex']);
 
+//Card part
+Route::get('/card', [CardController::class, 'index'])->name('card.index');
+Route::get('/checkout', [CardController::class, 'checkout'])->name('checkout');
