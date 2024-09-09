@@ -91,6 +91,17 @@
                             @endforeach
                         </div>
                     </div>
+                    <div class="mb-6">
+                        <h4 class="text-md font-semibold mb-2">Brand</h4>
+                        <div class="space-y-2">
+                            @foreach ($brands as $brand)
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="mr-2" name="brands[]" value="{{ $brand->id }}">
+                                    <span>{{ $brand->name }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
                 </form>
             </div>
         </div>
@@ -250,5 +261,6 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
 </script>
 @endsection
