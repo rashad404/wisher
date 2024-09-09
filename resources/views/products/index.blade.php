@@ -21,6 +21,33 @@
         color: blue;
         background-color: white;
     }
+
+    /* CSS for desktop dropdowns */
+    .subcategory-list {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 112%;
+        background-color: white;
+        border: 1px solid #ddd;
+        border-radius: 0.25rem;
+        z-index: 10;
+        min-width: 200px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .category-item {
+        position: relative;
+    }
+
+    .category-item:hover .subcategory-list {
+        display: block;
+    }
+
+    .subcategory-list a {
+        padding: 0.5rem 1rem;
+        display: block;
+    }
 </style>
 
 <div class="bg-gray-100 py-12">
@@ -67,11 +94,11 @@
                 </div>
                 <ul class="mt-2 space-y-2 bg-white p-4 rounded-md shadow">
                     @foreach ($categories[null] as $parentCategory)
-                        <li class="relative group">
+                        <li class="relative category-item">
                             <a href="{{ route('category', ['id' => $parentCategory->id]) }}" class="block p-2 rounded-md category-link hover:bg-gray-200">{{ $parentCategory->name }}</a>
 
                             <!-- Subcategory List -->
-                            <ul class="absolute left-full top-0 mt-0 hidden w-48 bg-white border border-gray-200 rounded-md shadow-lg group-hover:block z-10 ml-4">
+                            <ul class="subcategory-list">
                                 @if(isset($categories[$parentCategory->id]))
                                     @foreach ($categories[$parentCategory->id] as $subcategory)
                                         <li>
