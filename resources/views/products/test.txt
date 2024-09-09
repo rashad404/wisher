@@ -1,0 +1,7 @@
+<h2 class="text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('messages.giftsTitle') }}</h2>
+<p class="text-center mt-4 mb-16 text-lg text-gray-600">{{ __('messages.giftsSubTitle') }}</p>
+
+
+@foreach ($products as $product)
+                            <x-product-card :product="$product" />
+                        @endforeach

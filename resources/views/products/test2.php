@@ -152,7 +152,7 @@
                         <!-- Color Filter -->
                         <div class="mb-6">
                             <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('desktopColorSection', 'desktopColorToggle')">
-                                Color<span class="toggle-icon" id="desktopColorToggle">&#8594;</span>
+                                Color <span class="toggle-icon" id="desktopColorToggle">+</span>
                             </h4>
                             <div class="collapsible-content" id="desktopColorSection" style="display: none;">
                                 <div class="space-y-2">
@@ -170,7 +170,7 @@
                         <!-- Size Filter -->
                         <div class="mb-6">
                             <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('desktopSizeSection', 'desktopSizeToggle')">
-                                Size <span class="toggle-icon" id="desktopColorToggle">&#8594;</span>
+                                Size <span class="toggle-icon" id="desktopSizeToggle">+</span>
                             </h4>
                             <div class="collapsible-content" id="desktopSizeSection" style="display: none;">
                                 <div class="space-y-2">
@@ -187,7 +187,7 @@
                         <!-- Brand Filter -->
                         <div class="mb-6">
                             <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('desktopBrandSection', 'desktopBrandToggle')">
-                                Brand <span class="toggle-icon" id="desktopColorToggle">&#8594;</span>
+                                Brand <span class="toggle-icon" id="desktopBrandToggle">+</span>
                             </h4>
                             <div class="collapsible-content" id="desktopBrandSection" style="display: none;">
                                 <div class="space-y-2">
@@ -231,10 +231,12 @@
 
             <!-- Products Grid -->
             <div class="flex-1">
-                <div id="productsGrid" class="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    @foreach ($products as $product)
-                        <x-product-card :product="$product" />
-                    @endforeach
+                <div class="-mx-px grid grid-cols-2 border-l border-gray-200 sm:mx-0 md:grid-cols-3 lg:grid-cols-4">
+                    <div id="productsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                        @foreach ($products as $product)
+                            <x-product-card :product="$product" />
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
@@ -394,10 +396,10 @@ function toggleSection(sectionId, toggleId) {
 
     if (section.style.display === 'none' || section.style.display === '') {
         section.style.display = 'block';
-        toggleIcon.innerHTML = '&#8595;'; // Down arrow
+        toggleIcon.textContent = '-';
     } else {
         section.style.display = 'none';
-        toggleIcon.innerHTML = '&#8594;'; // Right arrow
+        toggleIcon.textContent = '+';
     }
 }
 

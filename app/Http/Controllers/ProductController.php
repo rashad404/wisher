@@ -17,12 +17,10 @@ class ProductController extends Controller
         $products = Product::with('variants')->get();
         $categories = Category::all()->groupBy('parent_id');
 
-        // Fetch brands, colors, and sizes for the filter
         $brands = Brand::all();
         $colors = Color::all();
         $sizes = Size::all();
 
-        // Check if categories data is returned
         if ($categories->isEmpty()) {
             return 'No categories found!';
         }
@@ -108,17 +106,19 @@ class ProductController extends Controller
         $colors = Color::all();
         $sizes = Size::all();
 
-        return view('products.category', compact('category', 'products', 'brands', 'colors', 'sizes'));
+        $categories = Category::with('subcategories')->get()->groupBy('parent_id');
+
+        return view('products.category', compact('category', 'products', 'brands', 'colors', 'sizes', 'categories'));
     }
 
     public function showBrand($id)
     {
         $brand = Brand::findOrFail($id);
         $products = Product::where('brand_id', $id)->get();
-        $categories = Category::all();
+        //$categories = Category::all();
         $colors = Color::all();
         $sizes = Size::all();
-
+        $categories = Category::with('subcategories')->get()->groupBy('parent_id');
         return view('products.brand', compact('brand', 'products', 'categories', 'colors', 'sizes'));
     }
 
