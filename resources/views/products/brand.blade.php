@@ -73,10 +73,10 @@
                         </div>
                     </div>
 
-                    <!--Color part Mobile-->
+                    <!-- Color Part Mobile -->
                     <div class="mb-6">
                         <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('colorSection', 'colorToggle')">
-                            Color <span class="toggle-icon" id="colorToggle">+</span>
+                            Color <span class="toggle-icon" id="colorToggle">&#8594;</span>
                         </h4>
                         <div class="collapsible-content" id="colorSection" style="display: none;">
                             <div class="space-y-2">
@@ -91,10 +91,10 @@
                         </div>
                     </div>
 
-                    <!--Size part Mobile-->
+                    <!-- Size Part Mobile -->
                     <div class="mb-6">
                         <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('sizeSection', 'sizeToggle')">
-                            Size <span class="toggle-icon" id="sizeToggle">+</span>
+                            Size <span class="toggle-icon" id="sizeToggle">&#8594;</span>
                         </h4>
                         <div class="collapsible-content" id="sizeSection" style="display: none;">
                             <div class="space-y-2">
@@ -127,10 +127,10 @@
                         </div>
                     </div>
 
-                    <!--Color part Desktop-->
+                    <!-- Color Filter -->
                     <div class="mb-6">
                         <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('desktopColorSection', 'desktopColorToggle')">
-                            Color <span class="toggle-icon" id="desktopColorToggle">+</span>
+                            Color<span class="toggle-icon" id="desktopColorToggle">&#8594;</span>
                         </h4>
                         <div class="collapsible-content" id="desktopColorSection" style="display: none;">
                             <div class="space-y-2">
@@ -145,10 +145,10 @@
                         </div>
                     </div>
 
-                    <!--Size part Desktop-->
+                    <!-- Size Filter -->
                     <div class="mb-6">
                         <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('desktopSizeSection', 'desktopSizeToggle')">
-                            Size <span class="toggle-icon" id="desktopSizeToggle">+</span>
+                            Size <span class="toggle-icon" id="desktopSizeToggle">&#8594;</span>
                         </h4>
                         <div class="collapsible-content" id="desktopSizeSection" style="display: none;">
                             <div class="space-y-2">
@@ -357,10 +357,10 @@ function toggleSection(sectionId, toggleId) {
 
     if (section.style.display === 'none' || section.style.display === '') {
         section.style.display = 'block';
-        toggleIcon.textContent = '-';
+        toggleIcon.innerHTML = '&#8595;'; // Down arrow
     } else {
         section.style.display = 'none';
-        toggleIcon.textContent = '+';
+        toggleIcon.innerHTML = '&#8594;'; // Right arrow
     }
 }
 

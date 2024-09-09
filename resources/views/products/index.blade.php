@@ -83,7 +83,7 @@
 
                         <!-- Color Part Mobile -->
                         <div class="mb-6">
-                            <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('colorSection', 'colorToggle')">Color <span class="toggle-icon" id="colorToggle">+</span></h4>
+                            <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('colorSection', 'colorToggle')">Color <span class="toggle-icon" id="colorToggle">&#8594;</span></h4>
                             <div class="collapsible-content" id="colorSection" style="display: none;">
                                 <div class="space-y-2">
                                     @foreach ($colors as $color)
@@ -99,7 +99,7 @@
 
                         <!-- Size Part Mobile -->
                         <div class="mb-6">
-                            <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('sizeSection', 'sizeToggle')">Size <span class="toggle-icon" id="sizeToggle">+</span></h4>
+                            <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('sizeSection', 'sizeToggle')">Size <span class="toggle-icon" id="sizeToggle">&#8594;</span></h4>
                             <div class="collapsible-content" id="sizeSection" style="display: none;">
                                 <div class="space-y-2">
                                     @foreach ($sizes as $size)
@@ -114,7 +114,7 @@
 
                         <!-- Brand Part Mobile -->
                         <div class="mb-6">
-                            <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('brandSection', 'brandToggle')">Brands <span class="toggle-icon" id="brandToggle">+</span></h4>
+                            <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('brandSection', 'brandToggle')">Brands <span class="toggle-icon" id="brandToggle">&#8594;</span></h4>
                             <div class="collapsible-content" id="brandSection" style="display: none;">
                                 <div class="space-y-2">
                                     @foreach ($brands as $brand)
@@ -170,7 +170,7 @@
                         <!-- Size Filter -->
                         <div class="mb-6">
                             <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('desktopSizeSection', 'desktopSizeToggle')">
-                                Size <span class="toggle-icon" id="desktopColorToggle">&#8594;</span>
+                                Size <span class="toggle-icon" id="desktopSizeToggle">&#8594;</span>
                             </h4>
                             <div class="collapsible-content" id="desktopSizeSection" style="display: none;">
                                 <div class="space-y-2">
@@ -187,7 +187,7 @@
                         <!-- Brand Filter -->
                         <div class="mb-6">
                             <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('desktopBrandSection', 'desktopBrandToggle')">
-                                Brand <span class="toggle-icon" id="desktopColorToggle">&#8594;</span>
+                                Brand <span class="toggle-icon" id="desktopBrandToggle">&#8594;</span>
                             </h4>
                             <div class="collapsible-content" id="desktopBrandSection" style="display: none;">
                                 <div class="space-y-2">
@@ -400,12 +400,6 @@ function toggleSection(sectionId, toggleId) {
         toggleIcon.innerHTML = '&#8594;'; // Right arrow
     }
 }
-
-document.getElementById('hamburger-menu').addEventListener('click', function () {
-    const mobileMenu = document.getElementById('mobile-menu');
-    mobileMenu.classList.toggle('hidden');
-});
-
 document.querySelectorAll('.category-link').forEach(item => {
     item.addEventListener('click', function () {
         const categoryId = this.getAttribute('data-category-id');
