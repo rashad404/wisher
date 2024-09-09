@@ -25,30 +25,41 @@
                             <span id="priceRangeValueMobile">$0</span>
                         </div>
                     </div>
+
+                    <!--Color part Mobile-->
                     <div class="mb-6">
-                        <h4 class="text-md font-semibold mb-2">Color</h4>
-                        <div class="space-y-2">
-                            @foreach ($colors as $color)
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2" name="colors[]" value="{{ $color->id }}">
-                                    <span class="inline-block w-4 h-4 mr-2" style="background-color: {{ strtolower($color->name) }};"></span>
-                                    <span>{{ $color->name }}</span>
-                                </label>
-                            @endforeach
+                        <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('colorSection', 'colorToggle')">
+                            Color <span class="toggle-icon" id="colorToggle">+</span>
+                        </h4>
+                        <div class="collapsible-content" id="colorSection" style="display: none;">
+                            <div class="space-y-2">
+                                @foreach ($colors as $color)
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-2" name="colors[]" value="{{ $color->id }}">
+                                        <span class="inline-block w-4 h-4 mr-2" style="background-color: {{ strtolower($color->name) }};"></span>
+                                        <span>{{ $color->name }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
+
+                    <!--Size part Mobile-->
                     <div class="mb-6">
-                        <h4 class="text-md font-semibold mb-2">Size</h4>
-                        <div class="space-y-2">
-                            @foreach ($sizes as $size)
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2" name="sizes[]" value="{{ $size->id }}">
-                                    <span>{{ $size->name }}</span>
-                                </label>
-                            @endforeach
+                        <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('sizeSection', 'sizeToggle')">
+                            Size <span class="toggle-icon" id="sizeToggle">+</span>
+                        </h4>
+                        <div class="collapsible-content" id="sizeSection" style="display: none;">
+                            <div class="space-y-2">
+                                @foreach ($sizes as $size)
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-2" name="sizes[]" value="{{ $size->id }}">
+                                        <span>{{ $size->name }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
-                    <!-- Other Filters if needed -->
                 </form>
             </div>
         </div>
@@ -68,27 +79,39 @@
                             <span id="priceRangeValue">$0</span>
                         </div>
                     </div>
+
+                    <!--Color part Desktop-->
                     <div class="mb-6">
-                        <h4 class="text-md font-semibold mb-2">Color</h4>
-                        <div class="space-y-2">
-                            @foreach ($colors as $color)
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2" name="colors[]" value="{{ $color->id }}">
-                                    <span class="inline-block w-4 h-4 mr-2" style="background-color: {{ strtolower($color->name) }};"></span>
-                                    <span>{{ $color->name }}</span>
-                                </label>
-                            @endforeach
+                        <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('desktopColorSection', 'desktopColorToggle')">
+                            Color <span class="toggle-icon" id="desktopColorToggle">+</span>
+                        </h4>
+                        <div class="collapsible-content" id="desktopColorSection" style="display: none;">
+                            <div class="space-y-2">
+                                @foreach ($colors as $color)
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-2" name="colors[]" value="{{ $color->id }}">
+                                        <span class="inline-block w-4 h-4 mr-2" style="background-color: {{ strtolower($color->name) }};"></span>
+                                        <span>{{ $color->name }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
+
+                    <!--Size part Desktop-->
                     <div class="mb-6">
-                        <h4 class="text-md font-semibold mb-2">Size</h4>
-                        <div class="space-y-2">
-                            @foreach ($sizes as $size)
-                                <label class="flex items-center">
-                                    <input type="checkbox" class="mr-2" name="sizes[]" value="{{ $size->id }}">
-                                    <span>{{ $size->name }}</span>
-                                </label>
-                            @endforeach
+                        <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('desktopSizeSection', 'desktopSizeToggle')">
+                            Size <span class="toggle-icon" id="desktopSizeToggle">+</span>
+                        </h4>
+                        <div class="collapsible-content" id="desktopSizeSection" style="display: none;">
+                            <div class="space-y-2">
+                                @foreach ($sizes as $size)
+                                    <label class="flex items-center">
+                                        <input type="checkbox" class="mr-2" name="sizes[]" value="{{ $size->id }}">
+                                        <span>{{ $size->name }}</span>
+                                    </label>
+                                @endforeach
+                            </div>
                         </div>
                     </div>
                 </form>
@@ -250,5 +273,19 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+//Make mobile part Collapsible
+function toggleSection(sectionId, toggleId) {
+    const section = document.getElementById(sectionId);
+    const toggleIcon = document.getElementById(toggleId);
+
+    if (section.style.display === 'none' || section.style.display === '') {
+        section.style.display = 'block';
+        toggleIcon.textContent = '-';
+    } else {
+        section.style.display = 'none';
+        toggleIcon.textContent = '+';
+    }
+}
 </script>
 @endsection
