@@ -27,7 +27,7 @@
         display: none;
         position: absolute;
         top: 0;
-        left: 112%;
+        left: calc(100% + 12px);
         background-color: white;
         border: 1px solid #ddd;
         border-radius: 0.25rem;
@@ -59,11 +59,12 @@
             <!-- Mobile Hamburger Menu -->
             <div class="lg:hidden mb-4">
                 <button id="hamburger-menu" class="bg-blue-600 text-white p-2 rounded-md w-full flex justify-between items-center">
-                    <span class="text-lg font-semibold">Categories</span>
+                    <span class="text-lg font-semibold">Categories and Filters</span>
                     <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
                     </svg>
                 </button>
+
                 <!-- Mobile Category List -->
                 <ul id="mobile-menu" class="hidden space-y-2 bg-white p-4 rounded-md shadow">
                     @foreach ($categories[null] as $parentCategory)
@@ -84,10 +85,64 @@
                             </ul>
                         </li>
                     @endforeach
+
+                    <!-- Filters Section -->
+                    <h3 class="text-lg font-semibold mb-4 mt-6">Filters</h3>
+
+                    <!-- Price Range -->
+                    <div class="mb-6">
+                        <h4 class="text-md font-semibold mb-2">Price Range</h4>
+                        <input type="range" min="0" max="1000" value="0" step="10" class="w-full" id="priceRangeMobile" name="priceRange">
+                        <div class="flex justify-between text-sm mt-2">
+                            <span>$0</span>
+                            <span id="priceRangeValueMobile">$0</span>
+                        </div>
+                    </div>
+
+                    <!-- Color Filter (Collapsible) -->
+                    <div class="mb-6">
+                        <h4 class="text-md font-semibold mb-2 cursor-pointer" id="colorToggleMobile">Color</h4>
+                        <div class="space-y-2 hidden" id="colorOptionsMobile">
+                            @foreach ($colors as $color)
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="mr-2" name="colors[]" value="{{ $color->id }}">
+                                    <span class="inline-block w-4 h-4 mr-2" style="background-color: {{ strtolower($color->name) }};"></span>
+                                    <span>{{ $color->name }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Size Filter (Collapsible) -->
+                    <div class="mb-6">
+                        <h4 class="text-md font-semibold mb-2 cursor-pointer" id="sizeToggleMobile">Size</h4>
+                        <div class="space-y-2 hidden" id="sizeOptionsMobile">
+                            @foreach ($sizes as $size)
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="mr-2" name="sizes[]" value="{{ $size->id }}">
+                                    <span>{{ $size->name }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
+
+                    <!-- Brand Filter (Collapsible) -->
+                    <div class="mb-6">
+                        <h4 class="text-md font-semibold mb-2 cursor-pointer" id="brandToggleMobile">Brand</h4>
+                        <div class="space-y-2 hidden" id="brandOptionsMobile">
+                            @foreach ($brands as $brand)
+                                <label class="flex items-center">
+                                    <input type="checkbox" class="mr-2" name="brands[]" value="{{ $brand->id }}">
+                                    <span>{{ $brand->name }}</span>
+                                </label>
+                            @endforeach
+                        </div>
+                    </div>
                 </ul>
             </div>
 
-            <!-- Desktop Category Filter -->
+
+            <!-- Desktop Category Filter and Filters -->
             <div class="hidden lg:block w-1/4 pr-4">
                 <div class="bg-blue-600 text-white p-2 rounded-md">
                     <h3 class="text-lg font-semibold">Categories</h3>
@@ -112,6 +167,70 @@
                         </li>
                     @endforeach
                 </ul>
+
+                <!-- Filters Section -->
+                <div class="mt-6">
+                    <div class="bg-blue-600 text-white p-2 rounded-md">
+                        <h3 class="text-lg font-semibold">Filters</h3>
+                    </div>
+
+                    <div class="bg-white p-4 rounded-md shadow h-full mt-2 space-y-2">
+                        <form id="filterForm">
+                            @csrf
+                            <input type="hidden" name="category_id" value="{{ $category->id ?? '' }}">
+
+                            <!-- Price Range -->
+                            <div class="mb-6">
+                                <h4 class="text-md font-semibold mb-2">Price Range</h4>
+                                <input type="range" min="0" max="1000" value="0" step="10" class="w-full" id="priceRange" name="priceRange">
+                                <div class="flex justify-between text-sm mt-2">
+                                    <span>$0</span>
+                                    <span id="priceRangeValue">$0</span>
+                                </div>
+                            </div>
+
+                            <!-- Color Filter (Collapsible) -->
+                            <div class="mb-6">
+                                <h4 class="text-md font-semibold mb-2 cursor-pointer" id="colorToggle">Color</h4>
+                                <div class="space-y-2" id="colorOptions" style="display: none;">
+                                    @foreach ($colors as $color)
+                                        <label class="flex items-center">
+                                            <input type="checkbox" class="mr-2" name="colors[]" value="{{ $color->id }}">
+                                            <span class="inline-block w-4 h-4 mr-2" style="background-color: {{ strtolower($color->name) }};"></span>
+                                            <span>{{ $color->name }}</span>
+                                        </label>
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            <!-- Size Filter (Collapsible) -->
+                            <div class="mb-6">
+                                <h4 class="text-md font-semibold mb-2 cursor-pointer" id="sizeToggle">Size</h4>
+                                <div class="space-y-2" id="sizeOptions" style="display: none;">
+                                    @foreach ($sizes as $size)
+                                        <label class="flex items-center">
+                                            <input type="checkbox" class="mr-2" name="sizes[]" value="{{ $size->id }}">
+                                            <span>{{ $size->name }}</span>
+                                        </label>
+                                    @endforeach
+                                </div>
+                            </div>
+
+                            <!-- Brand Filter (Collapsible) -->
+                            <div class="mb-6">
+                                <h4 class="text-md font-semibold mb-2 cursor-pointer" id="brandToggle">Brand</h4>
+                                <div class="space-y-2" id="brandOptions" style="display: none;">
+                                    @foreach ($brands as $brand)
+                                        <label class="flex items-center">
+                                            <input type="checkbox" class="mr-2" name="brands[]" value="{{ $brand->id }}">
+                                            <span>{{ $brand->name }}</span>
+                                        </label>
+                                    @endforeach
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
             </div>
 
             <!-- Products Grid -->
@@ -142,5 +261,42 @@
             }
         });
     });
+
+    // Toggle Color options
+    document.getElementById('colorToggle').addEventListener('click', function () {
+        const colorOptions = document.getElementById('colorOptions');
+        colorOptions.style.display = colorOptions.style.display === 'none' ? 'block' : 'none';
+    });
+
+    // Toggle Size options
+    document.getElementById('sizeToggle').addEventListener('click', function () {
+        const sizeOptions = document.getElementById('sizeOptions');
+        sizeOptions.style.display = sizeOptions.style.display === 'none' ? 'block' : 'none';
+    });
+
+    // Toggle Brand options
+    document.getElementById('brandToggle').addEventListener('click', function () {
+        const brandOptions = document.getElementById('brandOptions');
+        brandOptions.style.display = brandOptions.style.display === 'none' ? 'block' : 'none';
+    });
+
+    // Toggle Color options (Mobile)
+    document.getElementById('colorToggleMobile').addEventListener('click', function () {
+        const colorOptions = document.getElementById('colorOptionsMobile');
+        colorOptions.classList.toggle('hidden');
+    });
+
+    // Toggle Size options (Mobile)
+    document.getElementById('sizeToggleMobile').addEventListener('click', function () {
+        const sizeOptions = document.getElementById('sizeOptionsMobile');
+        sizeOptions.classList.toggle('hidden');
+    });
+
+    // Toggle Brand options (Mobile)
+    document.getElementById('brandToggleMobile').addEventListener('click', function () {
+        const brandOptions = document.getElementById('brandOptionsMobile');
+        brandOptions.classList.toggle('hidden');
+    });
+
 </script>
 @endsection
