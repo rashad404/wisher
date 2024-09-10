@@ -46,9 +46,15 @@
                         <ul class="space-y-2 bg-white p-4 rounded-md shadow">
                             @foreach ($categories[null] as $parentCategory)
                                 <li class="relative group">
-                                    <a href="javascript:void(0)" class="block p-2 rounded-md category-link hover:bg-gray-200" data-category-id="{{ $parentCategory->id }}">
-                                        {{ $parentCategory->name }}
-                                    </a>
+                                    <div class="flex justify-between items-center">
+                                        <a href="javascript:void(0)"
+                                           class="block p-2 rounded-md category-link hover:bg-gray-200"
+                                           data-category-id="{{ $parentCategory->id }}"
+                                           onclick="toggleSubcategories('subcategory-{{ $parentCategory->id }}', 'arrow-{{ $parentCategory->id }}')">
+                                            {{ $parentCategory->name }}
+                                        </a>
+                                        <span class="toggle-icon" id="arrow-{{ $parentCategory->id }}">&#8594;</span>
+                                    </div>
                                     <!-- Subcategory List (Initially hidden) -->
                                     <ul id="subcategory-{{ $parentCategory->id }}" class="mt-2 hidden bg-white border border-gray-200 rounded-md shadow-lg">
                                         @if(isset($categories[$parentCategory->id]))
@@ -208,19 +214,20 @@
                         <h4 class="text-lg font-semibold mb-2">Categories</h4>
                         <ul class="mt-2 space-y-2 bg-white p-4 rounded-md shadow">
                             @foreach ($categories[null] as $parentCategory)
-                                <li class="relative group">
-                                    <a href="{{ route('category', ['id' => $parentCategory->id]) }}" class="block p-2 rounded-md category-link hover:bg-gray-200">
-                                        {{ $parentCategory->name }}
-                                    </a>
+                                <li class="relative">
+                                    <div class="flex justify-between items-center cursor-pointer"
+                                         onclick="toggleSubcategories('desktop-subcat-{{ $parentCategory->id }}', 'desktop-arrow-{{ $parentCategory->id }}')">
+                                        <span class="block p-2 rounded-md category-link hover:bg-gray-200">{{ $parentCategory->name }}</span>
+                                        <!-- Use different arrows for collapsed and expanded states -->
+                                        <span class="toggle-icon" id="desktop-arrow-{{ $parentCategory->id }}">&#8594;</span>
+                                    </div>
 
                                     <!-- Subcategory List -->
-                                    <ul class="absolute left-full top-0 mt-0 hidden w-48 bg-white border border-gray-200 rounded-md shadow-lg group-hover:block z-10 ml-4">
-                                        @if(isset($categories[$parentCategory->id]))
+                                    <ul class="hidden mt-2 ml-4 bg-white border border-gray-200 rounded-md shadow-lg" id="desktop-subcat-{{ $parentCategory->id }}">
+                                        @if(isset($categories[$parentCategory->id]) && count($categories[$parentCategory->id]) > 0)
                                             @foreach ($categories[$parentCategory->id] as $subcategory)
                                                 <li>
-                                                    <a href="{{ route('category', ['id' => $subcategory->id]) }}" class="block p-2 rounded-md subcategory-link">
-                                                        {{ $subcategory->name }}
-                                                    </a>
+                                                    <a href="{{ route('category', ['id' => $subcategory->id]) }}" class="block p-2 rounded-md subcategory-link hover:bg-gray-100">{{ $subcategory->name }}</a>
                                                 </li>
                                             @endforeach
                                         @else
@@ -407,47 +414,19 @@ function toggleSection(sectionId, toggleId) {
     }
 }
 
+//Category and Subcategory part
+function toggleSubcategories(subcategoryId, arrowId) {
+    const subcategory = document.getElementById(subcategoryId);
+    const arrow = document.getElementById(arrowId);
 
-// Toggle subcategory visibility
-document.querySelectorAll('.category-link').forEach(item => {
-    item.addEventListener('click', function () {
-        const categoryId = this.getAttribute('data-category-id');
-        const subcategoryList = document.getElementById('subcategory-' + categoryId);
-        if (subcategoryList) {
-            subcategoryList.classList.toggle('hidden');
-        }
-    });
-});
-
-// To ensure subcategory lists behave correctly
-document.querySelectorAll('.relative').forEach(item => {
-    const subcategoryList = item.querySelector('ul');
-
-    item.addEventListener('mouseenter', () => {
-        if (subcategoryList) {
-            subcategoryList.classList.remove('hidden');
-        }
-    });
-
-    item.addEventListener('mouseleave', () => {
-        if (subcategoryList) {
-            setTimeout(() => {
-                if (!subcategoryList.matches(':hover') && !item.matches(':hover')) {
-                    subcategoryList.classList.add('hidden');
-                }
-            }, 100);
-        }
-    });
-
-    if (subcategoryList) {
-        subcategoryList.addEventListener('mouseenter', () => {
-            subcategoryList.classList.remove('hidden');
-        });
-
-        subcategoryList.addEventListener('mouseleave', () => {
-            subcategoryList.classList.add('hidden');
-        });
+    if (subcategory.style.display === 'none' || subcategory.style.display === '') {
+        subcategory.style.display = 'block';
+        arrow.innerHTML = '&#8595;';
+    } else {
+        subcategory.style.display = 'none';
+        arrow.innerHTML = '&#8594;';
     }
-});
+}
+
 </script>
 @endsection
