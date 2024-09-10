@@ -384,6 +384,7 @@ function toggleSubcategories(subcategoryId, arrowId) {
         arrow.innerHTML = '&#8594;';
     }
 }
+/**/
 
 </script>
 @endsection
