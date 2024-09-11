@@ -8,7 +8,7 @@
         </div>
         <div class="hidden lg:flex lg:gap-x-12">
             @php
-                
+
 
             @endphp
             @foreach ($menus as $menu)
@@ -66,28 +66,42 @@
                               </div>
                             </div>
                           </div>
-                          
+
                     </div>
                 @endif
             @endforeach
         </div>
         <div class="flex flex-1 items-center justify-end gap-x-6">
             <!-- Language Dropdown -->
-            <div class="relative z-50">
-                <button type="button" class="text-white text-sm font-semibold leading-6 focus:outline-none" id="languageButton">
-                    {{ strtoupper(app()->getLocale()) }}
-                </button>
-                <div class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden" id="languageDropdown">
-                    <div class="py-1">
-                        <!-- Language options -->
-                        @foreach (['en', 'az', 'es', 'fr', 'de', 'pt', 'ru', 'zh-CN', 'ar', 'hi', 'ja', 'it'] as $lang)
-                            <a href="{{ route('switchLang', $lang) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                {{ __('messages.' . $lang) }}
-                            </a>
-                        @endforeach
+            <div class="flex flex-1 items-center justify-end gap-x-6">
+                <!-- Language Dropdown -->
+                <div class="relative z-50 flex items-center">
+                    <button type="button" class="text-white text-sm font-semibold leading-6 focus:outline-none" id="languageButton">
+                        {{ strtoupper(app()->getLocale()) }}
+                    </button>
+                    <div class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden" id="languageDropdown">
+                        <div class="py-1">
+                            @foreach (['en', 'az', 'es', 'fr', 'de', 'pt', 'ru', 'zh-CN', 'ar', 'hi', 'ja', 'it'] as $lang)
+                                <a href="{{ route('switchLang', $lang) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                    {{ __('messages.' . $lang) }}
+                                </a>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
+
+                <!-- Shopping Cart -->
+                <div class="relative z-50 flex items-center">
+                    <a href="{{ route('cart.index') }}" class="relative">
+                        <i class="fas fa-shopping-cart text-2xl text-white"></i>
+                        <span class="absolute w-5 h-5 flex items-center justify-center"
+                              style="background-color: #ffcf31; color: black; font-size: 12px; border-radius: 50%; top: -10px; left: -10px;">
+                            {{ session('cartCount', $cartCount ?? 0) }}
+                        </span>
+                    </a>
+                </div>
             </div>
+
 
             @auth
                 <!-- User Profile with Photo and Dropdown -->
@@ -150,7 +164,7 @@
                     </svg>
                 </button>
             </div>
-            
+
             <div class="mt-6 flow-root px-6 py-6">
                 <div class="-my-6 divide-y divide-gray-500/10">
 

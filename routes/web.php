@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\CardController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\GiftController;
 use App\Http\Controllers\MainController;
@@ -23,7 +25,6 @@ use App\Http\Controllers\ContactGroupController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\UserWishPhotoController;
-use App\Http\Controllers\CardController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ContactInterestController;
 use App\Http\Controllers\WishPhotoTemplateController;
@@ -253,6 +254,8 @@ Route::get('wish-photos', [WishPhotoTemplateController::class, 'index'])->name('
 
 Route::get('api/wish-photo-templates', [WishPhotoTemplateController::class, 'apiIndex']);
 
-//Card part
-Route::get('/card', [CardController::class, 'index'])->name('card.index');
-Route::get('/checkout', [CardController::class, 'checkout'])->name('checkout');
+//Cart part
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/update/{cartId}', [CartController::class, 'updateCart'])->name('cart.update');
+Route::get('/cart/remove/{cartId}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+Route::post('/products/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
