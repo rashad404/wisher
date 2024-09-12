@@ -16,7 +16,17 @@ class ProductController extends Controller
     public function index() {
         $products = Product::with('variants')->get();
         $categories = Category::all()->groupBy('parent_id');
-        return view('products.index', compact('products', 'categories'));
+
+        $brands = Brand::all();
+        $colors = Color::all();
+        $sizes = Size::all();
+
+        if ($categories->isEmpty()) {
+            return 'No categories found!';
+        }
+
+        // Pass the data to the view
+        return view('products.index', compact('products', 'categories', 'brands', 'colors', 'sizes'));
     }
 
     public function show($id) {
@@ -96,7 +106,20 @@ class ProductController extends Controller
         $colors = Color::all();
         $sizes = Size::all();
 
-        return view('products.category', compact('category', 'products', 'brands', 'colors', 'sizes'));
+        $categories = Category::with('subcategories')->get()->groupBy('parent_id');
+
+        return view('products.category', compact('category', 'products', 'brands', 'colors', 'sizes', 'categories'));
+    }
+
+    public function showBrand($id)
+    {
+        $brand = Brand::findOrFail($id);
+        $products = Product::where('brand_id', $id)->get();
+        //$categories = Category::all();
+        $colors = Color::all();
+        $sizes = Size::all();
+        $categories = Category::with('subcategories')->get()->groupBy('parent_id');
+        return view('products.brand', compact('brand', 'products', 'categories', 'colors', 'sizes'));
     }
 
     public function filter(Request $request)
@@ -105,11 +128,17 @@ class ProductController extends Controller
         $selectedColors = $request->input('colors', []);
         $selectedSizes = $request->input('sizes', []);
         $selectedBrands = $request->input('brands', []);
+        $brandId = $request->input('brand_id');
         $inStock = $request->input('in_stock');
         $subcategoryId = $request->input('subcategoryId');
         $categoryId = $request->input('category_id');
 
-        $query = Product::query();
+        $query = Product::with('reviews');
+
+        // Filter by brand ID
+        if ($brandId) {
+            $query->where('brand_id', $brandId);
+        }
 
         if ($categoryId) {
             $categoryIds = Category::where('id', $categoryId)
@@ -127,14 +156,13 @@ class ProductController extends Controller
             $query->where('price', '<=', $priceRange);
         }
 
-
         // Filter by both color and size for exact match
         if (!empty($selectedColors) && !empty($selectedSizes)) {
             $query->whereHas('productVariants', function ($q) use ($selectedColors, $selectedSizes) {
                 $q->whereIn('color_id', $selectedColors)
-                ->whereIn('size_id', $selectedSizes);
+                  ->whereIn('size_id', $selectedSizes);
             });
-        } 
+        }
         // Filter by color only
         else if (!empty($selectedColors)) {
             $query->whereHas('productVariants', function ($q) use ($selectedColors) {
@@ -147,33 +175,23 @@ class ProductController extends Controller
                 $q->whereIn('size_id', $selectedSizes);
             });
         }
-        
+
+        // Filter by selected brands (if any)
         if (!empty($selectedBrands)) {
-            $query->whereHas('productVariants', function ($q) use ($selectedBrands) {
-                $q->whereIn('size_id', $selectedBrands);
-            });
+            $query->whereIn('brand_id', $selectedBrands);
         }
-        
 
         if ($inStock) {
             $query->where('stock', '>', 0);
         }
 
-        // Fetch products with review count and average rating
-        $products = $query->withCount('reviews')
-            ->withAvg('reviews', 'rating')
-            ->get()
-            ->map(function ($product) {
-                $product->reviews_count = $product->reviews_count;
-                $product->reviews_avg_rating = $product->reviews_avg_rating;
-                return $product;
-            });
-
-
+        // Fetch products and add average rating and review count
+        $products = $query->get()->map(function ($product) {
+            $product->average_rating = $product->reviews->avg('rating');
+            $product->number_of_reviews = $product->reviews->count();
+            return $product;
+        });
 
         return response()->json(['products' => $products]);
     }
-
-
-
 }

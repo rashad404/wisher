@@ -32,15 +32,13 @@
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
                 </svg>
             </button>
-
             <!-- Mobile Filter Menu -->
             <div id="mobile-menu" class="hidden bg-white p-4 rounded-md shadow">
                 <h3 class="text-lg font-semibold mb-4">Filters</h3>
                 <form id="filterFormMobile">
                     @csrf
-                    <input type="hidden" name="category_id" value="{{ $category->id ?? '' }}">
+                    <input type="hidden" name="brand_id" value="{{ $brand->id ?? '' }}">
 
-                    <!-- Category Section -->
                     <div class="mb-6">
                         <h4 class="text-md font-semibold mb-2">Categories</h4>
                         <ul class="space-y-2 bg-white p-4 rounded-md shadow">
@@ -72,7 +70,6 @@
                         </ul>
                     </div>
 
-                    <!-- Price Range -->
                     <div class="mb-6">
                         <h4 class="text-md font-semibold mb-2">Price Range</h4>
                         <input type="range" min="0" max="1000" value="0" step="10" class="w-full" id="priceRangeMobile" name="priceRange">
@@ -116,23 +113,6 @@
                             </div>
                         </div>
                     </div>
-
-                    <!-- Brand Part Mobile -->
-                    <div class="mb-6">
-                        <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('brandSection', 'brandToggle')">
-                            Brands <span class="toggle-icon" id="brandToggle">&#8594;</span>
-                        </h4>
-                        <div class="collapsible-content" id="brandSection" style="display: none;">
-                            <div class="space-y-2">
-                                @foreach ($brands as $brand)
-                                    <label class="flex items-center">
-                                        <input type="checkbox" class="mr-2" name="brands[]" value="{{ $brand->id }}">
-                                        <span>{{ $brand->name }}</span>
-                                    </label>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
                 </form>
             </div>
         </div>
@@ -140,13 +120,10 @@
         <!-- Filter Sidebar for Desktop -->
         <div class="hidden lg:block w-1/4 pr-4 flex-shrink-0">
             <div class="bg-white p-4 rounded-md shadow h-full">
-                <!-- Filters Section -->
                 <h3 class="text-lg font-semibold mb-4">Filters</h3>
                 <form id="filterForm">
                     @csrf
-                    <input type="hidden" name="category_id" value="{{ $category->id ?? '' }}">
-
-                    <!-- Price Range -->
+                    <input type="hidden" name="brand_id" value="{{ $brand->id ?? '' }}">
                     <div class="mb-6">
                         <h4 class="text-md font-semibold mb-2">Price Range</h4>
                         <input type="range" min="0" max="1000" value="0" step="10" class="w-full" id="priceRange" name="priceRange">
@@ -191,24 +168,6 @@
                         </div>
                     </div>
 
-                    <!-- Brand Filter -->
-                    <div class="mb-6">
-                        <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('desktopBrandSection', 'desktopBrandToggle')">
-                            Brand <span class="toggle-icon" id="desktopBrandToggle">&#8594;</span>
-                        </h4>
-                        <div class="collapsible-content" id="desktopBrandSection" style="display: none;">
-                            <div class="space-y-2">
-                                @foreach ($brands as $brand)
-                                    <label class="flex items-center">
-                                        <input type="checkbox" class="mr-2" name="brands[]" value="{{ $brand->id }}">
-                                        <span>{{ $brand->name }}</span>
-                                    </label>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-
-
                     <!-- Categories Section -->
                     <div class="mb-6">
                         <h4 class="text-lg font-semibold mb-2">Categories</h4>
@@ -242,11 +201,9 @@
             </div>
         </div>
 
-
-
         <!-- Products Grid -->
         <div class="flex-1">
-            <h2 class="text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ $category->name }} Products</h2>
+            <h2 class="text-center text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ $brand->name }} Products</h2>
             <div id="productsGrid" class="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                 @foreach ($products as $product)
                     <x-product-card :product="$product" />
@@ -427,6 +384,7 @@ function toggleSubcategories(subcategoryId, arrowId) {
         arrow.innerHTML = '&#8594;';
     }
 }
+/**/
 
 </script>
 @endsection

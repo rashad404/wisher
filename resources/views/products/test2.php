@@ -21,20 +21,6 @@
         color: blue;
         background-color: white;
     }
-
-    .toggle-icon {
-        transition: transform 0.3s; /* Optional: Smooth rotation */
-    }
-
-    .toggle-icon {
-        transition: transform 0.3s ease; /* Smooth transition for rotation */
-    }
-
-    .rotate-90 {
-        transform: rotate(90deg); /* Rotate icon */
-    }
-
-
 </style>
 
 <div class="bg-gray-100 py-12">
@@ -65,15 +51,9 @@
                             <ul class="space-y-2 bg-white p-4 rounded-md shadow">
                                 @foreach ($categories[null] as $parentCategory)
                                     <li class="relative group">
-                                        <div class="flex justify-between items-center">
-                                            <a href="javascript:void(0)"
-                                               class="block p-2 rounded-md category-link hover:bg-gray-200"
-                                               data-category-id="{{ $parentCategory->id }}"
-                                               onclick="toggleSubcategories('subcategory-{{ $parentCategory->id }}', 'arrow-{{ $parentCategory->id }}')">
-                                                {{ $parentCategory->name }}
-                                            </a>
-                                            <span class="toggle-icon" id="arrow-{{ $parentCategory->id }}">&#8594;</span>
-                                        </div>
+                                        <a href="javascript:void(0)" class="block p-2 rounded-md category-link hover:bg-gray-200" data-category-id="{{ $parentCategory->id }}">
+                                            {{ $parentCategory->name }}
+                                        </a>
                                         <!-- Subcategory List (Initially hidden) -->
                                         <ul id="subcategory-{{ $parentCategory->id }}" class="mt-2 hidden bg-white border border-gray-200 rounded-md shadow-lg">
                                             @if(isset($categories[$parentCategory->id]))
@@ -91,7 +71,6 @@
                             </ul>
                         </div>
 
-
                         <!-- Price Range -->
                         <div class="mb-6">
                             <h4 class="text-md font-semibold mb-2">Price Range</h4>
@@ -104,7 +83,7 @@
 
                         <!-- Color Part Mobile -->
                         <div class="mb-6">
-                            <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('colorSection', 'colorToggle')">Color <span class="toggle-icon" id="colorToggle">&#8594;</span></h4>
+                            <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('colorSection', 'colorToggle')">Color <span class="toggle-icon" id="colorToggle">+</span></h4>
                             <div class="collapsible-content" id="colorSection" style="display: none;">
                                 <div class="space-y-2">
                                     @foreach ($colors as $color)
@@ -120,7 +99,7 @@
 
                         <!-- Size Part Mobile -->
                         <div class="mb-6">
-                            <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('sizeSection', 'sizeToggle')">Size <span class="toggle-icon" id="sizeToggle">&#8594;</span></h4>
+                            <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('sizeSection', 'sizeToggle')">Size <span class="toggle-icon" id="sizeToggle">+</span></h4>
                             <div class="collapsible-content" id="sizeSection" style="display: none;">
                                 <div class="space-y-2">
                                     @foreach ($sizes as $size)
@@ -135,7 +114,7 @@
 
                         <!-- Brand Part Mobile -->
                         <div class="mb-6">
-                            <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('brandSection', 'brandToggle')">Brands <span class="toggle-icon" id="brandToggle">&#8594;</span></h4>
+                            <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('brandSection', 'brandToggle')">Brands <span class="toggle-icon" id="brandToggle">+</span></h4>
                             <div class="collapsible-content" id="brandSection" style="display: none;">
                                 <div class="space-y-2">
                                     @foreach ($brands as $brand)
@@ -173,7 +152,7 @@
                         <!-- Color Filter -->
                         <div class="mb-6">
                             <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('desktopColorSection', 'desktopColorToggle')">
-                                Color<span class="toggle-icon" id="desktopColorToggle">&#8594;</span>
+                                Color <span class="toggle-icon" id="desktopColorToggle">+</span>
                             </h4>
                             <div class="collapsible-content" id="desktopColorSection" style="display: none;">
                                 <div class="space-y-2">
@@ -191,7 +170,7 @@
                         <!-- Size Filter -->
                         <div class="mb-6">
                             <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('desktopSizeSection', 'desktopSizeToggle')">
-                                Size <span class="toggle-icon" id="desktopSizeToggle">&#8594;</span>
+                                Size <span class="toggle-icon" id="desktopSizeToggle">+</span>
                             </h4>
                             <div class="collapsible-content" id="desktopSizeSection" style="display: none;">
                                 <div class="space-y-2">
@@ -208,7 +187,7 @@
                         <!-- Brand Filter -->
                         <div class="mb-6">
                             <h4 class="text-md font-semibold mb-2 cursor-pointer" onclick="toggleSection('desktopBrandSection', 'desktopBrandToggle')">
-                                Brand <span class="toggle-icon" id="desktopBrandToggle">&#8594;</span>
+                                Brand <span class="toggle-icon" id="desktopBrandToggle">+</span>
                             </h4>
                             <div class="collapsible-content" id="desktopBrandSection" style="display: none;">
                                 <div class="space-y-2">
@@ -222,24 +201,20 @@
                             </div>
                         </div>
 
+                        <!-- Categories Section -->
                         <div class="mb-6">
                             <h4 class="text-lg font-semibold mb-2">Categories</h4>
                             <ul class="mt-2 space-y-2 bg-white p-4 rounded-md shadow">
                                 @foreach ($categories[null] as $parentCategory)
-                                    <li class="relative">
-                                        <div class="flex justify-between items-center cursor-pointer"
-                                             onclick="toggleSubcategories('desktop-subcat-{{ $parentCategory->id }}', 'desktop-arrow-{{ $parentCategory->id }}')">
-                                            <span class="block p-2 rounded-md category-link hover:bg-gray-200">{{ $parentCategory->name }}</span>
-                                            <!-- Use different arrows for collapsed and expanded states -->
-                                            <span class="toggle-icon" id="desktop-arrow-{{ $parentCategory->id }}">&#8594;</span>
-                                        </div>
+                                    <li class="relative group">
+                                        <a href="{{ route('category', ['id' => $parentCategory->id]) }}" class="block p-2 rounded-md category-link hover:bg-gray-200">{{ $parentCategory->name }}</a>
 
                                         <!-- Subcategory List -->
-                                        <ul class="hidden mt-2 ml-4 bg-white border border-gray-200 rounded-md shadow-lg" id="desktop-subcat-{{ $parentCategory->id }}">
-                                            @if(isset($categories[$parentCategory->id]) && count($categories[$parentCategory->id]) > 0)
+                                        <ul class="absolute left-full top-0 mt-0 hidden w-48 bg-white border border-gray-200 rounded-md shadow-lg group-hover:block z-10 ml-4">
+                                            @if(isset($categories[$parentCategory->id]))
                                                 @foreach ($categories[$parentCategory->id] as $subcategory)
                                                     <li>
-                                                        <a href="{{ route('category', ['id' => $subcategory->id]) }}" class="block p-2 rounded-md subcategory-link hover:bg-gray-100">{{ $subcategory->name }}</a>
+                                                        <a href="{{ route('category', ['id' => $subcategory->id]) }}" class="block p-2 rounded-md subcategory-link">{{ $subcategory->name }}</a>
                                                     </li>
                                                 @endforeach
                                             @else
@@ -256,10 +231,12 @@
 
             <!-- Products Grid -->
             <div class="flex-1">
-                <div id="productsGrid" class="mt-4 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                    @foreach ($products as $product)
-                        <x-product-card :product="$product" />
-                    @endforeach
+                <div class="-mx-px grid grid-cols-2 border-l border-gray-200 sm:mx-0 md:grid-cols-3 lg:grid-cols-4">
+                    <div id="productsGrid" class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+                        @foreach ($products as $product)
+                            <x-product-card :product="$product" />
+                        @endforeach
+                    </div>
                 </div>
             </div>
         </div>
@@ -419,24 +396,53 @@ function toggleSection(sectionId, toggleId) {
 
     if (section.style.display === 'none' || section.style.display === '') {
         section.style.display = 'block';
-        toggleIcon.innerHTML = '&#8595;'; // Down arrow
+        toggleIcon.textContent = '-';
     } else {
         section.style.display = 'none';
-        toggleIcon.innerHTML = '&#8594;'; // Right arrow
+        toggleIcon.textContent = '+';
     }
 }
 
-function toggleSubcategories(subcategoryId, arrowId) {
-    const subcategory = document.getElementById(subcategoryId);
-    const arrow = document.getElementById(arrowId);
+document.getElementById('hamburger-menu').addEventListener('click', function () {
+    const mobileMenu = document.getElementById('mobile-menu');
+    mobileMenu.classList.toggle('hidden');
+});
 
-    if (subcategory.style.display === 'none' || subcategory.style.display === '') {
-        subcategory.style.display = 'block';
-        arrow.innerHTML = '&#8595;';
-    } else {
-        subcategory.style.display = 'none';
-        arrow.innerHTML = '&#8594;';
+document.querySelectorAll('.category-link').forEach(item => {
+    item.addEventListener('click', function () {
+        const categoryId = this.getAttribute('data-category-id');
+        const subcategoryList = document.getElementById('subcategory-' + categoryId);
+        if (subcategoryList) {
+            subcategoryList.classList.toggle('hidden');
+        }
+    });
+});
+
+// To ensure subcategory lists behave correctly
+document.querySelectorAll('.relative').forEach(item => {
+    const subcategoryList = item.querySelector('ul');
+    item.addEventListener('mouseenter', () => {
+        if (subcategoryList) {
+            subcategoryList.classList.remove('hidden');
+        }
+    });
+    item.addEventListener('mouseleave', () => {
+        if (subcategoryList) {
+            setTimeout(() => {
+                if (!subcategoryList.matches(':hover') && !item.matches(':hover')) {
+                    subcategoryList.classList.add('hidden');
+                }
+            }, 100);
+        }
+    });
+    if (subcategoryList) {
+        subcategoryList.addEventListener('mouseenter', () => {
+            subcategoryList.classList.remove('hidden');
+        });
+        subcategoryList.addEventListener('mouseleave', () => {
+            subcategoryList.classList.add('hidden');
+        });
     }
-}
+});
 </script>
 @endsection

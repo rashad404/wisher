@@ -23,6 +23,7 @@ use App\Http\Controllers\ContactGroupController;
 use App\Http\Controllers\SubscriptionController;
 use App\Http\Controllers\User\ProfileController;
 use App\Http\Controllers\UserWishPhotoController;
+use App\Http\Controllers\CardController;
 use App\Http\Controllers\ForgotPasswordController;
 use App\Http\Controllers\ContactInterestController;
 use App\Http\Controllers\WishPhotoTemplateController;
@@ -78,6 +79,10 @@ Route::get('/products/filter', [ProductController::class, 'filterByCategory']);
 Route::post('/products/filter', [ProductController::class, 'filter'])->name('products.filter');
 Route::get('/category/{id}', [ProductController::class, 'showCategory'])->name('category');
 Route::post('/products/filter', [ProductController::class, 'filter'])->name('products.filter');
+
+
+Route::get('/products/category/{id}', [ProductController::class, 'showCategory'])->name('products.category');
+Route::get('/products/brand/{id}', [ProductController::class, 'showBrand'])->name('products.brand');
 
 Route::post('groups/{group}/add-contact', [GroupController::class, 'addContact'])->name('user.groups.addContact');
 Route::delete('groups/{group}/remove-contact/{contact}', [GroupController::class, 'removeContact'])->name('user.groups.removeContact');
@@ -248,3 +253,6 @@ Route::get('wish-photos', [WishPhotoTemplateController::class, 'index'])->name('
 
 Route::get('api/wish-photo-templates', [WishPhotoTemplateController::class, 'apiIndex']);
 
+//Card part
+Route::get('/card', [CardController::class, 'index'])->name('card.index');
+Route::get('/checkout', [CardController::class, 'checkout'])->name('checkout');
