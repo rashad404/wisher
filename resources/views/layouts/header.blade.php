@@ -94,10 +94,6 @@
                 <div class="relative z-50 flex items-center">
                     <a href="{{ route('cart.index') }}" class="relative">
                         <i class="fas fa-shopping-cart text-2xl text-white"></i>
-                        <span class="absolute w-5 h-5 flex items-center justify-center"
-                              style="background-color: #ffcf31; color: black; font-size: 12px; border-radius: 50%; top: -10px; left: -10px;">
-                            {{ session('cartCount', $cartCount ?? 0) }}
-                        </span>
                     </a>
                 </div>
             </div>

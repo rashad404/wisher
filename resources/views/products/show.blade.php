@@ -283,7 +283,7 @@ function selectSize(sizeId, buttonElement) {
             sizeId: sizeId
         })
         .then(response => {
-            console.log('Quantity response:', response.data); // Debug log
+            console.log('Quantity response:', response.data);
 
             quantityDisplay.innerHTML = `
                 <h2 class="text-xl font-semibold">Available Quantity</h2>

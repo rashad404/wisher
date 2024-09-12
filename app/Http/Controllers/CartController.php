@@ -11,21 +11,45 @@ class CartController extends Controller
 {
     public function index()
     {
-        // Fetch all cart items for the authenticated user
-        $cartItems = Cart::where('user_id', Auth::id())->with('product', 'color', 'size')->get();
-        return view('cart.index', compact('cartItems'));
+        $cartItems = Cart::where('user_id', auth()->id())->with('product')->get();
+
+        $subtotal = $cartItems->sum(function ($item) {
+            return $item->product->price * $item->quantity;
+        });
+
+        // Pass the data to the view
+        return view('cart.index', [
+            'cartItems' => $cartItems,
+            'subtotal' => $subtotal,
+            'shipping' => $this->calculateShipping($subtotal),
+            'tax' => $this->calculateTax($subtotal),
+            'total' => $this->calculateTotal($subtotal),
+        ]);
+    }
+
+    private function calculateShipping($subtotal)
+    {
+        return $subtotal * 0.1;
+    }
+
+    private function calculateTax($subtotal)
+    {
+        return $subtotal * 0.07;
+    }
+
+    private function calculateTotal($subtotal)
+    {
+        return $subtotal + $this->calculateShipping($subtotal) + $this->calculateTax($subtotal);
     }
 
     public function addToCart(Request $request, $productId)
     {
-        // Validate the form data
         $request->validate([
             'color_id' => 'required|exists:colors,id',
             'size_id' => 'required|exists:sizes,id',
             'quantity' => 'required|integer|min:1'
         ]);
 
-        // Check if the product is already in the cart
         $cart = Cart::where('user_id', Auth::id())
                     ->where('product_id', $productId)
                     ->where('color_id', $request->color_id)
@@ -33,11 +57,9 @@ class CartController extends Controller
                     ->first();
 
         if ($cart) {
-            // If product exists, increase the quantity
             $cart->quantity += $request->quantity;
             $cart->save();
         } else {
-            // Add new product to cart
             Cart::create([
                 'user_id' => Auth::id(),
                 'product_id' => $productId,
@@ -47,36 +69,42 @@ class CartController extends Controller
             ]);
         }
 
-        // Calculate the updated cart total
-        $total = Cart::where('user_id', Auth::id())->sum('quantity'); // Adjust as needed
+        $total = Cart::where('user_id', Auth::id())->sum('quantity');
 
-        // Store the total in the session
-        session(['cartTotal' => $total]);
-
-        // Redirect back to the previous page
         return back()->with('success', 'Product added to cart.');
     }
 
-    public function updateCart(Request $request, $cartId)
+    public function removeFromCart(Request $request, $itemId)
     {
-        $cart = Cart::find($cartId);
-        $cart->quantity = $request->quantity; // Update the quantity
-        $cart->save();
+        // Find the cart item by ID and delete it
+        $cartItem = Cart::where('user_id', Auth::id())->findOrFail($itemId);
+        $cartItem->delete();
 
-        return redirect()->route('cart.index');
+        return redirect()->route('cart.index')->with('success', 'Product removed from cart.');
     }
 
-    public function removeFromCart($cartId)
+    public function updateCart(Request $request)
     {
-        $cart = Cart::find($cartId);
-        $cart->delete(); // Remove item from cart
+        // Validate the incoming request
+        $request->validate([
+            'quantity' => 'required|array',
+            'quantity.*' => 'integer|min:1',
+        ]);
 
-        return redirect()->route('cart.index');
+        // Loop through the quantities provided in the request
+        foreach ($request->quantity as $itemId => $quantity) {
+            // Find the cart item for the authenticated user
+            $cartItem = Cart::where('id', $itemId)->where('user_id', Auth::id())->first();
+
+            // If the cart item exists, update its quantity
+            if ($cartItem) {
+                $cartItem->quantity = $quantity;
+                $cartItem->save();
+            }
+        }
+
+        // Redirect back to the cart index with a success message
+        return redirect()->route('cart.index')->with('success', 'Cart updated successfully.');
     }
 
-    public function getCartCount()
-    {
-        $cartCount = Cart::where('user_id', Auth::id())->count();
-        return $cartCount;
-    }
 }
