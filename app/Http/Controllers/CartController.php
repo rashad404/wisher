@@ -76,7 +76,8 @@ class CartController extends Controller
 
     public function removeFromCart(Request $request, $itemId)
     {
-        // Find the cart item by ID and delete it
+        // dd($itemId);
+
         $cartItem = Cart::where('user_id', Auth::id())->findOrFail($itemId);
         $cartItem->delete();
 

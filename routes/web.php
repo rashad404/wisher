@@ -18,6 +18,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\UserEventController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\ContactEventController;
@@ -254,8 +255,11 @@ Route::get('wish-photos', [WishPhotoTemplateController::class, 'index'])->name('
 
 Route::get('api/wish-photo-templates', [WishPhotoTemplateController::class, 'apiIndex']);
 
-//Cart part
+// Cart part
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/products/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
 Route::post('/cart/remove/{itemId}', [CartController::class, 'removeFromCart'])->name('cart.remove');
 Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
+
+// Checkout
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
