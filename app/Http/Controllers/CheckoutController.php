@@ -49,29 +49,54 @@ class CheckoutController extends Controller
     }
 
     public function processPayment(Request $request)
-    {
-        // Validate the incoming request
-        $request->validate([
-            'payment_method' => 'required|string',
-            'email-address' => 'required|email',
-            'address' => 'required|string',
-            'city' => 'required|string',
-            'region' => 'required|string',
-            'postal-code' => 'required|string',
+{
+    // Validate the incoming request
+    $request->validate([
+        'payment_method' => 'required|string',
+        'email-address' => 'required|email',
+        'address' => 'required|string',
+        'city' => 'required|string',
+        'region' => 'required|string',
+        'postal-code' => 'required|string',
+    ]);
+
+    $userId = auth()->id();
+    $cartItems = Cart::where('user_id', $userId)->with('product')->get();
+    $subtotal = $cartItems->sum(function ($item) {
+        return $item->product->price * $item->quantity;
+    });
+
+    $shipping = $this->calculateShipping($subtotal);
+    $tax = $this->calculateTax($subtotal);
+    $total = $this->calculateTotal($subtotal);
+
+    // Create a new order record for each cart item
+    foreach ($cartItems as $item) {
+        \App\Models\Order::create([
+            'user_id' => $userId,
+            'payment_method' => $request->input('payment_method'),
+            'email_address' => $request->input('email-address'),
+            'address' => $request->input('address'),
+            'city' => $request->input('city'),
+            'region' => $request->input('region'),
+            'postal_code' => $request->input('postal-code'),
+            'subtotal' => $item->product->price * $item->quantity, // Set subtotal for individual item
+            'shipping' => $shipping,
+            'tax' => $tax,
+            'total' => $total,
+            'product_id' => $item->product_id, // Use the product_id from the cart item
+            'color_id' => $item->color_id, // Assuming you have color_id in the cart
+            'size_id' => $item->size_id, // Assuming you have size_id in the cart
         ]);
-
-        if ($request->input('payment_method') === 'card') {
-            // Credit/Debit cart part
-        } else {
-            // Cash on Delivery part
-        }
-
-
-        $userId = auth()->id();
-        Cart::where('user_id', $userId)->delete();
-
-        return redirect()->route('checkout.success')->with('success', 'Order placed successfully!');
     }
+
+    // Optionally delete the cart items
+    Cart::where('user_id', $userId)->delete();
+
+    return redirect()->route('checkout.success')->with('success', 'Order placed successfully!');
+}
+
+
 
     public function success()
     {
