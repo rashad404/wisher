@@ -27,16 +27,19 @@ class CartController extends Controller
         ]);
     }
 
+    // Need to fix
     private function calculateShipping($subtotal)
     {
         return $subtotal * 0.1;
     }
 
+    // Need to fix
     private function calculateTax($subtotal)
     {
         return $subtotal * 0.07;
     }
 
+    // Need to fix
     private function calculateTotal($subtotal)
     {
         return $subtotal + $this->calculateShipping($subtotal) + $this->calculateTax($subtotal);
@@ -86,25 +89,20 @@ class CartController extends Controller
 
     public function updateCart(Request $request)
     {
-        // Validate the incoming request
         $request->validate([
             'quantity' => 'required|array',
             'quantity.*' => 'integer|min:1',
         ]);
 
-        // Loop through the quantities provided in the request
         foreach ($request->quantity as $itemId => $quantity) {
-            // Find the cart item for the authenticated user
             $cartItem = Cart::where('id', $itemId)->where('user_id', Auth::id())->first();
 
-            // If the cart item exists, update its quantity
             if ($cartItem) {
                 $cartItem->quantity = $quantity;
                 $cartItem->save();
             }
         }
 
-        // Redirect back to the cart index with a success message
         return redirect()->route('cart.index')->with('success', 'Cart updated successfully.');
     }
 
