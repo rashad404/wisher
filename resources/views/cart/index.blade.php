@@ -4,6 +4,10 @@
 <div class="bg-white">
     <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
         <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Shopping Cart</h1>
+
+        @if ($cartItems->isEmpty())
+            <p class="mt-12 text-center text-lg font-medium text-gray-600">Currently, there are no items in your cart.</p>
+        @else
         <form action="{{ route('cart.update') }}" method="POST" class="mt-12">
             @csrf
             <div class="lg:grid lg:grid-cols-12 lg:gap-x-12 lg:items-start xl:gap-x-16">
@@ -107,6 +111,7 @@
                 </section>
             </div>
         </form>
+        @endif
     </div>
 </div>
 @endsection
