@@ -4,29 +4,29 @@
 
 <div class="bg-white">
     <div class="pb-8 pt-6 sm:pb-16">
-        <nav aria-label="Breadcrumb" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <ol role="list" class="flex items-center space-x-4">
-                <li>
-                    <div class="flex items-center">
-                        <a href="{{ route('products.category', $product->category->id) }}" class="mr-4 text-sm font-medium text-gray-900">{{ $product->category->name }}</a>
-                        <svg viewBox="0 0 6 20" aria-hidden="true" class="h-5 w-auto text-gray-300">
-                            <path d="M4.878 4.34H3.551L.27 16.532h1.327l3.281-12.19z" fill="currentColor" />
-                        </svg>
-                    </div>
-                </li>
-                <li>
-                    <div class="flex items-center">
-                        <a href="{{ route('products.brand', $product->brand->id) }}" class="mr-4 text-sm font-medium text-gray-900">{{ $product->brand->name }}</a>
-                        <svg viewBox="0 0 6 20" aria-hidden="true" class="h-5 w-auto text-gray-300">
-                            <path d="M4.878 4.34H3.551L.27 16.532h1.327l3.281-12.19z" fill="currentColor" />
-                        </svg>
-                    </div>
-                </li>
-                <li class="text-sm">
-                    <a href="#" aria-current="page" class="font-medium text-gray-500 hover:text-gray-600">{{ $product->name }}</a>
-                </li>
-            </ol>
-        </nav>
+      <nav aria-label="Breadcrumb" class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <ol role="list" class="flex items-center space-x-4">
+          <li>
+            <div class="flex items-center">
+              <a href="{{ route('products.category', $product->category->id) }}" class="mr-4 text-sm font-medium text-gray-900">{{ $product->category->name }}</a>
+              <svg viewBox="0 0 6 20" aria-hidden="true" class="h-5 w-auto text-gray-300">
+                <path d="M4.878 4.34H3.551L.27 16.532h1.327l3.281-12.19z" fill="currentColor" />
+              </svg>
+            </div>
+          </li>
+          <li>
+            <div class="flex items-center">
+              <a href="{{ route('products.brand', $product->brand->id) }}" class="mr-4 text-sm font-medium text-gray-900">{{ $product->brand->name }}</a>
+              <svg viewBox="0 0 6 20" aria-hidden="true" class="h-5 w-auto text-gray-300">
+                <path d="M4.878 4.34H3.551L.27 16.532h1.327l3.281-12.19z" fill="currentColor" />
+              </svg>
+            </div>
+          </li>
+          <li class="text-sm">
+            <a href="#" aria-current="page" class="font-medium text-gray-500 hover:text-gray-600">{{ $product->name }}</a>
+          </li>
+        </ol>
+      </nav>
       <div class="mx-auto mt-4 max-w-2xl px-4 sm:px-6 lg:max-w-7xl lg:px-8">
         <div class="lg:grid lg:auto-rows-min lg:grid-cols-12 lg:gap-x-8">
           <div class="lg:col-span-5 lg:col-start-8">
@@ -94,45 +94,58 @@
           </div>
 
           <div class="mt-4 lg:col-span-5">
-            <form>
-              <!-- Color picker -->
-              <div>
-                <h2 class="text-sm font-medium text-gray-900">Color</h2>
-                @if (!empty($uniqueColors))
-                <div class="mt-4 flex items-center space-x-3">
-                    @foreach ($uniqueColors as $colorId)
-                        @php
-                            $colorVariant = $product->variants->where('color_id', $colorId)->first();
-                        @endphp
-                        @if ($colorVariant)
-                            <button type="button" class="color-button h-8 w-8 rounded-full border" style="background-color: {{ $colorVariant->color->name }}" onclick="selectColor({{ $colorVariant->color->id }}, this)"></button>
-                        @endif
-                    @endforeach
-                </div>
-                @else
-                    <p class="mt-6 text-sm text-gray-600">No available colors for this product.</p>
-                @endif
-              </div>
+            <form id="add-to-cart-form" method="POST" action="{{ route('cart.add', ['productId' => $product->id]) }}">
+                @csrf
+                <input type="hidden" name="color_id" id="color_id" value="">
+                <input type="hidden" name="size_id" id="size_id" value="">
+                <input type="hidden" name="quantity" id="quantity" value="1"> <!-- Default quantity is 1 -->
 
-              <!-- Size picker -->
-              <div class="mt-8">
-                <div class="flex items-center justify-between">
-                    <h2 class="text-sm font-medium text-gray-900">Size</h2>
-                </div>
-                <fieldset aria-label="Choose a size" class="mt-2" id="size-fieldset">
-                  <div class="grid grid-cols-3 gap-3 sm:grid-cols-7" id="size-options">
-                      <!-- Sizes will be dynamically populated here -->
-                  </div>
-                </fieldset>
-
-                <!-- Available Quantity -->
-                <div class="mt-6" id="quantity-display">
-                    <h2 class="text-lg font-medium text-gray-900">Available Quantity</h2>
-                    <p class="text-sm text-gray-600">Select both color and size to see available quantity.</p>
+                <!-- Color picker -->
+                <div>
+                    <h2 class="text-sm font-medium text-gray-900">Color</h2>
+                    @if (!empty($uniqueColors))
+                    <div class="mt-4 flex items-center space-x-3">
+                        @foreach ($uniqueColors as $colorId)
+                            @php
+                                $colorVariant = $product->variants->where('color_id', $colorId)->first();
+                            @endphp
+                            @if ($colorVariant)
+                                <button type="button" class="color-button h-8 w-8 rounded-full border" style="background-color: {{ $colorVariant->color->name }}" onclick="selectColor({{ $colorVariant->color->id }}, this)"></button>
+                            @endif
+                        @endforeach
+                    </div>
+                    @else
+                        <p class="mt-6 text-sm text-gray-600">No available colors for this product.</p>
+                    @endif
                 </div>
 
-              <button type="submit" class="mt-4 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Add to cart</button>
+                <!-- Size picker -->
+                <div class="mt-8">
+                    <div class="flex items-center justify-between">
+                        <h2 class="text-sm font-medium text-gray-900">Size</h2>
+                    </div>
+                    <fieldset aria-label="Choose a size" class="mt-2" id="size-fieldset">
+                        <div class="grid grid-cols-3 gap-3 sm:grid-cols-7" id="size-options">
+                            <!-- Sizes will be dynamically populated here -->
+                        </div>
+                    </fieldset>
+
+                    <!-- Available Quantity -->
+                    <div class="mt-6" id="quantity-display">
+                        <h2 class="text-lg font-medium text-gray-900">Available Quantity</h2>
+                        <p class="text-sm text-gray-600">Select both color and size to see available quantity.</p>
+                    </div>
+                </div>
+
+                <!-- Quantity input -->
+                <div class="mt-8">
+                    <label for="product-quantity" class="text-sm font-medium text-gray-900">Quantity</label>
+                    <input type="number" id="product-quantity" name="quantity" value="1" min="1" class="mt-2 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" onchange="updateQuantity(this.value)">
+                </div>
+
+                <button type="submit" class="mt-4 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Add to cart</button>
             </form>
+
 
             <!-- Product details -->
             <div class="mt-8">
@@ -160,47 +173,53 @@
     sizeContainer.style.display = 'none'; // Hide size options initially
 
     function selectColor(colorId, buttonElement) {
-        // Prevent default action
-        event.preventDefault();
+    event.preventDefault(); // Prevent default action
 
-        // Existing logic
-        selectedColor = colorId;
-        selectedSize = null;
-        sizeContainer.innerHTML = '';
-        sizeContainer.style.display = 'none';
-        checkAndUpdateSizeOptions();
-        document.querySelectorAll('.color-button').forEach(btn => {
-            btn.classList.remove('ring', 'ring-indigo-500');
-        });
-        buttonElement.classList.add('ring', 'ring-indigo-500');
-        quantityDisplay.innerHTML = `
-            <h2 class="text-xl font-semibold">Available Quantity</h2>
-            <p>Select both color and size to see available quantity.</p>
-        `;
-    }
+    selectedColor = colorId;
+    selectedSize = null;
+    sizeContainer.innerHTML = '';
+    sizeContainer.style.display = 'none';
+    checkAndUpdateSizeOptions();
 
-    function selectSize(sizeId, buttonElement) {
-        // Prevent default action
-        event.preventDefault();
+    document.querySelectorAll('.color-button').forEach(btn => {
+        btn.classList.remove('ring', 'ring-indigo-500');
+    });
+    buttonElement.classList.add('ring', 'ring-indigo-500');
 
-        // Existing logic
-        selectedSize = sizeId;
-        checkAndUpdateQuantityDisplay();
-        document.querySelectorAll('#size-options button').forEach(btn => {
-            btn.classList.remove('bg-indigo-500', 'text-white', 'border-indigo-500', 'ring-2', 'ring-indigo-500');
-            btn.style.backgroundColor = '';
-            btn.style.borderColor = '';
-            btn.style.color = '';
-            btn.style.boxShadow = '';
-            btn.style.outline = '';
-            btn.style.outlineOffset = '';
-        });
-        buttonElement.style.backgroundColor = 'rgb(79, 70, 229)';
-        buttonElement.style.color = 'white';
-        buttonElement.style.borderColor = 'rgb(79, 70, 229)';
-        buttonElement.style.outline = '2px solid rgb(79, 70, 229)';
-        buttonElement.style.outlineOffset = '2px';
-    }
+    // Update the hidden input field for color
+    document.getElementById('color_id').value = colorId;
+
+    quantityDisplay.innerHTML = `
+        <h2 class="text-xl font-semibold">Available Quantity</h2>
+        <p>Select both color and size to see available quantity.</p>
+    `;
+}
+
+
+function selectSize(sizeId, buttonElement) {
+    event.preventDefault(); // Prevent default action
+
+    selectedSize = sizeId;
+    checkAndUpdateQuantityDisplay();
+
+    document.querySelectorAll('#size-options button').forEach(btn => {
+        btn.classList.remove('bg-indigo-500', 'text-white', 'border-indigo-500', 'ring-2', 'ring-indigo-500');
+        btn.style.backgroundColor = '';
+        btn.style.borderColor = '';
+        btn.style.color = '';
+        btn.style.boxShadow = '';
+        btn.style.outline = '';
+        btn.style.outlineOffset = '';
+    });
+    buttonElement.style.backgroundColor = 'rgb(79, 70, 229)';
+    buttonElement.style.color = 'white';
+    buttonElement.style.borderColor = 'rgb(79, 70, 229)';
+    buttonElement.style.outline = '2px solid rgb(79, 70, 229)';
+    buttonElement.style.outlineOffset = '2px';
+
+    // Update the hidden input field for size
+    document.getElementById('size_id').value = sizeId;
+}
 
     function checkAndUpdateSizeOptions() {
         if (selectedColor !== null) {
@@ -264,7 +283,7 @@
             sizeId: sizeId
         })
         .then(response => {
-            console.log('Quantity response:', response.data); // Debug log
+            console.log('Quantity response:', response.data);
 
             quantityDisplay.innerHTML = `
                 <h2 class="text-xl font-semibold">Available Quantity</h2>
