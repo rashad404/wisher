@@ -84,9 +84,9 @@ class CheckoutController extends Controller
             'shipping' => $shipping,
             'tax' => $tax,
             'total' => $total,
-            'product_id' => $item->product_id, // Use the product_id from the cart item
-            'color_id' => $item->color_id, // Assuming you have color_id in the cart
-            'size_id' => $item->size_id, // Assuming you have size_id in the cart
+            'product_id' => $item->product_id,
+            'color_id' => $item->color_id,
+            'size_id' => $item->size_id,
         ]);
     }
 
