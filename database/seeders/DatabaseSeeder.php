@@ -43,6 +43,7 @@ class DatabaseSeeder extends Seeder
             MenuSeeder::class,
             WishPhotoTemplateSeeder::class,
             UserWishPhotoSeeder::class,
+            OrderStatusSeeder::class,
         ]);
     }
 }
