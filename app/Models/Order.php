@@ -24,7 +24,8 @@ class Order extends Model
         'product_id',
         'color_id',
         'size_id',
-        'quantity'
+        'quantity',
+        'order_number'
     ];
 
     public function user()
