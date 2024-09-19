@@ -36,7 +36,7 @@ class CreateOrdersTable extends Migration
 
             // Add the status field
             $table->tinyInteger('status')->default(0); // status field added here
-            $table->foreign('status')->references('id')->on('order_statuses')->onDelete('restrict'); // Add foreign key constraint
+            // $table->foreign('status')->references('id')->on('order_statuses')->onDelete('restrict'); // Add foreign key constraint
 
             $table->timestamps();
         });
