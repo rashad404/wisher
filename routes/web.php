@@ -13,6 +13,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WishController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ReviewController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\ProductController;
@@ -191,6 +192,8 @@ Route::middleware('auth')->prefix('user')->group(function () {
     Route::get('wish-photos/{id}/download', [UserWishPhotoController::class, 'download'])->name('user.wish-photos.download');
     Route::post('wish-photos', [UserWishPhotoController::class, 'store'])->name('user.wish-photos.store');
 
+    // My orders part
+    Route::get('my-orders', [OrderController::class, 'index'])->name('orders.index');
 });
 
 //Adding events from Contacts

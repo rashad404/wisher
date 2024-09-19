@@ -16,6 +16,7 @@ class CreateOrdersTable extends Migration
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->string('order_number');
             $table->string('payment_method');
             $table->string('email_address');
             $table->string('address');
@@ -27,7 +28,7 @@ class CreateOrdersTable extends Migration
             $table->decimal('tax', 10, 2);
             $table->decimal('total', 10, 2);
 
-            // New fields for product details
+            // Product-specific fields
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->foreignId('color_id')->constrained('colors')->onDelete('cascade');
             $table->foreignId('size_id')->constrained('sizes')->onDelete('cascade');

@@ -69,6 +69,14 @@
                                       Calendar
                                   </a>
                               </li>
+                              <li>
+                                <a href="/user/my-orders" class="{{ request()->is('user/my-orders') ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700' }} group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                                    <svg class="h-6 w-6 shrink-0 {{ request()->is('user/my-orders') ? 'text-white' : 'text-indigo-200' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M12 8V4m0 0C8.686 4 6 6.686 6 10s2.686 6 6 6 6-2.686 6-6-2.686-6-6-6zm-4 10h8m-4 2v1m-4-1c0-1.104-.896-2-2-2m12 2c0-1.104.896-2 2-2M5.207 19.293A1 1 0 014 18.586V17a1 1 0 011-1h14a1 1 0 011 1v1.586a1 1 0 01-.207.707l-1.793 1.793A1 1 0 0117.414 21H6.586a1 1 0 01-.707-.293L5.207 19.293z"/>
+                                    </svg>
+                                    My Orders
+                                </a>
+                              </li>
                           </ul>
                       </li>
                       <li>
