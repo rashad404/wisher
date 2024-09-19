@@ -90,6 +90,21 @@ class Order extends Resource
             DateTime::make('Created At')->sortable(),
 
             DateTime::make('Updated At')->sortable(),
+
+            Select::make('Status')
+                ->options([
+                    0 => 'Pending',
+                    1 => 'Processing',
+                    2 => 'Shipped',
+                    3 => 'Delivered',
+                    4 => 'Completed',
+                    5 => 'Cancelled',
+                    6 => 'Failed',
+                    7 => 'Refunded',
+                    8 => 'On Hold',
+                ])
+                ->default(0) // Set default to Pending
+                ->displayUsingLabels(),
         ];
     }
 }

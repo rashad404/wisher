@@ -34,6 +34,10 @@ class CreateOrdersTable extends Migration
             $table->foreignId('size_id')->constrained('sizes')->onDelete('cascade');
             $table->integer('quantity')->default(1);
 
+            // Add the status field
+            $table->tinyInteger('status')->default(0); // status field added here
+            $table->foreign('status')->references('id')->on('order_statuses')->onDelete('restrict'); // Add foreign key constraint
+
             $table->timestamps();
         });
     }
