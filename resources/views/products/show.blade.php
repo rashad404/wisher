@@ -143,7 +143,8 @@
                     <input type="number" id="product-quantity" name="quantity" value="1" min="1" class="mt-2 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" onchange="updateQuantity(this.value)">
                 </div>
 
-                <button type="submit" class="mt-4 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">Add to cart</button>
+                <button id="add-to-cart-btn" type="submit" class="mt-4 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" style="display: none;">Add to cart</button>
+
             </form>
 
 
@@ -173,53 +174,67 @@
     sizeContainer.style.display = 'none'; // Hide size options initially
 
     function selectColor(colorId, buttonElement) {
-    event.preventDefault(); // Prevent default action
+        event.preventDefault(); // Prevent default action
 
-    selectedColor = colorId;
-    selectedSize = null;
-    sizeContainer.innerHTML = '';
-    sizeContainer.style.display = 'none';
-    checkAndUpdateSizeOptions();
+        selectedColor = colorId;
+        selectedSize = null;
+        sizeContainer.innerHTML = '';
+        sizeContainer.style.display = 'none';
+        checkAndUpdateSizeOptions();
 
-    document.querySelectorAll('.color-button').forEach(btn => {
-        btn.classList.remove('ring', 'ring-indigo-500');
-    });
-    buttonElement.classList.add('ring', 'ring-indigo-500');
+        document.querySelectorAll('.color-button').forEach(btn => {
+            btn.classList.remove('ring', 'ring-indigo-500');
+        });
+        buttonElement.classList.add('ring', 'ring-indigo-500');
 
-    // Update the hidden input field for color
-    document.getElementById('color_id').value = colorId;
+        // Update the hidden input field for color
+        document.getElementById('color_id').value = colorId;
 
-    quantityDisplay.innerHTML = `
-        <h2 class="text-xl font-semibold">Available Quantity</h2>
-        <p>Select both color and size to see available quantity.</p>
-    `;
-}
+        quantityDisplay.innerHTML = `
+            <h2 class="text-xl font-semibold">Available Quantity</h2>
+            <p>Select both color and size to see available quantity.</p>
+        `;
+
+        checkAndUpdateAddToCartButton(); // Check button visibility
+    }
 
 
-function selectSize(sizeId, buttonElement) {
-    event.preventDefault(); // Prevent default action
 
-    selectedSize = sizeId;
-    checkAndUpdateQuantityDisplay();
 
-    document.querySelectorAll('#size-options button').forEach(btn => {
-        btn.classList.remove('bg-indigo-500', 'text-white', 'border-indigo-500', 'ring-2', 'ring-indigo-500');
-        btn.style.backgroundColor = '';
-        btn.style.borderColor = '';
-        btn.style.color = '';
-        btn.style.boxShadow = '';
-        btn.style.outline = '';
-        btn.style.outlineOffset = '';
-    });
-    buttonElement.style.backgroundColor = 'rgb(79, 70, 229)';
-    buttonElement.style.color = 'white';
-    buttonElement.style.borderColor = 'rgb(79, 70, 229)';
-    buttonElement.style.outline = '2px solid rgb(79, 70, 229)';
-    buttonElement.style.outlineOffset = '2px';
+    function selectSize(sizeId, buttonElement) {
+        event.preventDefault(); // Prevent default action
 
-    // Update the hidden input field for size
-    document.getElementById('size_id').value = sizeId;
-}
+        selectedSize = sizeId;
+        checkAndUpdateQuantityDisplay();
+        checkAndUpdateAddToCartButton(); // Check button visibility
+
+        document.querySelectorAll('#size-options button').forEach(btn => {
+            btn.classList.remove('bg-indigo-500', 'text-white', 'border-indigo-500', 'ring-2', 'ring-indigo-500');
+            btn.style.backgroundColor = '';
+            btn.style.borderColor = '';
+            btn.style.color = '';
+            btn.style.boxShadow = '';
+            btn.style.outline = '';
+            btn.style.outlineOffset = '';
+        });
+        buttonElement.style.backgroundColor = 'rgb(79, 70, 229)';
+        buttonElement.style.color = 'white';
+        buttonElement.style.borderColor = 'rgb(79, 70, 229)';
+        buttonElement.style.outline = '2px solid rgb(79, 70, 229)';
+        buttonElement.style.outlineOffset = '2px';
+
+        // Update the hidden input field for size
+        document.getElementById('size_id').value = sizeId;
+    }
+
+    function checkAndUpdateAddToCartButton() {
+        const addToCartButton = document.getElementById('add-to-cart-btn');
+        if (selectedColor !== null && selectedSize !== null) {
+            addToCartButton.style.display = 'flex'; // Show button
+        } else {
+            addToCartButton.style.display = 'none'; // Hide button
+        }
+    }
 
     function checkAndUpdateSizeOptions() {
         if (selectedColor !== null) {
