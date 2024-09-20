@@ -143,10 +143,12 @@
                     <input type="number" id="product-quantity" name="quantity" value="1" min="1" class="mt-2 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" onchange="updateQuantity(this.value)">
                 </div>
 
-                <button id="add-to-cart-btn" type="submit" class="mt-4 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" style="display: none;">Add to cart</button>
+                <button id="add-to-cart-btn" type="button" onclick="addToCart()" class="mt-4 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" style="display: none;">Add to cart</button>
 
             </form>
-
+            <div id="login-error" class="mt-4 text-red-600 text-center" style="display: none;">
+                Please <a href="{{ route('login') }}" class="underline">log in</a> to add items to your cart.
+            </div>
 
             <!-- Product details -->
             <div class="mt-8">
@@ -236,6 +238,14 @@
         }
     }
 
+    function addToCart() {
+        @auth
+            document.getElementById('add-to-cart-form').submit();
+        @else
+            document.getElementById('login-error').style.display = 'block';
+        @endauth
+    }
+
     function checkAndUpdateSizeOptions() {
         if (selectedColor !== null) {
             // Color is selected, so fetch and update available sizes
@@ -259,7 +269,7 @@
 
                 response.data.sizes.forEach(size => {
                     const sizeButton = document.createElement('button');
-                    sizeButton.className = 'px-3 py-1 border rounded text-sm font-medium text-gray-900 hover:bg-gray-200';
+                    sizeButton.className = 'px-3 py-1 border rounded text-sm font-medium text-gray-900 hover:bg-gray-200 flex items-center justify-center overflow-hidden';
                     sizeButton.textContent = size.name;
                     sizeButton.onclick = (event) => selectSize(size.id, event.target); // Add event listener with reference to the button
                     sizeContainer.appendChild(sizeButton);
