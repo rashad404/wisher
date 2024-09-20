@@ -17,6 +17,9 @@ class CartController extends Controller
             return $item->product->price * $item->quantity;
         });
 
+        // Calculate the total number of items in the cart
+        $cartCount = $cartItems->sum('quantity');
+
         // Pass the data to the view
         return view('cart.index', [
             'cartItems' => $cartItems,
@@ -24,8 +27,10 @@ class CartController extends Controller
             'shipping' => $this->calculateShipping($subtotal),
             'tax' => $this->calculateTax($subtotal),
             'total' => $this->calculateTotal($subtotal),
+            'cartCount' => $cartCount,
         ]);
     }
+
 
     // Need to fix
     private function calculateShipping($subtotal)
@@ -72,20 +77,26 @@ class CartController extends Controller
             ]);
         }
 
+        // Update the session cart count
         $total = Cart::where('user_id', Auth::id())->sum('quantity');
+        session(['cart_count' => $total]);
 
         return back()->with('success', 'Product added to cart.');
     }
 
+
     public function removeFromCart(Request $request, $itemId)
     {
-        // dd($itemId);
-
         $cartItem = Cart::where('user_id', Auth::id())->findOrFail($itemId);
         $cartItem->delete();
 
+        // Update the session cart count
+        $total = Cart::where('user_id', Auth::id())->sum('quantity');
+        session(['cart_count' => $total]);
+
         return redirect()->route('cart.index')->with('success', 'Product removed from cart.');
     }
+
 
     public function updateCart(Request $request)
     {
@@ -103,7 +114,12 @@ class CartController extends Controller
             }
         }
 
+        // Update the session cart count
+        $total = Cart::where('user_id', Auth::id())->sum('quantity');
+        session(['cart_count' => $total]);
+
         return redirect()->route('cart.index')->with('success', 'Cart updated successfully.');
     }
+
 
 }

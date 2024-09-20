@@ -110,6 +110,9 @@ class CheckoutController extends Controller
         // Optionally delete the cart items
         Cart::where('user_id', $userId)->delete();
 
+        // Update the session cart count
+        session(['cart_count' => 0]);
+
         return redirect()->route('checkout.success')->with('success', 'Order placed successfully!');
     }
 
