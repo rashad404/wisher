@@ -146,8 +146,8 @@
                 <button id="add-to-cart-btn" type="button" onclick="addToCart()" class="mt-4 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" style="display: none;">Add to cart</button>
 
             </form>
-            <div id="login-error" class="mt-4 text-red-600 text-center" style="display: none;">
-                Please <a href="{{ route('login') }}" class="underline">log in</a> to add items to your cart.
+            <div id="login-error" class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-md text-center hidden">
+                <span class="font-semibold">Error:</span> Please <a href="{{ route('login') }}" class="underline font-medium hover:text-red-600">log in</a> to add items to your cart.
             </div>
 
             <!-- Product details -->

@@ -44,7 +44,6 @@
                                                 <option value="{{ $i }}" {{ $item->quantity == $i ? 'selected' : '' }}>{{ $i }}</option>
                                             @endfor
                                         </select>
-
                                         <div class="absolute right-0 top-0">
                                             <button type="submit" name="remove" value="{{ $item->id }}" form="remove-form-{{ $item->id }}" class="-m-2 inline-flex p-2 text-gray-400 hover:text-gray-500">
                                                 <span class="sr-only">Remove</span>
@@ -52,10 +51,13 @@
                                                     <path d="M6.28 5.22a.75.75 0 00-1.06 1.06L8.94 10l-3.72 3.72a.75.75 0 101.06 1.06L10 11.06l3.72 3.72a.75.75 0 101.06-1.06L11.06 10l3.72-3.72a.75.75 0 00-1.06-1.06L10 8.94 6.28 5.22z"></path>
                                                 </svg>
                                             </button>
+
                                             <form id="remove-form-{{ $item->id }}" action="{{ route('cart.remove', $item->id) }}" method="POST" style="display: none;">
                                                 @csrf
+                                                <input type="hidden" name="item_id" value="{{ $item->id }}">
                                             </form>
                                         </div>
+
                                     </div>
                                 </div>
 

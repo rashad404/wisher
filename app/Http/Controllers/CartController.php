@@ -87,7 +87,12 @@ class CartController extends Controller
 
     public function removeFromCart(Request $request, $itemId)
     {
-        $cartItem = Cart::where('user_id', Auth::id())->findOrFail($itemId);
+        $cartItem = Cart::where('user_id', Auth::id())->where('id', $itemId)->first();
+
+        if (!$cartItem) {
+            return redirect()->route('cart.index')->with('error', 'Product not found in cart.'); // Check if this gets hit for the first item
+        }
+
         $cartItem->delete();
 
         // Update the session cart count
@@ -96,7 +101,6 @@ class CartController extends Controller
 
         return redirect()->route('cart.index')->with('success', 'Product removed from cart.');
     }
-
 
     public function updateCart(Request $request)
     {
