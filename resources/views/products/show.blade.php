@@ -143,7 +143,7 @@
                     <input type="number" id="product-quantity" name="quantity" value="1" min="1" class="mt-2 block w-full border-gray-300 rounded-md shadow-sm focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" onchange="updateQuantity(this.value)">
                 </div>
 
-                <button id="add-to-cart-btn" type="button" onclick="addToCart()" class="mt-4 flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2" style="display: none;">Add to cart</button>
+                <button id="add-to-cart-btn" type="button" onclick="addToCart()" class="mt-4 flex w-full items-center justify-center rounded-md border border-transparent bg-gray-300 px-8 py-3 text-base font-medium text-white cursor-not-allowed">Add to cart</button>
 
             </form>
             <div id="login-error" class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-md text-center hidden">
@@ -172,8 +172,10 @@
 
     const sizeContainer = document.getElementById('size-options');
     const quantityDisplay = document.getElementById('quantity-display');
+    const addToCartButton = document.getElementById('add-to-cart-btn');
 
     sizeContainer.style.display = 'none'; // Hide size options initially
+    addToCartButton.disabled = true; // Disable the button by default
 
     function selectColor(colorId, buttonElement) {
         event.preventDefault(); // Prevent default action
@@ -197,18 +199,15 @@
             <p>Select both color and size to see available quantity.</p>
         `;
 
-        checkAndUpdateAddToCartButton(); // Check button visibility
+        checkAndUpdateAddToCartButton();
     }
-
-
-
 
     function selectSize(sizeId, buttonElement) {
         event.preventDefault(); // Prevent default action
 
         selectedSize = sizeId;
         checkAndUpdateQuantityDisplay();
-        checkAndUpdateAddToCartButton(); // Check button visibility
+        checkAndUpdateAddToCartButton();
 
         document.querySelectorAll('#size-options button').forEach(btn => {
             btn.classList.remove('bg-indigo-500', 'text-white', 'border-indigo-500', 'ring-2', 'ring-indigo-500');
@@ -230,20 +229,25 @@
     }
 
     function checkAndUpdateAddToCartButton() {
-        const addToCartButton = document.getElementById('add-to-cart-btn');
         if (selectedColor !== null && selectedSize !== null) {
-            addToCartButton.style.display = 'flex'; // Show button
+            addToCartButton.disabled = false; // Enable button
+            addToCartButton.classList.remove('bg-gray-300', 'cursor-not-allowed');
+            addToCartButton.classList.add('bg-indigo-600', 'hover:bg-indigo-700');
         } else {
-            addToCartButton.style.display = 'none'; // Hide button
+            addToCartButton.disabled = true; // Disable button
+            addToCartButton.classList.remove('bg-indigo-600', 'hover:bg-indigo-700');
+            addToCartButton.classList.add('bg-gray-300', 'cursor-not-allowed');
         }
     }
 
     function addToCart() {
-        @auth
-            document.getElementById('add-to-cart-form').submit();
-        @else
-            document.getElementById('login-error').style.display = 'block';
-        @endauth
+        if (!addToCartButton.disabled) {
+            @auth
+                document.getElementById('add-to-cart-form').submit();
+            @else
+                document.getElementById('login-error').style.display = 'block';
+            @endauth
+        }
     }
 
     function checkAndUpdateSizeOptions() {
