@@ -146,8 +146,14 @@
                 <button id="add-to-cart-btn" type="button" onclick="addToCart()" class="mt-4 flex w-full items-center justify-center rounded-md border border-transparent bg-gray-300 px-8 py-3 text-base font-medium text-white cursor-not-allowed">Add to cart</button>
 
             </form>
+
+            <!--Errors to show-->
             <div id="login-error" class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-md text-center hidden">
                 <span class="font-semibold">Error:</span> Please <a href="{{ route('login') }}" class="underline font-medium hover:text-red-600">log in</a> to add items to your cart.
+            </div>
+
+            <div id="quantity-error" class="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded-md text-center hidden">
+                <span class="font-semibold">Error:</span> Only <span id="available-quantity"></span> product(s) available.
             </div>
 
             <!-- Product details -->
@@ -169,10 +175,12 @@
 <script>
     let selectedColor = null;
     let selectedSize = null;
+    let availableQuantity = 0;
 
     const sizeContainer = document.getElementById('size-options');
     const quantityDisplay = document.getElementById('quantity-display');
     const addToCartButton = document.getElementById('add-to-cart-btn');
+    const quantityErrorMessage = document.getElementById('quantity-error');
 
     sizeContainer.style.display = 'none'; // Hide size options initially
     addToCartButton.disabled = true; // Disable the button by default
@@ -240,13 +248,27 @@
         }
     }
 
-    function addToCart() {
+    async function addToCart() {
         if (!addToCartButton.disabled) {
-            @auth
-                document.getElementById('add-to-cart-form').submit();
-            @else
-                document.getElementById('login-error').style.display = 'block';
-            @endauth
+            const quantity = parseInt(document.getElementById('product-quantity').value);
+            const currentCartQuantity = (await axios.post('/cart/check', {
+                productId: {{ $product->id }},
+                colorId: selectedColor,
+                sizeId: selectedSize
+            })).data.quantity || 0;
+
+            const totalQuantity = currentCartQuantity + quantity;
+            if (totalQuantity > availableQuantity) {
+                quantityErrorMessage.style.display = 'block';
+                quantityErrorMessage.textContent = `Only ${availableQuantity - currentCartQuantity} product(s) available to add.`;
+            } else {
+                quantityErrorMessage.style.display = 'none';
+                @auth
+                    document.getElementById('add-to-cart-form').submit();
+                @else
+                    document.getElementById('login-error').style.display = 'block';
+                @endauth
+            }
         }
     }
 
@@ -314,9 +336,13 @@
         .then(response => {
             console.log('Quantity response:', response.data);
 
+            availableQuantity = response.data.quantity;
+            const quantityInput = document.getElementById('product-quantity');
+            quantityInput.max = availableQuantity; // Set the maximum allowed quantity
+
             quantityDisplay.innerHTML = `
                 <h2 class="text-xl font-semibold">Available Quantity</h2>
-                <p>Available Quantity: ${response.data.quantity}</p>
+                <p>Available Quantity: ${availableQuantity}</p>
             `;
         })
         .catch(error => {
@@ -327,6 +353,18 @@
             `;
         });
     }
+
+    function updateQuantity(value) {
+        const quantityInput = document.getElementById('product-quantity');
+        if (value > availableQuantity) {
+            quantityInput.value = availableQuantity; // Set the value to the maximum available quantity
+            quantityErrorMessage.style.display = 'block';
+            quantityErrorMessage.textContent = `Only ${availableQuantity} product(s) available.`;
+        } else {
+            quantityErrorMessage.style.display = 'none';
+        }
+    }
+
 </script>
 
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
