@@ -261,7 +261,7 @@ Route::get('api/wish-photo-templates', [WishPhotoTemplateController::class, 'api
 // Cart part
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/products/{productId}', [CartController::class, 'addToCart'])->name('cart.add');
-Route::post('/cart/remove/{itemId}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+Route::get('/cart/remove/{itemId}', [CartController::class, 'removeFromCart'])->name('cart.remove');
 Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.update');
 
 // Checkout
