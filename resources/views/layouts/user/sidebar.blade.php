@@ -78,6 +78,16 @@
                             My Orders
                         </a>
                       </li>
+
+                      <li>
+                        <a href="/user/send-wish" class="{{ request()->is('user/send-wish') ? 'bg-indigo-700 text-white' : 'text-indigo-200 hover:text-white hover:bg-indigo-700' }} group flex gap-x-3 rounded-md p-2 text-sm leading-6 font-semibold">
+                            <svg class="h-6 w-6 shrink-0 {{ request()->is('user/send-wish') ? 'text-white' : 'text-indigo-200' }}" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 4h18c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H3c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M3 6l9 6 9-6" />
+                            </svg>
+                            Send Wish
+                        </a>
+                    </li>
                   <li>
                 </ul>
               </li>

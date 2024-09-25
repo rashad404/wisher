@@ -20,6 +20,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\SendWishController;
 use App\Http\Controllers\UserEventController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\ContactEventController;
@@ -194,6 +195,10 @@ Route::middleware('auth')->prefix('user')->group(function () {
 
     // My orders part
     Route::get('my-orders', [OrderController::class, 'index'])->name('orders.index');
+
+    // Send wish part
+    Route::get('send-wish', [SendWishController::class, 'index'])->name('send-wish.index');
+    Route::post('send-message', [SendWishController::class, 'sendMessage'])->name('send.message');
 });
 
 //Adding events from Contacts

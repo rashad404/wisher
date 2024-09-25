@@ -23,7 +23,7 @@ class ContactController extends Controller
     public function index(Request $request)
     {
         $search = $request->input('search');
-    
+
         // Retrieve contacts based on search query or retrieve all contacts if no search query is provided, with pagination
         $contacts = Contact::query()
             ->when($search, function ($query, $search) {
@@ -34,10 +34,10 @@ class ContactController extends Controller
                 });
             })
             ->paginate(10); // Adjust the number to control how many contacts are shown per page
-    
+
         return view('user.contacts.index', compact('contacts', 'search'));
     }
-    
+
 
     public function create()
     {
@@ -153,7 +153,7 @@ class ContactController extends Controller
         Contact::whereIn('id', $ids)->delete();
         return response()->json(['success' => true]);
     }
-    
+
     public function bulkStatusUpdate(Request $request)
     {
         $ids = $request->input('ids', []);
