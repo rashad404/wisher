@@ -44,91 +44,97 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>
     $(document).ready(function() {
-        // Function to load events based on selected category
-        function loadEventsBasedOnCategory(categorySelector, eventDropdown) {
-            $(categorySelector).change(function() {
-                var categoryId = $(this).val();
+    function loadEventsBasedOnCategory(categorySelector, eventDropdown) {
+        $(categorySelector).change(function() {
+            var categoryId = $(this).val();
+            console.log("Category selected:", categoryId);
 
-                console.log("Category selected:", categoryId); // Debugging log
+            if (categoryId) {
+                $.ajax({
+                    url: '/events/category/' + categoryId,
+                    type: 'GET',
+                    dataType: 'json',
+                    success: function(events) {
+                        console.log("Events received:", events);
+                        $(eventDropdown).empty().append('<option value="">Select Event</option>');
+                        $.each(events, function(index, event) {
+                            $(eventDropdown).append('<option value="' + event.id + '">' + event.name + '</option>');
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error loading events:", status, error);
+                        $(eventDropdown).empty().append('<option value="">Error loading events</option>');
+                    }
+                });
+            } else {
+                $(eventDropdown).empty().append('<option value="">Select Event</option>');
+            }
+        });
+    }
 
-                if (categoryId) {
-                    $.ajax({
-                        url: '/events/category/' + categoryId,
-                        type: 'GET',
-                        dataType: 'json',
-                        success: function(events) {
-                            $(eventDropdown).empty().append('<option value="">Select Event</option>');
-                            $.each(events, function(index, event) {
-                                $(eventDropdown).append('<option value="' + event.id + '">' + event.name + '</option>');
-                            });
-                            console.log("Events loaded:", events); // Debugging log
-                        },
-                        error: function(xhr, status, error) {
-                            console.log("Error loading events:", status, error); // Debugging log
-                            $(eventDropdown).empty().append('<option value="">Error loading events</option>');
-                        }
-                    });
-                } else {
-                    $(eventDropdown).empty().append('<option value="">Select Event</option>');
-                }
-            });
-        }
+    function loadMessagesBasedOnEvent(eventSelector, messageDropdown) {
+        $(eventSelector).change(function() {
+            var eventId = $(this).val();
+            console.log("Event selected:", eventId);
 
-        // Function to load messages based on selected event
-        function loadMessagesBasedOnEvent(eventSelector, messageDropdown) {
-            $(eventSelector).change(function() {
-                var eventId = $(this).val();
-
-                console.log("Event selected:", eventId); // Debugging log
-
-                if (eventId) {
-                    $.ajax({
-                        url: '/get-messages',
-                        type: 'GET',
-                        data: { event_id: eventId },
-                        success: function(response) {
-                            console.log("Messages loaded:", response.messages); // Debugging log
-                            if (response.messages && response.messages.length > 0) {
-                                $(messageDropdown).empty().append('<option value="">Select Message</option>');
-                                $.each(response.messages, function(index, message) {
-                                    $(messageDropdown).append(
-                                        '<option value="' + message.id + '" data-content="' + message.content + '">' + message.title + '</option>'
-                                    );
+            if (eventId) {
+                $.ajax({
+                    url: '/get-messages',
+                    type: 'GET',
+                    data: { event_id: eventId },
+                    dataType: 'json',
+                    success: function(response) {
+                        console.log("Full response:", response);
+                        if (response.messages && response.messages.length > 0) {
+                            $(messageDropdown).empty().append('<option value="">Select Message</option>');
+                            $.each(response.messages, function(index, message) {
+                                console.log("Processing message:", message);
+                                var option = $('<option>', {
+                                    value: message.id,
+                                    text: message.title,
+                                    'data-content': message.text  // Changed from message.content to message.text
                                 });
-                            } else {
-                                $(messageDropdown).empty().append('<option value="">No messages available</option>');
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error("Error loading messages:", error);
-                            $(messageDropdown).empty().append('<option value="">Error loading messages</option>');
+                                console.log("Created option:", option[0].outerHTML);
+                                $(messageDropdown).append(option);
+                            });
+                        } else {
+                            console.log("No messages available");
+                            $(messageDropdown).empty().append('<option value="">No messages available</option>');
                         }
-                    });
-                } else {
-                    $(messageDropdown).empty().append('<option value="">Select Message</option>');
-                }
-            });
-        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error loading messages:", error);
+                        $(messageDropdown).empty().append('<option value="">Error loading messages</option>');
+                    }
+                });
+            } else {
+                $(messageDropdown).empty().append('<option value="">Select Message</option>');
+            }
+        });
+    }
 
-        // Function to load the wish message based on selected message title
-        function loadWishMessage(messageDropdown, messageTextarea) {
-            $(messageDropdown).change(function() {
-                var selectedOption = $(this).find('option:selected');
-                var messageContent = selectedOption.data('content');
+    function loadWishMessage(messageDropdown, messageTextarea) {
+        $(messageDropdown).change(function() {
+            var selectedOption = $(this).find('option:selected');
+            console.log("Selected option:", selectedOption[0].outerHTML);
 
-                if (messageContent !== undefined) {
-                    $(messageTextarea).val(messageContent);
-                } else {
-                    console.error('Message content is undefined');
-                    $(messageTextarea).val('');
-                }
-            });
-        }
+            var messageContent = selectedOption.data('content');
+            console.log("Message content from data attribute:", messageContent);
 
-        // Initialize functions
-        loadEventsBasedOnCategory('#event-category', '#event');
-        loadMessagesBasedOnEvent('#event', '#message');
-        loadWishMessage('#message', '#messageTextArea');
+            if (messageContent !== undefined && messageContent !== null) {
+                $(messageTextarea).val(messageContent);
+                console.log("Set textarea value to:", messageContent);
+            } else {
+                console.error('Message content is undefined or null');
+                $(messageTextarea).val('');
+            }
+        });
+    }
+
+    // Initialize functions
+    loadEventsBasedOnCategory('#event-category', '#event');
+    loadMessagesBasedOnEvent('#event', '#message');
+    loadWishMessage('#message', '#messageTextArea');
     });
 </script>
 
