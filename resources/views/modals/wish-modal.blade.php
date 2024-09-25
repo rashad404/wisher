@@ -21,7 +21,7 @@
             </div>
             <div class="mt-4">
                 <label for="event" class="block text-sm font-semibold text-gray-900">Event</label>
-                <select id="event" name="event" class="w-full border border-gray-300 rounded-md p-2 text-gray-900" required>
+                <select id="event" name="event" class="w-full border border-gray-300 rounded-md p-2 text-gray-900" required disabled>
                     <option value="">Select Event</option>
                     @foreach($events as $event)
                         <option value="{{ $event->id }}">{{ $event->name }}</option>
@@ -30,7 +30,7 @@
             </div>
             <div class="mt-4">
                 <label for="lang" class="block text-sm font-semibold text-gray-900">Language</label>
-                <select id="languageDropdown" name="language" class="w-full border border-gray-300 rounded-md p-2 text-gray-900" required>
+                <select id="languageDropdown" name="language" class="w-full border border-gray-300 rounded-md p-2 text-gray-900" required disabled>
                     <option value="">Select Language</option>
                     @foreach($languages as $language)
                         <option value="{{ $language->lang }}">{{ $language->lang }}</option>
@@ -39,7 +39,7 @@
             </div>
             <div class="mt-4">
                 <label for="message" class="block text-sm font-semibold text-gray-900">Message</label>
-                <select id="message" name="message" class="w-full border border-gray-300 rounded-md p-2 text-gray-900" required>
+                <select id="message" name="message" class="w-full border border-gray-300 rounded-md p-2 text-gray-900" required disabled>
                     <option value="">Select Message</option>
                     @foreach($wishes as $wish)
                         <option value="{{ $wish->id }}">{{ $wish->title }}</option>
@@ -57,3 +57,35 @@
         </form>
     </div>
 </div>
+
+<script>
+    // Enable Event dropdown when Event Category is selected
+    document.getElementById('event-category').addEventListener('change', function() {
+        const eventDropdown = document.getElementById('event');
+        eventDropdown.disabled = !this.value;  // Enable if a category is selected
+        if (!this.value) {
+            eventDropdown.value = ""; // Reset the event dropdown value if category is cleared
+            document.getElementById('languageDropdown').disabled = true; // Disable Language dropdown
+            document.getElementById('message').disabled = true; // Disable Message dropdown
+        }
+    });
+
+    // Enable Language dropdown when Event is selected
+    document.getElementById('event').addEventListener('change', function() {
+        const languageDropdown = document.getElementById('languageDropdown');
+        languageDropdown.disabled = !this.value; // Enable if an event is selected
+        if (!this.value) {
+            languageDropdown.value = ""; // Reset the language dropdown value if event is cleared
+            document.getElementById('message').disabled = true; // Disable Message dropdown
+        }
+    });
+
+    // Enable Message dropdown when Language is selected
+    document.getElementById('languageDropdown').addEventListener('change', function() {
+        const messageDropdown = document.getElementById('message');
+        messageDropdown.disabled = !this.value; // Enable if a language is selected
+        if (!this.value) {
+            messageDropdown.value = ""; // Reset the message dropdown value if language is cleared
+        }
+    });
+</script>
