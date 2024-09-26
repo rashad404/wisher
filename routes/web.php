@@ -198,7 +198,7 @@ Route::middleware('auth')->prefix('user')->group(function () {
 
     // Send wish part
     Route::get('send-wish', [SendWishController::class, 'index'])->name('send-wish.index');
-    Route::post('send-message', [SendWishController::class, 'sendMessage'])->name('send.message');
+    Route::post('send-message', [SendWishController::class, 'sendMessage'])->name('send.messages');
 });
 
 //Adding events from Contacts
