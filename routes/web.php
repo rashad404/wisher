@@ -198,8 +198,17 @@ Route::middleware('auth')->prefix('user')->group(function () {
 
     // Send wish part
     Route::get('send-wish', [SendWishController::class, 'index'])->name('send-wish.index');
-    Route::post('send-message', [SendWishController::class, 'sendMessage'])->name('send.messages');
+    Route::post('send-wishes', [SendWishController::class, 'sendWish'])->name('send.wish');
 });
+
+Route::get('/check-twilio-credentials', function () {
+    return [
+        'TWILIO_SID' => env('TWILIO_SID'),
+        'TWILIO_TOKEN' => env('TWILIO_TOKEN'),
+        'TWILIO_FROM' => env('TWILIO_FROM'),
+    ];
+});
+
 
 //Adding events from Contacts
 Route::prefix('contacts/{contact}/events')->name('contacts.events.')->group(function () {

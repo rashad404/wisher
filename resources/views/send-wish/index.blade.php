@@ -5,8 +5,69 @@
 <div class="mb-8">
     <h3 class="text-xl font-bold text-gray-900 mb-4">Send Wish</h3>
 
-    <form action="#" method="POST">
+    <form action="{{ route('send.wish') }}" method="POST">
         @csrf
+        <!-- Contacts List -->
+        <div class="mt-4">
+            <label class="block text-sm font-semibold text-gray-900 mb-2">Select Contacts</label>
+
+            <!-- Loop through each contact -->
+            <ul class="space-y-4">
+                @forelse($contacts as $contact)
+                    <li class="bg-white shadow overflow-hidden sm:rounded-lg hover:bg-gray-50 transition">
+                        <div class="px-4 py-4 sm:px-6 flex items-center justify-between">
+                            <div class="flex items-center">
+                                <!-- Contact Checkbox -->
+                                <input type="checkbox" name="contacts[]" value="{{ $contact->id }}" class="mr-4 rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
+
+                                <!-- Contact Image -->
+                                <div class="flex-shrink-0 h-12 w-12">
+                                    @if($contact->photo)
+                                        <img class="h-12 w-12 rounded-full object-cover" src="{{ Storage::url($contact->photo) }}" alt="{{ $contact->name }}">
+                                    @else
+                                        <svg class="h-12 w-12 rounded-full bg-gray-300 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
+                                        </svg>
+                                    @endif
+                                </div>
+
+                                <!-- Contact Information -->
+                                <div class="ml-4">
+                                    <div class="text-sm font-medium text-gray-900">
+                                        {{ $contact->name }}
+                                    </div>
+                                    <div class="text-sm text-gray-500">
+                                        Email: {{ $contact->email }} | Phone: {{ $contact->phone_number }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Contact Status and Groups -->
+                            <div class="flex items-center space-x-4">
+                                <!-- Status -->
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $contact->status == 1 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
+                                    {{ $contact->status == 1 ? 'Active' : 'Inactive' }}
+                                </span>
+
+                                <!-- Groups -->
+                                <div class="text-sm text-gray-500">
+                                    @if($contact->groups->isEmpty())
+                                        -
+                                    @else
+                                        Groups: {{ $contact->groups->pluck('name')->join(', ') }}
+                                    @endif
+                                </div>
+                            </div>
+                        </div>
+                    </li>
+                @empty
+                    <li class="px-4 py-4 sm:px-6 text-center text-gray-500">
+                        No contacts found.
+                    </li>
+                @endforelse
+            </ul>
+        </div>
+
         <div class="mt-4">
             <label class="block text-sm font-semibold text-gray-900">Send via</label>
             <div class="flex items-center mt-2">
@@ -39,7 +100,7 @@
     </form>
 </div>
 
-@include('modals.wish-modal') <!-- Ensure this modal is set up correctly -->
+@include('modals.wish-modal')
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script>

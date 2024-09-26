@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use App\Models\Wish;
 use App\Models\Event;
 use App\Models\Contact;
+use App\Models\Message; // Add this import
+use App\Models\Conversation; // Add this import
 use Twilio\Rest\Client;
 use Illuminate\Http\Request;
 use App\Models\EventCategory;
+use Illuminate\Support\Facades\Auth;
 
 class SendWishController extends Controller
 {
@@ -22,32 +25,37 @@ class SendWishController extends Controller
         return view('send-wish.index', compact('eventCategories', 'wishes', 'events', 'contacts', 'languages'));
     }
 
-    public function sendMessage(Request $request)
+    public function sendWish(Request $request)
     {
         // Validate the input
         $request->validate([
             'message' => 'required|string',
-            'contacts' => 'required|array', // Ensure contacts are selected
-            'contacts.*' => 'exists:contacts,id', // Validate that each contact exists
+            'contacts' => 'required|array',
+            'contacts.*' => 'exists:contacts,id',
         ]);
 
         $message = $request->input('message');
-        $contactIds = $request->input('contacts'); // Selected contacts
+        $contactIds = $request->input('contacts');
 
-        // Loop through each contact and send the message based on the selected methods
+        // Log the received message and contacts for debugging
+        \Log::info('Sending message', ['message' => $message, 'contacts' => $contactIds]);
+
         foreach ($contactIds as $contactId) {
-            $contact = Contact::find($contactId); // Retrieve the contact
+            $contact = Contact::find($contactId);
+
+            // Log the contact being processed
+            \Log::info('Processing contact', ['contact_id' => $contactId, 'contact' => $contact]);
 
             if ($request->has('sendSms')) {
-                $this->sendSms($message, $contact->phone_number); // Pass contact phone number
+                $this->sendSms($message, $contact->phone_number);
             }
 
             if ($request->has('sendEmail')) {
-                $this->sendEmail($message, $contact->email); // Pass contact email
+                $this->sendEmail($message, $contact->email);
             }
 
             if ($request->has('sendChat')) {
-                $this->sendChat($message, $contact->chat_id); // Pass contact's chat ID
+                $this->sendChatMessage($message, $contactId); // Call the chat function
             }
         }
 
@@ -78,20 +86,27 @@ class SendWishController extends Controller
         });
     }
 
-    // Function to send message via Twilio Chat
-    protected function sendChat($message, $chatId)
+    // Function to send a chat message
+    protected function sendChatMessage($messageContent, $contactId)
     {
-        $accountSid = env('TWILIO_SID');
-        $authToken = env('TWILIO_TOKEN');
-        $chatServiceSid = env('TWILIO_CHAT_SERVICE_SID');
+        // Find or create a conversation with the contact
+        $conversation = Conversation::firstOrCreate(
+            [
+                'user1_id' => Auth::id(),
+                'user2_id' => $contactId,
+            ],
+            [
+                'user1_id' => Auth::id(),
+                'user2_id' => $contactId,
+            ]
+        );
 
-        $client = new Client($accountSid, $authToken);
-
-        $client->chat->v2->services($chatServiceSid)
-            ->channels($chatId) // Use the contact-specific chat ID
-            ->messages
-            ->create([
-                'body' => $message
-            ]);
+        // Create a new message in that conversation
+        Message::create([
+            'conversation_id' => $conversation->id,
+            'sender_id' => Auth::id(),
+            'body' => $messageContent,
+            'is_seen' => false,
+        ]);
     }
 }
