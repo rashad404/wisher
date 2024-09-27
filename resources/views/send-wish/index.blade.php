@@ -20,6 +20,17 @@
     </div>
     @endif
 
+    @if ($errors->any())
+    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+        <p class="font-bold">Oops!</p>
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+    @endif
+
     <form action="{{ route('send.wish') }}" method="POST">
         @csrf
         <!-- Contacts List -->
@@ -54,13 +65,13 @@
             <div class="flex items-center">
                 <label class="block text-sm font-semibold text-gray-900 mr-2">Send via:</label>
 
-                <input type="checkbox" id="sendSms" name="sendSms" value="1" class="ml-4 mr-2" />
+                <input type="checkbox" id="sendSms" name="sendVia[]" value="sms" class="ml-4 mr-2" />
                 <label for="sendSms" class="text-sm font-medium text-gray-900">SMS</label>
 
-                <input type="checkbox" id="sendEmail" name="sendEmail" value="1" class="ml-4 mr-2" />
+                <input type="checkbox" id="sendEmail" name="sendVia[]" value="email" class="ml-4 mr-2" />
                 <label for="sendEmail" class="text-sm font-medium text-gray-900">Email</label>
 
-                <input type="checkbox" id="sendChat" name="sendChat" value="1" class="ml-4 mr-2" />
+                <input type="checkbox" id="sendChat" name="sendVia[]" value="chat" class="ml-4 mr-2" />
                 <label for="sendChat" class="text-sm font-medium text-gray-900">In the Chat</label>
             </div>
 
@@ -127,6 +138,14 @@
                 });
             } else {
                 $('#contact-suggestions').addClass('hidden');
+            }
+        });
+
+        $('#send-wish-form').on('submit', function(e) {
+            var sendViaOptions = $('input[name="sendVia[]"]:checked').length;
+            if (sendViaOptions === 0) {
+                e.preventDefault();
+                alert('Please select at least one "Send via" option.');
             }
         });
 

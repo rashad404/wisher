@@ -32,45 +32,42 @@ class SendWishController extends Controller
             'message' => 'required|string',
             'contacts' => 'required|array',
             'contacts.*' => 'exists:contacts,id',
+            'sendVia' => 'required|array|min:1',
+            'sendVia.*' => 'in:sms,email,chat',
         ]);
 
         $message = $request->input('message');
         $contactIds = $request->input('contacts');
+        $sendVia = $request->input('sendVia');
 
-        // Log the received message and contacts for debugging
-        \Log::info('Sending message', ['message' => $message, 'contacts' => $contactIds]);
+        \Log::info('Sending message', ['message' => $message, 'contacts' => $contactIds, 'sendVia' => $sendVia]);
 
-        // Initialize a flag for success
         $messageSent = false;
 
         foreach ($contactIds as $contactId) {
             $contact = Contact::find($contactId);
 
-            // Log the contact being processed
             \Log::info('Processing contact', ['contact_id' => $contactId, 'contact' => $contact]);
 
-            // Try to send messages and catch any potential errors
             try {
-                if ($request->has('sendSms')) {
+                if (in_array('sms', $sendVia)) {
                     $this->sendSms($message, $contact->phone_number);
                 }
 
-                if ($request->has('sendEmail')) {
+                if (in_array('email', $sendVia)) {
                     $this->sendEmail($message, $contact->email);
                 }
 
-                if ($request->has('sendChat')) {
-                    $this->sendChatMessage($message, $contactId); // Call the chat function
+                if (in_array('chat', $sendVia)) {
+                    $this->sendChatMessage($message, $contactId);
                 }
 
-                $messageSent = true; // Set to true if any message is sent
+                $messageSent = true;
             } catch (\Exception $e) {
-                // Log the error message for debugging
                 \Log::error('Error sending message', ['contact_id' => $contactId, 'error' => $e->getMessage()]);
             }
         }
 
-        // Flash message based on whether any message was sent
         if ($messageSent) {
             return redirect()->back()->with('status', 'Message sent successfully!');
         } else {
