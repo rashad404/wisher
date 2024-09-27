@@ -40,26 +40,42 @@ class SendWishController extends Controller
         // Log the received message and contacts for debugging
         \Log::info('Sending message', ['message' => $message, 'contacts' => $contactIds]);
 
+        // Initialize a flag for success
+        $messageSent = false;
+
         foreach ($contactIds as $contactId) {
             $contact = Contact::find($contactId);
 
             // Log the contact being processed
             \Log::info('Processing contact', ['contact_id' => $contactId, 'contact' => $contact]);
 
-            if ($request->has('sendSms')) {
-                $this->sendSms($message, $contact->phone_number);
-            }
+            // Try to send messages and catch any potential errors
+            try {
+                if ($request->has('sendSms')) {
+                    $this->sendSms($message, $contact->phone_number);
+                }
 
-            if ($request->has('sendEmail')) {
-                $this->sendEmail($message, $contact->email);
-            }
+                if ($request->has('sendEmail')) {
+                    $this->sendEmail($message, $contact->email);
+                }
 
-            if ($request->has('sendChat')) {
-                $this->sendChatMessage($message, $contactId); // Call the chat function
+                if ($request->has('sendChat')) {
+                    $this->sendChatMessage($message, $contactId); // Call the chat function
+                }
+
+                $messageSent = true; // Set to true if any message is sent
+            } catch (\Exception $e) {
+                // Log the error message for debugging
+                \Log::error('Error sending message', ['contact_id' => $contactId, 'error' => $e->getMessage()]);
             }
         }
 
-        return redirect()->back()->with('success', 'Messages sent successfully!');
+        // Flash message based on whether any message was sent
+        if ($messageSent) {
+            return redirect()->back()->with('status', 'Message sent successfully!');
+        } else {
+            return redirect()->back()->with('error', 'No messages were sent. Please try again.');
+        }
     }
 
     // Function to send SMS via Twilio

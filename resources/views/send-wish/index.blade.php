@@ -5,12 +5,29 @@
 <div class="mb-8">
     <h3 class="text-xl font-bold text-gray-900 mb-4">Send Wish</h3>
 
+    <!-- Display Flash Messages -->
+    @if (session('status'))
+    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
+        <p class="font-bold">Success!</p>
+        <p>{{ session('status') }}</p>
+    </div>
+    @endif
+
+    @if (session('error'))
+    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
+        <p class="font-bold">Error!</p>
+        <p>{{ session('error') }}</p>
+    </div>
+    @endif
+
     <form action="{{ route('send.wish') }}" method="POST">
         @csrf
         <!-- Contacts List -->
         <div class="mt-4">
-            <label class="block text-sm font-semibold text-gray-900 mb-2">Select Contacts</label>
-            <input type="text" id="contact-search" class="w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="Start typing a contact name...">
+            <div class="flex items-center">
+                <label class="block text-sm font-semibold text-gray-900 mr-2">To:</label>
+                <input type="text" id="contact-search" class="w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="Start typing a contact name...">
+            </div>
 
             <ul id="contact-suggestions" class="mt-2 bg-white border border-gray-300 rounded-md shadow-md hidden"></ul>
 
@@ -19,9 +36,24 @@
 
         <div id="hidden-contact-inputs"></div>
 
-        <div class="mt-4">
-            <label class="block text-sm font-semibold text-gray-900">Send via</label>
-            <div class="flex items-center mt-2">
+        <!-- Message Input -->
+        <div class="mt-4 flex items-start">
+            <label for="messageTextArea" class="block text-sm font-semibold text-gray-900 mr-2">Message:</label>
+            <div class="relative flex w-full">
+                <textarea id="messageTextArea" name="message" class="w-full border border-gray-300 rounded-md p-2 pr-12" required></textarea>
+                <!-- Use Template Icon inside textarea container -->
+                <button type="button" id="useTemplate" class="ml-2 text-gray-600 hover:text-gray-800 focus:outline-none">
+                    <i class="fas fa-file-alt text-2xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Send via Part -->
+        <div class="flex justify-between items-center mt-4">
+            <!-- Send via options -->
+            <div class="flex items-center">
+                <label class="block text-sm font-semibold text-gray-900 mr-2">Send via:</label>
+
                 <input type="checkbox" id="sendSms" name="sendSms" value="1" class="ml-4 mr-2" />
                 <label for="sendSms" class="text-sm font-medium text-gray-900">SMS</label>
 
@@ -30,31 +62,21 @@
 
                 <input type="checkbox" id="sendChat" name="sendChat" value="1" class="ml-4 mr-2" />
                 <label for="sendChat" class="text-sm font-medium text-gray-900">In the Chat</label>
-            </div>xhr
-        </div>
+            </div>
 
-        <!-- Message Input -->
-        <div class="mt-4">
-            <label for="messageTextArea" class="block text-sm font-semibold text-gray-900">Message</label>
-            <textarea id="messageTextArea" name="message" class="w-full border border-gray-300 rounded-md p-2" required></textarea>
-        </div>
-
-        <button type="button" id="useTemplate" class="mt-2 w-full bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600">
-            Use Template
-        </button>
-
-        <!-- Submit Button -->
-        <div class="flex justify-center mt-4">
-            <button type="submit" class="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600">
+            <!-- Submit Button -->
+            <button type="submit" class="w-1/3 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600">
                 Send Message
             </button>
         </div>
     </form>
 </div>
 
+
 @include('modals.wish-modal')
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -79,9 +101,12 @@
                                 if (!selectedContacts.includes(contact.id)) {
                                     selectedContacts.push(contact.id);
 
-                                    // Seçilen kişileri ekranda göster ve gizli input ekle
+                                    // Display selected contacts with delete button
                                     $('#selected-contacts').append(
-                                        `<div class="bg-blue-100 px-2 py-1 rounded inline-block mt-2 mr-2">${contact.name}</div>`
+                                        `<div class="bg-blue-100 px-2 py-1 rounded inline-block mt-2 mr-2">
+                                            ${contact.name}
+                                            <button type="button" class="delete-contact text-red-500 ml-2" data-id="${contact.id}">&times;</button>
+                                        </div>`
                                     );
                                     $('#hidden-contact-inputs').append(
                                         `<input type="hidden" name="contacts[]" value="${contact.id}">`
@@ -103,6 +128,18 @@
             } else {
                 $('#contact-suggestions').addClass('hidden');
             }
+        });
+
+        // Delete selected contact
+        $(document).on('click', '.delete-contact', function() {
+            const contactId = $(this).data('id');
+            selectedContacts = selectedContacts.filter(id => id !== contactId);
+
+            // Remove the contact from the displayed list
+            $(this).parent().remove();
+
+            // Remove the corresponding hidden input
+            $('#hidden-contact-inputs input[value="' + contactId + '"]').remove();
         });
     });
 </script>
