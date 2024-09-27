@@ -10,63 +10,14 @@
         <!-- Contacts List -->
         <div class="mt-4">
             <label class="block text-sm font-semibold text-gray-900 mb-2">Select Contacts</label>
+            <input type="text" id="contact-search" class="w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="Start typing a contact name...">
 
-            <!-- Loop through each contact -->
-            <ul class="space-y-4">
-                @forelse($contacts as $contact)
-                    <li class="bg-white shadow overflow-hidden sm:rounded-lg hover:bg-gray-50 transition">
-                        <div class="px-4 py-4 sm:px-6 flex items-center justify-between">
-                            <div class="flex items-center">
-                                <!-- Contact Checkbox -->
-                                <input type="checkbox" name="contacts[]" value="{{ $contact->id }}" class="mr-4 rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500">
+            <ul id="contact-suggestions" class="mt-2 bg-white border border-gray-300 rounded-md shadow-md hidden"></ul>
 
-                                <!-- Contact Image -->
-                                <div class="flex-shrink-0 h-12 w-12">
-                                    @if($contact->photo)
-                                        <img class="h-12 w-12 rounded-full object-cover" src="{{ Storage::url($contact->photo) }}" alt="{{ $contact->name }}">
-                                    @else
-                                        <svg class="h-12 w-12 rounded-full bg-gray-300 text-gray-600" fill="currentColor" viewBox="0 0 24 24">
-                                            <path d="M24 20.993V24H0v-2.996A14.977 14.977 0 0112.004 15c4.904 0 9.26 2.354 11.996 5.993zM16.002 8.999a4 4 0 11-8 0 4 4 0 018 0z" />
-                                        </svg>
-                                    @endif
-                                </div>
-
-                                <!-- Contact Information -->
-                                <div class="ml-4">
-                                    <div class="text-sm font-medium text-gray-900">
-                                        {{ $contact->name }}
-                                    </div>
-                                    <div class="text-sm text-gray-500">
-                                        Email: {{ $contact->email }} | Phone: {{ $contact->phone_number }}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <!-- Contact Status and Groups -->
-                            <div class="flex items-center space-x-4">
-                                <!-- Status -->
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $contact->status == 1 ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800' }}">
-                                    {{ $contact->status == 1 ? 'Active' : 'Inactive' }}
-                                </span>
-
-                                <!-- Groups -->
-                                <div class="text-sm text-gray-500">
-                                    @if($contact->groups->isEmpty())
-                                        -
-                                    @else
-                                        Groups: {{ $contact->groups->pluck('name')->join(', ') }}
-                                    @endif
-                                </div>
-                            </div>
-                        </div>
-                    </li>
-                @empty
-                    <li class="px-4 py-4 sm:px-6 text-center text-gray-500">
-                        No contacts found.
-                    </li>
-                @endforelse
-            </ul>
+            <div id="selected-contacts" class="mt-4 space-y-2"></div>
         </div>
+
+        <div id="hidden-contact-inputs"></div>
 
         <div class="mt-4">
             <label class="block text-sm font-semibold text-gray-900">Send via</label>
@@ -79,10 +30,7 @@
 
                 <input type="checkbox" id="sendChat" name="sendChat" value="1" class="ml-4 mr-2" />
                 <label for="sendChat" class="text-sm font-medium text-gray-900">In the Chat</label>
-            </div>
-            <button type="button" id="useTemplate" class="mt-2 w-full bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600">
-                Use Template
-            </button>
+            </div>xhr
         </div>
 
         <!-- Message Input -->
@@ -90,6 +38,10 @@
             <label for="messageTextArea" class="block text-sm font-semibold text-gray-900">Message</label>
             <textarea id="messageTextArea" name="message" class="w-full border border-gray-300 rounded-md p-2" required></textarea>
         </div>
+
+        <button type="button" id="useTemplate" class="mt-2 w-full bg-gray-500 text-white py-2 px-4 rounded-md hover:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-600">
+            Use Template
+        </button>
 
         <!-- Submit Button -->
         <div class="flex justify-center mt-4">
@@ -103,6 +55,58 @@
 @include('modals.wish-modal')
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function() {
+        let selectedContacts = [];
+
+        $('#contact-search').on('keyup', function() {
+            let query = $(this).val();
+
+            if (query.length >= 2) {
+                $.ajax({
+                    url: '{{ route("contacts.search") }}',
+                    type: 'GET',
+                    data: { term: query },
+                    success: function(data) {
+                        $('#contact-suggestions').empty().removeClass('hidden');
+
+                        data.forEach(contact => {
+                            let contactItem = $('<li/>', {
+                                text: contact.name,
+                                class: 'cursor-pointer hover:bg-gray-100 p-2'
+                            }).on('click', function() {
+                                if (!selectedContacts.includes(contact.id)) {
+                                    selectedContacts.push(contact.id);
+
+                                    // Seçilen kişileri ekranda göster ve gizli input ekle
+                                    $('#selected-contacts').append(
+                                        `<div class="bg-blue-100 px-2 py-1 rounded inline-block mt-2 mr-2">${contact.name}</div>`
+                                    );
+                                    $('#hidden-contact-inputs').append(
+                                        `<input type="hidden" name="contacts[]" value="${contact.id}">`
+                                    );
+                                }
+
+                                $('#contact-suggestions').addClass('hidden');
+                                $('#contact-search').val('');
+                            });
+
+                            $('#contact-suggestions').append(contactItem);
+                        });
+
+                        if (data.length === 0) {
+                            $('#contact-suggestions').append('<li class="p-2 text-gray-500">No contacts found</li>');
+                        }
+                    }
+                });
+            } else {
+                $('#contact-suggestions').addClass('hidden');
+            }
+        });
+    });
+</script>
+
 <script>
     $(document).ready(function() {
     function loadEventsBasedOnCategory(categorySelector, eventDropdown) {

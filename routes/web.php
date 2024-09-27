@@ -282,3 +282,5 @@ Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.u
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
 Route::post('/checkout/payment', [CheckoutController::class, 'processPayment'])->name('payment.process');
 Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
+
+Route::get('/contacts/search', [ContactController::class, 'search'])->name('contacts.search');

@@ -5,8 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Wish;
 use App\Models\Event;
 use App\Models\Contact;
-use App\Models\Message; // Add this import
-use App\Models\Conversation; // Add this import
+use App\Models\Message;
+use App\Models\Conversation;
 use Twilio\Rest\Client;
 use Illuminate\Http\Request;
 use App\Models\EventCategory;

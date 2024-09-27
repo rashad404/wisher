@@ -417,4 +417,15 @@ class ContactController extends Controller
     //     return strtolower(str_replace(' ', '_', $header));
     // }
 
+    // ContactController.php
+
+    public function search(Request $request)
+    {
+        $term = $request->input('term');
+
+        $contacts = Contact::where('name', 'LIKE', '%' . $term . '%')->get();
+
+        return response()->json($contacts);
+    }
+
 }
