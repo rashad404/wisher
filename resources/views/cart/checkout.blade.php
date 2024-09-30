@@ -86,6 +86,38 @@
                                     </div>
                                 </div>
 
+
+                                <!-- Details for "Me" -->
+                                <div x-show="tab === 'me'" class="mt-6 space-y-6">
+                                    <h4 class="text-md font-medium text-gray-900">Shipping Address</h4>
+                                    <div class="mt-6 grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-3">
+                                        <div class="sm:col-span-3">
+                                            <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
+                                            <div class="mt-1">
+                                                <input type="text" id="address" name="address" value="{{ $userProfile->address ?? '' }}" required autocomplete="street-address" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label for="city" class="block text-sm font-medium text-gray-700">City</label>
+                                            <div class="mt-1">
+                                                <input type="text" id="city" name="city" value="{{ $userProfile->city ?? '' }}" required autocomplete="address-level2" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label for="region" class="block text-sm font-medium text-gray-700">State / Province</label>
+                                            <div class="mt-1">
+                                                <input type="text" id="region" name="region" value="{{ $userProfile->state ?? '' }}" required autocomplete="address-level1" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <label for="postal-code" class="block text-sm font-medium text-gray-700">Postal code</label>
+                                            <div class="mt-1">
+                                                <input type="text" id="postal-code" name="postal-code" value="{{ $userProfile->zip ?? '' }}" required autocomplete="postal-code" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <!-- Details for "To My Contact" -->
                                 <div x-show="tab === 'contact'" class="mt-6 space-y-6">
                                     <!-- To My Contact - To: Label with Input -->
