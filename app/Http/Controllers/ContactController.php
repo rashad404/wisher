@@ -9,14 +9,15 @@ use App\Models\Group;
 use App\Models\Contact;
 use Twilio\Rest\Client;
 use App\Models\Activity;
+use App\Models\UserProfile;
 use App\Mail\ContactMessage;
 use Illuminate\Http\Request;
 use App\Models\EventCategory;
+use JeroenDesloovere\VCard\VCard;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
-use JeroenDesloovere\VCard\VCardParser;
-use JeroenDesloovere\VCard\VCard;
 use Illuminate\Support\Facades\Storage;
+use JeroenDesloovere\VCard\VCardParser;
 
 class ContactController extends Controller
 {
@@ -421,9 +422,10 @@ class ContactController extends Controller
 
     public function search(Request $request)
     {
-        $term = $request->input('term');
-
-        $contacts = Contact::where('name', 'LIKE', '%' . $term . '%')->get();
+        $term = $request->get('term');
+        $contacts = UserProfile::where('first_name', 'like', "%{$term}%")
+                               ->orWhere('last_name', 'like', "%{$term}%")
+                               ->get(['id', 'first_name', 'last_name', 'address', 'city', 'state', 'zip', 'country', 'phone_number']);
 
         return response()->json($contacts);
     }

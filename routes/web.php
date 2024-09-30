@@ -23,6 +23,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\SendWishController;
 use App\Http\Controllers\UserEventController;
 use App\Http\Controllers\TestimonialController;
+use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\ContactEventController;
 use App\Http\Controllers\ContactGroupController;
 use App\Http\Controllers\SubscriptionController;
@@ -284,3 +285,4 @@ Route::post('/checkout/payment', [CheckoutController::class, 'processPayment'])-
 Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
 
 Route::get('/contacts/search', [ContactController::class, 'search'])->name('contacts.search');
+Route::get('/user_profiles', [UserProfileController::class, 'getUserProfiles'])->name('user_profiles.get');
