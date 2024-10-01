@@ -71,7 +71,7 @@
                         <div class="mt-10">
                             <!-- Details Tabs -->
                             <div class="mt-10">
-                                <h3 id="details-heading" class="text-lg font-medium text-gray-900">Details</h3>
+                                <h3 id="details-heading" class="text-lg font-medium text-gray-900">Send To:</h3>
 
                                 <!-- Details Tabs -->
                                 <div class="mt-6">
@@ -82,7 +82,7 @@
 
                                         <button type="button" class="w-full rounded-md border border-gray-300 py-2 text-center text-sm font-medium"
                                             :class="tab === 'contact' ? 'bg-indigo-600 text-white' : 'bg-gray-200'"
-                                            @click="tab = 'contact'">To My Contacts</button>
+                                            @click="tab = 'contact'">My Contacts</button>
                                     </div>
                                 </div>
 
@@ -298,6 +298,17 @@
                             <input type="text" id="postal-code-${contact.id}" name="postal_code[${contact.id}]" value="${contact.zip || ''}" required autocomplete="postal-code" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Enter postal code">
                         </div>
                     </div>
+                        <div class="sm:col-span-3">
+                            <label for="note-${contact.id}" class="block text-sm font-medium text-gray-700">Note to ${contact.first_name || 'Recipient'}</label>
+                            <div class="mt-1 flex items-center">
+                                <textarea
+                                    id="note-${contact.id}"
+                                    name="notes[${contact.id}]"
+                                    rows="3"
+                                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                    placeholder="Enter any notes here">${contact.note || ''}</textarea>
+                            </div>
+                        </div>
                 </div>
             </div>
         `;

@@ -11,9 +11,9 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
-        'total',
-        'email_address',
+        'order_number',
         'payment_method',
+        'email_address',
         'address',
         'city',
         'region',
@@ -21,11 +21,14 @@ class Order extends Model
         'subtotal',
         'shipping',
         'tax',
+        'total',
         'product_id',
         'color_id',
         'size_id',
         'quantity',
-        'order_number'
+        'status',
+        'contact_ids',
+        'note',
     ];
 
     public function user()

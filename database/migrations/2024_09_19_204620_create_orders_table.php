@@ -40,6 +40,9 @@ class CreateOrdersTable extends Migration
             // Add a JSON field to store multiple contact IDs
             $table->json('contact_ids')->nullable(); // Store multiple contact IDs as JSON
 
+            // Add a notes field to hold notes for the sent contact
+            $table->text('notes')->nullable(); // Nullable text field for notes
+
             $table->timestamps();
         });
     }
