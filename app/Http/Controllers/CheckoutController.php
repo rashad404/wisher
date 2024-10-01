@@ -6,8 +6,8 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str; // To generate unique order numbers
-use Illuminate\Support\Facades\Log; // For logging
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Log;
 
 class CheckoutController extends Controller
 {
@@ -23,6 +23,9 @@ class CheckoutController extends Controller
             return $item->product->price * $item->quantity;
         });
 
+        // Fetch contacts associated with the user
+        $contacts = UserProfile::where('user_id', '!=', $userId)->get();
+
         return view('cart.checkout', [
             'cartItems' => $cartItems,
             'subtotal' => $subtotal,
@@ -31,8 +34,10 @@ class CheckoutController extends Controller
             'total' => $this->calculateTotal($subtotal),
             'userProfile' => $userProfile,
             'userEmail' => $userEmail,
+            'contacts' => $contacts,
         ]);
     }
+
 
     // Need to fix
     private function calculateShipping($subtotal)
@@ -62,9 +67,11 @@ class CheckoutController extends Controller
             'city' => 'required|string',
             'region' => 'required|string',
             'postal-code' => 'required|string',
+            'contact_id' => 'nullable|exists:user_profiles,id',
         ]);
 
         $userId = auth()->id();
+        $userProfile = UserProfile::where('user_id', $userId)->first();
         $cartItems = Cart::where('user_id', $userId)->with('product')->get();
         $subtotal = $cartItems->sum(function ($item) {
             return $item->product->price * $item->quantity;
@@ -77,25 +84,28 @@ class CheckoutController extends Controller
         // Generate a unique order number for all cart items in the same order
         $orderNumber = Str::uuid();
 
+        // Use the contact ID if provided, else use the user's profile information
+        $contactId = $request->input('contact_id');
+        $orderAddress = $contactId ? UserProfile::find($contactId) : $userProfile; // Use user profile if no contact is selected
+
         foreach ($cartItems as $item) {
             // Calculate individual item subtotal
             $itemSubtotal = $item->product->price * $item->quantity;
 
-            // The shipping and tax for each item are allocated as follows:
-            // Shipping and tax should be based on the item's subtotal relative to the overall subtotal
-            $itemShipping = $shipping * ($itemSubtotal / $subtotal); // Proportional shipping
-            $itemTax = $tax * ($itemSubtotal / $subtotal); // Proportional tax
-            $itemTotal = $itemSubtotal + $itemShipping + $itemTax; // Total for this specific item
+            // Calculate proportional shipping and tax
+            $itemShipping = $shipping * ($itemSubtotal / $subtotal);
+            $itemTax = $tax * ($itemSubtotal / $subtotal);
+            $itemTotal = $itemSubtotal + $itemShipping + $itemTax;
 
             Order::create([
                 'user_id' => $userId,
                 'order_number' => $orderNumber,
                 'payment_method' => $request->input('payment_method'),
-                'email_address' => $request->input('email-address'),
-                'address' => $request->input('address'),
-                'city' => $request->input('city'),
-                'region' => $request->input('region'),
-                'postal_code' => $request->input('postal-code'),
+                'email_address' => $contactId ? $orderAddress->email : $request->input('email-address'),
+                'address' => $contactId ? $orderAddress->address : $request->input('address'),
+                'city' => $contactId ? $orderAddress->city : $request->input('city'),
+                'region' => $contactId ? $orderAddress->region : $request->input('region'),
+                'postal_code' => $contactId ? $orderAddress->postal_code : $request->input('postal-code'),
                 'subtotal' => $itemSubtotal,
                 'shipping' => $itemShipping,
                 'tax' => $itemTax,

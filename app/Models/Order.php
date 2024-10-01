@@ -47,4 +47,19 @@ class Order extends Model
     {
         return $this->belongsTo(Size::class);
     }
+
+    public function getContactIdsAttribute($value)
+    {
+        return json_decode($value, true); // Decode JSON to array
+    }
+
+    public function setContactIdsAttribute($value)
+    {
+        $this->attributes['contact_ids'] = json_encode($value); // Encode array to JSON
+    }
+
+    public function sender()
+    {
+        return $this->belongsTo(User::class, 'user_id'); // Assuming 'user_id' is the sender
+    }
 }

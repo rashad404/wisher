@@ -33,7 +33,7 @@ class Order extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'email_address', 'payment_method'
+        'id', 'email_address', 'payment_method', 'order_number'
     ];
 
     /**
@@ -47,7 +47,13 @@ class Order extends Resource
         return [
             ID::make()->sortable(),
 
-            BelongsTo::make('User'),
+            BelongsTo::make('Sender', 'sender', \App\Nova\User::class) // Display the sender's information
+                ->sortable()
+                ->searchable(), // Make it searchable if needed
+
+            Text::make('Order Number')
+                ->sortable()
+                ->rules('required', 'max:255'),
 
             Select::make('Payment Method')
                 ->options([
@@ -56,7 +62,8 @@ class Order extends Resource
                 ])
                 ->displayUsingLabels(),
 
-            Text::make('Email Address'),
+            Text::make('Email Address')
+                ->rules('required', 'email'), // Add validation for email
 
             Text::make('Address'),
 
@@ -85,7 +92,8 @@ class Order extends Resource
             BelongsTo::make('Size'),
 
             Number::make('Quantity')
-                ->step(1), // Quantity should likely be an integer
+                ->step(1) // Quantity should likely be an integer
+                ->rules('required', 'min:1'),
 
             DateTime::make('Created At')->sortable(),
 
@@ -105,6 +113,10 @@ class Order extends Resource
                 ])
                 ->default(0) // Set default to Pending
                 ->displayUsingLabels(),
+
+            Text::make('Contact IDs') // Use a Text field for JSON data
+                ->rules('nullable')
+                ->help('Store multiple contact IDs as a JSON string'),
         ];
     }
 }

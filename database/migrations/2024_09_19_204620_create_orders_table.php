@@ -28,15 +28,17 @@ class CreateOrdersTable extends Migration
             $table->decimal('tax', 10, 2);
             $table->decimal('total', 10, 2);
 
-            // Product-specific fields
+            // Product-specific fields with cascading delete
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->foreignId('color_id')->constrained('colors')->onDelete('cascade');
             $table->foreignId('size_id')->constrained('sizes')->onDelete('cascade');
             $table->integer('quantity')->default(1);
 
-            // Add the status field
-            $table->tinyInteger('status')->default(0); // status field added here
-            // $table->foreign('status')->references('id')->on('order_statuses')->onDelete('restrict'); // Add foreign key constraint
+            // Status field
+            $table->tinyInteger('status')->default(0);
+
+            // Add a JSON field to store multiple contact IDs
+            $table->json('contact_ids')->nullable(); // Store multiple contact IDs as JSON
 
             $table->timestamps();
         });

@@ -51,11 +51,11 @@
             </section>
 
             <!-- Payment and Shipping Details Section -->
-            <section aria-labelledby="payment-and-shipping-heading" class="py-16 lg:col-start-1 lg:row-start-1 lg:mx-auto lg:w-full lg:max-w-lg lg:pt-0" x-data="{ paymentMethod: 'card' }">
+            <section aria-labelledby="payment-and-shipping-heading" class="py-16 lg:col-start-1 lg:row-start-1 lg:mx-auto lg:w-full lg:max-w-lg lg:pt-0" x-data="{ tab: 'me', paymentMethod: 'card' }">
                 <h2 id="payment-and-shipping-heading" class="sr-only">Payment and shipping details</h2>
-                <form action="{{ route('payment.process') }}" method="POST">
+                <form action="{{ route('payment.process') }}" method="POST" id="checkout-form">
                     @csrf
-                    <input type="hidden" id="payment_method" name="payment_method" value="card">
+                    <input type="hidden" id="payment_method" name="payment_method" x-model="paymentMethod">
                     <div class="mx-auto max-w-2xl px-4 lg:max-w-none lg:px-0">
                         <!-- Contact Information Section -->
                         <div>
@@ -70,7 +70,7 @@
 
                         <div class="mt-10">
                             <!-- Details Tabs -->
-                            <div x-data="{ tab: 'me' }" class="mt-10">
+                            <div class="mt-10">
                                 <h3 id="details-heading" class="text-lg font-medium text-gray-900">Details</h3>
 
                                 <!-- Details Tabs -->
@@ -82,10 +82,9 @@
 
                                         <button type="button" class="w-full rounded-md border border-gray-300 py-2 text-center text-sm font-medium"
                                             :class="tab === 'contact' ? 'bg-indigo-600 text-white' : 'bg-gray-200'"
-                                            @click="tab = 'contact'">To My Contact</button>
+                                            @click="tab = 'contact'">To My Contacts</button>
                                     </div>
                                 </div>
-
 
                                 <!-- Details for "Me" -->
                                 <div x-show="tab === 'me'" class="mt-6 space-y-6">
@@ -94,33 +93,32 @@
                                         <div class="sm:col-span-3">
                                             <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
                                             <div class="mt-1">
-                                                <input type="text" id="address" name="address" value="{{ $userProfile->address ?? '' }}" required autocomplete="street-address" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                                <input type="text" id="address" name="address" value="{{ $userProfile->address ?? '' }}" x-bind:required="tab === 'me'" autocomplete="street-address" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                             </div>
                                         </div>
                                         <div>
                                             <label for="city" class="block text-sm font-medium text-gray-700">City</label>
                                             <div class="mt-1">
-                                                <input type="text" id="city" name="city" value="{{ $userProfile->city ?? '' }}" required autocomplete="address-level2" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                                <input type="text" id="city" name="city" value="{{ $userProfile->city ?? '' }}" x-bind:required="tab === 'me'" autocomplete="address-level2" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                             </div>
                                         </div>
                                         <div>
                                             <label for="region" class="block text-sm font-medium text-gray-700">State / Province</label>
                                             <div class="mt-1">
-                                                <input type="text" id="region" name="region" value="{{ $userProfile->state ?? '' }}" required autocomplete="address-level1" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                                <input type="text" id="region" name="region" value="{{ $userProfile->state ?? '' }}" x-bind:required="tab === 'me'" autocomplete="address-level1" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                             </div>
                                         </div>
                                         <div>
                                             <label for="postal-code" class="block text-sm font-medium text-gray-700">Postal code</label>
                                             <div class="mt-1">
-                                                <input type="text" id="postal-code" name="postal-code" value="{{ $userProfile->zip ?? '' }}" required autocomplete="postal-code" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                                <input type="text" id="postal-code" name="postal-code" value="{{ $userProfile->zip ?? '' }}" x-bind:required="tab === 'me'" autocomplete="postal-code" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                             </div>
                                         </div>
                                     </div>
                                 </div>
 
-                                <!-- Details for "To My Contact" -->
+                                <!-- Details for "To My Contacts" -->
                                 <div x-show="tab === 'contact'" class="mt-6 space-y-6">
-                                    <!-- To My Contact - To: Label with Input -->
                                     <div class="mt-4">
                                         <div class="flex items-center">
                                             <label class="block text-sm font-semibold text-gray-900 mr-2">To:</label>
@@ -134,6 +132,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <!-- Shipping Address Section -->
                         <div class="mt-10">
                             <div id="shipping-sections">
@@ -150,11 +149,11 @@
                                 <div class="flex space-x-4">
                                     <button type="button" class="w-full rounded-md border border-gray-300 py-2 text-center text-sm font-medium"
                                         :class="paymentMethod === 'card' ? 'bg-indigo-600 text-white' : 'bg-gray-200'"
-                                        @click="paymentMethod = 'card'; document.getElementById('payment_method').value = 'card'">Credit/Debit Card</button>
+                                        @click="paymentMethod = 'card'">Credit/Debit Card</button>
 
                                     <button type="button" class="w-full rounded-md border border-gray-300 py-2 text-center text-sm font-medium"
                                         :class="paymentMethod === 'cod' ? 'bg-indigo-600 text-white' : 'bg-gray-200'"
-                                        @click="paymentMethod = 'cod'; document.getElementById('payment_method').value = 'cod'">Cash on Delivery</button>
+                                        @click="paymentMethod = 'cod'">Cash on Delivery</button>
                                 </div>
                             </div>
 
@@ -163,7 +162,7 @@
                                 <div>
                                     <label for="card-number" class="block text-sm font-medium text-gray-700">Card number</label>
                                     <div class="mt-1">
-                                        <input type="text" id="card-number" name="card-number" required x-bind:required="paymentMethod === 'card'" autocomplete="cc-number"
+                                        <input type="text" id="card-number" name="card-number" x-bind:required="paymentMethod === 'card'" autocomplete="cc-number"
                                             class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                     </div>
                                 </div>
@@ -171,21 +170,20 @@
                                     <div>
                                         <label for="expiration-date" class="block text-sm font-medium text-gray-700">Expiration date (MM/YY)</label>
                                         <div class="mt-1">
-                                            <input type="text" id="expiration-date" name="expiration-date" required x-bind:required="paymentMethod === 'card'" autocomplete="cc-exp"
+                                            <input type="text" id="expiration-date" name="expiration-date" x-bind:required="paymentMethod === 'card'" autocomplete="cc-exp"
                                                 class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                         </div>
                                     </div>
                                     <div>
                                         <label for="cvc" class="block text-sm font-medium text-gray-700">CVC</label>
                                         <div class="mt-1">
-                                            <input type="text" id="cvc" name="cvc" required x-bind:required="paymentMethod === 'card'" autocomplete="cc-csc"
+                                            <input type="text" id="cvc" name="cvc" x-bind:required="paymentMethod === 'card'" autocomplete="cc-csc"
                                                 class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
 
                         <!-- Submit Button -->
                         <div class="mt-10">
@@ -204,138 +202,121 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
-        let selectedContacts = new Set(); // Use a Set to manage unique contacts
+    let selectedContacts = new Set();
+    let debounceTimer;
 
-        // Event listener for keyup on the contact search input
-        $('#contact-search').on('keyup', function() {
-            let query = $(this).val();
-            console.log(query); // Log the query to the console
+    $('#contact-search').on('input', function() {
+        clearTimeout(debounceTimer);
+        let query = $(this).val();
 
-            // Trigger the AJAX request if the query length is 2 or more
+        debounceTimer = setTimeout(() => {
             if (query.length >= 2) {
-                $.ajax({
-                    url: '{{ route("contacts.search") }}', // Ensure this route is defined correctly
-                    type: 'GET',
-                    data: { term: query },
-                    success: function(data) {
-                        console.log(data); // Log the returned data for debugging
-                        $('#contact-suggestions').empty().removeClass('hidden');
-
-                        // Populate the suggestion list
-                        if (data.length > 0) {
-                            data.forEach(contact => {
-                                let contactName = `${contact.first_name || 'Unnamed'} ${contact.last_name || 'Unnamed'}`;
-
-                                // Create the suggestion item
-                                let contactItem = $('<li/>', {
-                                    text: contactName,
-                                    class: 'cursor-pointer hover:bg-gray-100 p-2'
-                                }).on('click', function() {
-                                    // Check if the contact is already selected
-                                    if (!selectedContacts.has(contact.id)) { // Check using Set
-                                        selectedContacts.add(contact.id); // Add to Set
-
-                                        // Display selected contacts with a delete button
-                                        $('#selected-contacts').append(
-                                            `<div class="bg-blue-100 px-2 py-1 rounded inline-block mt-2 mr-2" id="selected-contact-${contact.id}">
-                                                ${contactName}
-                                                <button type="button" class="delete-contact text-red-500 ml-2" data-id="${contact.id}">&times;</button>
-                                            </div>`
-                                        );
-
-                                        // Add hidden input for the selected contact
-                                        $('#hidden-contact-inputs').append(
-                                            `<input type="hidden" name="contacts[]" value="${contact.id}">`
-                                        );
-
-                                        // Create a new shipping address section for the selected contact
-                                        $('#shipping-sections').append(createShippingSection(contact));
-                                    } else {
-                                        console.log(`${contactName} is already selected.`); // Debugging line
-                                    }
-
-                                    // Clear the search input and hide suggestions
-                                    $('#contact-suggestions').addClass('hidden');
-                                    $('#contact-search').val('');
-                                });
-
-                                $('#contact-suggestions').append(contactItem);
-                            });
-                        } else {
-                            $('#contact-suggestions').append('<li class="p-2 text-gray-500">No contacts found</li>');
-                        }
-                    },
-                    error: function(xhr) {
-                        console.error('AJAX error:', xhr); // Log any AJAX errors
-                    }
-                });
+                searchContacts(query);
             } else {
-                $('#contact-suggestions').addClass('hidden'); // Hide suggestions if query is less than 2
+                $('#contact-suggestions').addClass('hidden');
+            }
+        }, 300);
+    });
+
+    function searchContacts(query) {
+        $.ajax({
+            url: '/contacts/search',
+            type: 'GET',
+            data: { term: query },
+            success: function(data) {
+                displayContactSuggestions(data);
+            },
+            error: function(xhr) {
+                console.error('AJAX error:', xhr);
+                $('#contact-suggestions').html('<li class="p-2 text-red-500">Error fetching contacts</li>').removeClass('hidden');
             }
         });
+    }
 
-        // Function to create a new shipping address section
-        function createShippingSection(contact) {
-            return `
-                <div id="shipping-section-${contact.id}" class="mt-10">
-                    <h3 class="text-lg font-medium text-gray-900">Shipping address for ${contact.first_name || 'Unnamed'} ${contact.last_name || 'Unnamed'}</h3>
-                    <div class="mt-6 grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-3">
-                        <div class="sm:col-span-3">
-                            <label for="address-${contact.id}" class="block text-sm font-medium text-gray-700">Address</label>
-                            <div class="mt-1">
-                                <input type="text" id="address-${contact.id}" name="address[${contact.id}]" value="${contact.address || ''}" required autocomplete="street-address" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Enter address">
-                            </div>
+    function displayContactSuggestions(contacts) {
+        $('#contact-suggestions').empty().removeClass('hidden');
+        if (contacts.length > 0) {
+            contacts.forEach(contact => {
+                let contactName = `${contact.first_name || 'Unnamed'} ${contact.last_name || 'Unnamed'}`;
+                let contactItem = $('<li/>', {
+                    text: contactName,
+                    class: 'cursor-pointer hover:bg-gray-100 p-2'
+                }).on('click', function() {
+                    addContact(contact);
+                });
+                $('#contact-suggestions').append(contactItem);
+            });
+        } else {
+            $('#contact-suggestions').append('<li class="p-2 text-gray-500">No contacts found</li>');
+        }
+    }
+
+    function addContact(contact) {
+        if (!selectedContacts.has(contact.id)) {
+            selectedContacts.add(contact.id);
+            let contactName = `${contact.first_name || 'Unnamed'} ${contact.last_name || 'Unnamed'}`;
+
+            $('#selected-contacts').append(
+                `<div class="bg-blue-100 px-2 py-1 rounded inline-block mt-2 mr-2" id="selected-contact-${contact.id}">
+                    ${contactName}
+                    <button type="button" class="delete-contact text-red-500 ml-2" data-id="${contact.id}">&times;</button>
+                </div>`
+            );
+            $('form').append(`<input type="hidden" name="contacts[]" value="${contact.id}">`);
+            $('#shipping-sections').append(createShippingSection(contact));
+        }
+        $('#contact-suggestions').addClass('hidden');
+        $('#contact-search').val('');
+    }
+
+    function createShippingSection(contact) {
+        return `
+            <div id="shipping-section-${contact.id}" class="mt-10">
+                <h3 class="text-lg font-medium text-gray-900">Shipping address for ${contact.first_name || 'Unnamed'} ${contact.last_name || 'Unnamed'}</h3>
+                <div class="mt-6 grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-3">
+                    <div class="sm:col-span-3">
+                        <label for="address-${contact.id}" class="block text-sm font-medium text-gray-700">Address</label>
+                        <div class="mt-1">
+                            <input type="text" id="address-${contact.id}" name="address[${contact.id}]" value="${contact.address || ''}" required autocomplete="street-address" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Enter address">
                         </div>
-                        <div>
-                            <label for="city-${contact.id}" class="block text-sm font-medium text-gray-700">City</label>
-                            <div class="mt-1">
-                                <input type="text" id="city-${contact.id}" name="city[${contact.id}]" value="${contact.city || ''}" required autocomplete="address-level2" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Enter city">
-                            </div>
+                    </div>
+                    <div>
+                        <label for="city-${contact.id}" class="block text-sm font-medium text-gray-700">City</label>
+                        <div class="mt-1">
+                            <input type="text" id="city-${contact.id}" name="city[${contact.id}]" value="${contact.city || ''}" required autocomplete="address-level2" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Enter city">
                         </div>
-                        <div>
-                            <label for="region-${contact.id}" class="block text-sm font-medium text-gray-700">State / Province</label>
-                            <div class="mt-1">
-                                <input type="text" id="region-${contact.id}" name="region[${contact.id}]" value="${contact.state || ''}" required autocomplete="address-level1" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Enter state or province">
-                            </div>
+                    </div>
+                    <div>
+                        <label for="region-${contact.id}" class="block text-sm font-medium text-gray-700">State / Province</label>
+                        <div class="mt-1">
+                            <input type="text" id="region-${contact.id}" name="region[${contact.id}]" value="${contact.state || ''}" required autocomplete="address-level1" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Enter state or province">
                         </div>
-                        <div>
-                            <label for="postal-code-${contact.id}" class="block text-sm font-medium text-gray-700">Postal code</label>
-                            <div class="mt-1">
-                                <input type="text" id="postal-code-${contact.id}" name="postal_code[${contact.id}]" value="${contact.zip || ''}" required autocomplete="postal-code" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Enter postal code">
-                            </div>
-                        </div>
-                        <div>
-                            <label for="country-${contact.id}" class="block text-sm font-medium text-gray-700">Country</label>
-                            <div class="mt-1">
-                                <input type="text" id="country-${contact.id}" name="country[${contact.id}]" value="${contact.country || ''}" required autocomplete="country" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Enter country">
-                            </div>
-                        </div>
-                        <div>
-                            <label for="phone-number-${contact.id}" class="block text-sm font-medium text-gray-700">Phone Number</label>
-                            <div class="mt-1">
-                                <input type="text" id="phone-number-${contact.id}" name="phone_number[${contact.id}]" value="${contact.phone_number || ''}" required autocomplete="tel" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Enter phone number">
-                            </div>
+                    </div>
+                    <div>
+                        <label for="postal-code-${contact.id}" class="block text-sm font-medium text-gray-700">Postal code</label>
+                        <div class="mt-1">
+                            <input type="text" id="postal-code-${contact.id}" name="postal_code[${contact.id}]" value="${contact.zip || ''}" required autocomplete="postal-code" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Enter postal code">
                         </div>
                     </div>
                 </div>
-            `;
-        }
+            </div>
+        `;
+    }
 
-        // Delete selected contact
-        $(document).on('click', '.delete-contact', function() {
-            const contactId = $(this).data('id');
-            selectedContacts.delete(contactId); // Remove from Set
-
-            // Remove the contact from the displayed list
-            $(this).parent().remove();
-
-            // Remove the corresponding hidden input
-            $('#hidden-contact-inputs input[value="' + contactId + '"]').remove();
-
-            // Remove the corresponding shipping section
-            $('#shipping-section-' + contactId).remove();
-        });
+    $(document).on('click', '.delete-contact', function() {
+        const contactId = $(this).data('id');
+        selectedContacts.delete(contactId);
+        $(`#selected-contact-${contactId}`).remove();
+        $(`input[name="contacts[]"][value="${contactId}"]`).remove();
+        $(`#shipping-section-${contactId}`).remove();
     });
+
+    $(document).click(function(event) {
+        if (!$(event.target).closest('#contact-search, #contact-suggestions').length) {
+            $('#contact-suggestions').addClass('hidden');
+        }
+    });
+});
 </script>
 
 
