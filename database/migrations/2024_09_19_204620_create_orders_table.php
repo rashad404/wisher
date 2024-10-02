@@ -23,9 +23,9 @@ class CreateOrdersTable extends Migration
             $table->foreignId('size_id')->constrained('sizes')->onDelete('cascade');
             $table->integer('quantity')->default(1);
             $table->tinyInteger('status')->default(0);
-            $table->json('contact_ids')->nullable(); // Store multiple contact IDs as JSON
-            $table->json('shipping_addresses')->nullable(); // Store multiple shipping addresses as JSON
-            $table->json('notes')->nullable(); // Store notes for multiple contacts as JSON
+            $table->json('contact_ids')->nullable();
+            $table->json('shipping_addresses')->nullable();
+            $table->json('notes')->nullable();
             $table->timestamps();
         });
     }

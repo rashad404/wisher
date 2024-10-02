@@ -14,10 +14,6 @@ class Order extends Model
         'order_number',
         'payment_method',
         'email_address',
-        'address',
-        'city',
-        'region',
-        'postal_code',
         'subtotal',
         'shipping',
         'tax',
@@ -28,7 +24,14 @@ class Order extends Model
         'quantity',
         'status',
         'contact_ids',
-        'note',
+        'shipping_addresses',
+        'notes',
+    ];
+
+    protected $casts = [
+        'contact_ids' => 'array',
+        'shipping_addresses' => 'array',
+        'notes' => 'array',
     ];
 
     public function user()
@@ -49,16 +52,6 @@ class Order extends Model
     public function size()
     {
         return $this->belongsTo(Size::class);
-    }
-
-    public function getContactIdsAttribute($value)
-    {
-        return json_decode($value, true);
-    }
-
-    public function setContactIdsAttribute($value)
-    {
-        $this->attributes['contact_ids'] = json_encode($value);
     }
 
     public function sender()

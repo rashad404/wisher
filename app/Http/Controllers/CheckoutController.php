@@ -87,6 +87,7 @@ class CheckoutController extends Controller
 
         $shippingAddresses = [];
         $notes = [];
+        $contactIds = [];
 
         // Determine which postal code key is being used
         $postalCodeKey = $request->has('postal-code') ? 'postal-code' : 'postal_code';
@@ -100,12 +101,7 @@ class CheckoutController extends Controller
             ];
             $notes['me'] = $request->input('notes.me');
         } else {
-            // Debug: Log the contacts and address data
-            Log::info('Contacts:', $validatedData['contacts']);
-            Log::info('Address data:', $validatedData['address']);
-
             foreach ($validatedData['contacts'] as $contactId) {
-                // Check if we have address data for this contact
                 if (isset($validatedData['address'][$contactId])) {
                     $shippingAddresses[$contactId] = [
                         'address' => $validatedData['address'][$contactId],
@@ -114,15 +110,12 @@ class CheckoutController extends Controller
                         'postal_code' => $validatedData[$postalCodeKey][$contactId] ?? null,
                     ];
                     $notes[$contactId] = $request->input("notes.$contactId");
+                    $contactIds[] = $contactId;
                 } else {
-                    // Log a warning if we're missing data for a contact
                     Log::warning("Missing address data for contact ID: $contactId");
                 }
             }
         }
-
-        // Debug: Log the final shipping addresses
-        Log::info('Final shipping addresses:', $shippingAddresses);
 
         foreach ($cartItems as $item) {
             Order::create([
@@ -138,9 +131,9 @@ class CheckoutController extends Controller
                 'color_id' => $item->color_id,
                 'size_id' => $item->size_id,
                 'quantity' => $item->quantity,
-                'contact_ids' => $validatedData['tab'] === 'me' ? null : json_encode(array_keys($shippingAddresses)),
-                'shipping_addresses' => json_encode($shippingAddresses),
-                'notes' => json_encode($notes),
+                'contact_ids' => $contactIds,
+                'shipping_addresses' => $shippingAddresses,
+                'notes' => $notes,
             ]);
         }
 
