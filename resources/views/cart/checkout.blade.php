@@ -56,6 +56,7 @@
                 <form action="{{ route('payment.process') }}" method="POST" id="checkout-form">
                     @csrf
                     <input type="hidden" id="payment_method" name="payment_method" x-model="paymentMethod">
+                    <input type="hidden" name="tab" x-model="tab">
                     <div class="mx-auto max-w-2xl px-4 lg:max-w-none lg:px-0">
                         <!-- Contact Information Section -->
                         <div>
@@ -93,25 +94,25 @@
                                         <div class="sm:col-span-3">
                                             <label for="address" class="block text-sm font-medium text-gray-700">Address</label>
                                             <div class="mt-1">
-                                                <input type="text" id="address" name="address" value="{{ $userProfile->address ?? '' }}" x-bind:required="tab === 'me'" autocomplete="street-address" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                                <input type="text" id="address" name="address[me]" value="{{ $userProfile->address ?? '' }}" x-bind:required="tab === 'me'" autocomplete="street-address" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                             </div>
                                         </div>
                                         <div>
                                             <label for="city" class="block text-sm font-medium text-gray-700">City</label>
                                             <div class="mt-1">
-                                                <input type="text" id="city" name="city" value="{{ $userProfile->city ?? '' }}" x-bind:required="tab === 'me'" autocomplete="address-level2" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                                <input type="text" id="city" name="city[me]" value="{{ $userProfile->city ?? '' }}" x-bind:required="tab === 'me'" autocomplete="address-level2" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                             </div>
                                         </div>
                                         <div>
                                             <label for="region" class="block text-sm font-medium text-gray-700">State / Province</label>
                                             <div class="mt-1">
-                                                <input type="text" id="region" name="region" value="{{ $userProfile->state ?? '' }}" x-bind:required="tab === 'me'" autocomplete="address-level1" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                                <input type="text" id="region" name="region[me]" value="{{ $userProfile->state ?? '' }}" x-bind:required="tab === 'me'" autocomplete="address-level1" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                             </div>
                                         </div>
                                         <div>
                                             <label for="postal-code" class="block text-sm font-medium text-gray-700">Postal code</label>
                                             <div class="mt-1">
-                                                <input type="text" id="postal-code" name="postal-code" value="{{ $userProfile->zip ?? '' }}" x-bind:required="tab === 'me'" autocomplete="postal-code" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
+                                                <input type="text" id="postal-code" name="postal-code[me]" value="{{ $userProfile->zip ?? '' }}" x-bind:required="tab === 'me'" autocomplete="postal-code" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm">
                                             </div>
                                         </div>
                                     </div>
@@ -295,24 +296,26 @@
                     <div>
                         <label for="postal-code-${contact.id}" class="block text-sm font-medium text-gray-700">Postal code</label>
                         <div class="mt-1">
-                            <input type="text" id="postal-code-${contact.id}" name="postal_code[${contact.id}]" value="${contact.zip || ''}" required autocomplete="postal-code" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Enter postal code">
+                            <input type="text" id="postal-code-${contact.id}" name="postal-code[${contact.id}]" value="${contact.zip || ''}" required autocomplete="postal-code" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Enter postal code">
                         </div>
                     </div>
-                        <div class="sm:col-span-3">
-                            <label for="note-${contact.id}" class="block text-sm font-medium text-gray-700">Note to ${contact.first_name || 'Recipient'}</label>
-                            <div class="mt-1 flex items-center">
-                                <textarea
-                                    id="note-${contact.id}"
-                                    name="notes[${contact.id}]"
-                                    rows="3"
-                                    class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                    placeholder="Enter any notes here">${contact.note || ''}</textarea>
-                            </div>
+                    <div class="sm:col-span-3">
+                        <label for="note-${contact.id}" class="block text-sm font-medium text-gray-700">Note to ${contact.first_name || 'Recipient'}</label>
+                        <div class="mt-1 flex items-center">
+                            <textarea
+                                id="note-${contact.id}"
+                                name="notes[${contact.id}]"
+                                rows="3"
+                                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                                placeholder="Enter any notes here">${contact.note || ''}</textarea>
                         </div>
+                    </div>
                 </div>
             </div>
         `;
     }
+
+
 
     $(document).on('click', '.delete-contact', function() {
         const contactId = $(this).data('id');

@@ -6,7 +6,6 @@ use App\Models\Cart;
 use App\Models\Order;
 use App\Models\UserProfile;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Log;
 
 class CheckoutController extends Controller
@@ -59,77 +58,90 @@ class CheckoutController extends Controller
         $validatedData = $request->validate([
             'payment_method' => 'required|string',
             'email-address' => 'required|email',
+            'tab' => 'required|in:me,contact',
             'address' => 'required|array',
             'city' => 'required|array',
             'region' => 'required|array',
-            'postal_code' => 'required|array',
-            'contacts' => 'required|array',
+            'postal-code' => 'required_without:postal_code|array',
+            'postal_code' => 'required_without:postal-code|array',
+            'contacts' => 'required_if:tab,contact|array',
             'notes' => 'array',
-            'notes.*' => 'string|nullable', // Make sure notes can be nullable
+            'notes.*' => 'string|nullable',
         ]);
 
         $userId = auth()->id();
-        $orderNumber = 'ORD-' . uniqid(); // Generate a unique order number
-        $subtotal = 0; // Initialize subtotal
-        $cartItems = Cart::where('user_id', $userId)->get(); // Fetch cart items
+        $orderNumber = 'ORD-' . uniqid();
+        $cartItems = Cart::where('user_id', $userId)->with('product')->get();
 
-        // Check if the cart is empty
         if ($cartItems->isEmpty()) {
             return redirect()->back()->withErrors('Your cart is empty.');
         }
 
-        // Calculate subtotal
-        foreach ($cartItems as $item) {
-            $subtotal += $item->product->price * $item->quantity;
+        $subtotal = $cartItems->sum(function($item) {
+            return $item->product->price * $item->quantity;
+        });
+
+        $shipping = $this->calculateShipping($subtotal);
+        $tax = $this->calculateTax($subtotal);
+        $total = $this->calculateTotal($subtotal);
+
+        $shippingAddresses = [];
+        $notes = [];
+
+        // Determine which postal code key is being used
+        $postalCodeKey = $request->has('postal-code') ? 'postal-code' : 'postal_code';
+
+        if ($validatedData['tab'] === 'me') {
+            $shippingAddresses['me'] = [
+                'address' => $validatedData['address']['me'],
+                'city' => $validatedData['city']['me'],
+                'region' => $validatedData['region']['me'],
+                'postal_code' => $validatedData[$postalCodeKey]['me'],
+            ];
+            $notes['me'] = $request->input('notes.me');
+        } else {
+            // Debug: Log the contacts and address data
+            Log::info('Contacts:', $validatedData['contacts']);
+            Log::info('Address data:', $validatedData['address']);
+
+            foreach ($validatedData['contacts'] as $contactId) {
+                // Check if we have address data for this contact
+                if (isset($validatedData['address'][$contactId])) {
+                    $shippingAddresses[$contactId] = [
+                        'address' => $validatedData['address'][$contactId],
+                        'city' => $validatedData['city'][$contactId],
+                        'region' => $validatedData['region'][$contactId],
+                        'postal_code' => $validatedData[$postalCodeKey][$contactId] ?? null,
+                    ];
+                    $notes[$contactId] = $request->input("notes.$contactId");
+                } else {
+                    // Log a warning if we're missing data for a contact
+                    Log::warning("Missing address data for contact ID: $contactId");
+                }
+            }
         }
 
-        $contacts = $request->input('contacts');
-        $contactIds = [];
+        // Debug: Log the final shipping addresses
+        Log::info('Final shipping addresses:', $shippingAddresses);
 
-        foreach ($contacts as $contactId) {
-            // Retrieve address details based on the contact ID
-            $orderAddress = [
-                'address' => $request->input('address')[$contactId] ?? null,
-                'city' => $request->input('city')[$contactId] ?? null,
-                'region' => $request->input('region')[$contactId] ?? null,
-                'postal_code' => $request->input('postal_code')[$contactId] ?? null,
-            ];
-
-            // Check for null values in order address fields
-            if (in_array(null, $orderAddress, true)) {
-                return redirect()->back()->withErrors('Please provide all address fields for selected contacts.');
-            }
-
-            // Add the contact ID to the array
-            $contactIds[] = $contactId;
-
-            // Retrieve the note for this contact
-            $note = $request->input('notes')[$contactId] ?? null;
-
-            // Create the order for each item in the cart
-            foreach ($cartItems as $item) {
-                // Create order for each cart item
-                Order::create([
-                    'user_id' => $userId,
-                    'order_number' => $orderNumber,
-                    'payment_method' => $validatedData['payment_method'],
-                    'email_address' => $validatedData['email-address'],
-                    'address' => $orderAddress['address'],
-                    'city' => $orderAddress['city'],
-                    'region' => $orderAddress['region'],
-                    'postal_code' => $orderAddress['postal_code'],
-                    'subtotal' => $item->product->price * $item->quantity, // Item subtotal
-                    'shipping' => $this->calculateShipping($subtotal), // Calculate shipping
-                    'tax' => $this->calculateTax($subtotal), // Calculate tax
-                    'total' => $this->calculateTotal($subtotal), // Calculate total
-                    'product_id' => $item->product_id,
-                    'color_id' => $item->color_id,
-                    'size_id' => $item->size_id,
-                    'quantity' => $item->quantity,
-                    'contact_ids' => json_encode($contactIds),
-                    'notes' => $note, // Save the note for the order
-                ]);
-            }
+        foreach ($cartItems as $item) {
+            Order::create([
+                'user_id' => $userId,
+                'order_number' => $orderNumber,
+                'payment_method' => $validatedData['payment_method'],
+                'email_address' => $validatedData['email-address'],
+                'subtotal' => $item->product->price * $item->quantity,
+                'shipping' => $shipping,
+                'tax' => $tax,
+                'total' => $total,
+                'product_id' => $item->product_id,
+                'color_id' => $item->color_id,
+                'size_id' => $item->size_id,
+                'quantity' => $item->quantity,
+                'contact_ids' => $validatedData['tab'] === 'me' ? null : json_encode(array_keys($shippingAddresses)),
+                'shipping_addresses' => json_encode($shippingAddresses),
+                'notes' => json_encode($notes),
+            ]);
         }
 
         // Clear the cart after successful payment processing
@@ -138,6 +150,7 @@ class CheckoutController extends Controller
         // Update the session cart count
         session(['cart_count' => 0]);
 
+        // Redirect to success route with a success message
         return redirect()->route('checkout.success')->with('success', 'Order placed successfully.');
     }
 
