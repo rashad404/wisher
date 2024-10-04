@@ -26,6 +26,11 @@ class CreateOrdersTable extends Migration
             $table->json('contact_ids')->nullable();
             $table->json('shipping_addresses')->nullable();
             $table->json('notes')->nullable();
+
+            // New date fields for delivery time
+            $table->date('delivery_date')->nullable(); // The selected delivery date, if "Send Later" was chosen
+            $table->timestamp('delivered_at')->nullable(); // Timestamp when the order was actually delivered
+
             $table->timestamps();
         });
     }

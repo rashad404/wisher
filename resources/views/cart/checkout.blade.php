@@ -121,16 +121,49 @@
                                 <!-- Details for "To My Contacts" -->
                                 <div x-show="tab === 'contact'" class="mt-6 space-y-6">
                                     <div class="mt-4">
+                                        <!-- Contact Search Section -->
                                         <div class="flex items-center">
                                             <label class="block text-sm font-semibold text-gray-900 mr-2">To:</label>
+                                            <!-- Assuming you have some mechanism to select contacts, include their IDs here -->
                                             <input type="text" id="contact-search" class="w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="Start typing a contact name...">
                                         </div>
 
                                         <ul id="contact-suggestions" class="mt-2 bg-white border border-gray-300 rounded-md shadow-md hidden"></ul>
 
-                                        <div id="selected-contacts" class="mt-4 space-y-2"></div>
+                                        <!-- This section will hold the selected contact details (IDs, addresses) -->
+                                        <div id="selected-contacts" class="mt-4 space-y-2">
+                                            @foreach($contacts as $contact)
+                                            <div class="contact" data-contact-id="{{ $contact->id }}">
+                                                <input type="hidden" name="contacts[]" value="{{ $contact->id }}"> <!-- Hidden input for contact ID -->
+                                            </div>
+                                            @endforeach
+                                        </div>
+                                    </div>
+
+                                    <!-- Delivery Options -->
+                                    <div class="mt-6">
+                                        <h4 class="text-md font-medium text-gray-900">Delivery Options</h4>
+
+                                        <!-- Radio button to send now -->
+                                        <div class="flex items-center mt-4 space-x-3">
+                                            <input id="send-now-contact" type="radio" name="delivery_time_contact" value="now" class="form-radio text-indigo-600 h-5 w-5" checked>
+                                            <label for="send-now-contact" class="block text-sm font-medium text-gray-700">Send Now</label>
+                                        </div>
+
+                                        <!-- Radio button to select date -->
+                                        <div class="flex items-center mt-4 space-x-3">
+                                            <input id="send-later-contact" type="radio" name="delivery_time_contact" value="later" class="form-radio text-indigo-600 h-5 w-5">
+                                            <label for="send-later-contact" class="block text-sm font-medium text-gray-700">Select Date</label>
+                                        </div>
+
+                                        <!-- Date picker section, hidden initially -->
+                                        <div id="date-picker-contact-section" class="mt-4 hidden"> <!-- Add the "hidden" class here -->
+                                            <label for="delivery_date_contact" class="block text-sm font-medium text-gray-700">Select Delivery Date</label>
+                                            <input type="date" id="delivery_date_contact" name="delivery_date_contact" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm p-2">
+                                        </div>
                                     </div>
                                 </div>
+
                             </div>
                         </div>
 
@@ -200,72 +233,93 @@
 </main>
 @endsection
 
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Initially hide the date picker if "Send Now" is selected
+        const sendNowRadio = document.getElementById('send-now-contact');
+        const sendLaterRadio = document.getElementById('send-later-contact');
+        const datePickerSection = document.getElementById('date-picker-contact-section');
+
+        // Check the initial state of the radio buttons
+        if (sendNowRadio.checked) {
+            datePickerSection.classList.add('hidden');  // Hide date picker initially
+        }
+
+        // Event listener for "Send Now"
+        sendNowRadio.addEventListener('change', function() {
+            datePickerSection.classList.add('hidden');
+        });
+
+        // Event listener for "Send Later"
+        sendLaterRadio.addEventListener('change', function() {
+            datePickerSection.classList.remove('hidden');
+        });
+    });
+</script>
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
-    $(document).ready(function() {
-    let selectedContacts = new Set();
-    let debounceTimer;
+$(document).ready(function() {
+    let selectedContacts = [];
 
-    $('#contact-search').on('input', function() {
-        clearTimeout(debounceTimer);
+    $('#contact-search').on('keyup', function() {
         let query = $(this).val();
+        console.log("Search query:", query);
 
-        debounceTimer = setTimeout(() => {
-            if (query.length >= 2) {
-                searchContacts(query);
-            } else {
-                $('#contact-suggestions').addClass('hidden');
-            }
-        }, 300);
-    });
+        if (query.length >= 2) {
+            $.ajax({
+                url: "{{ route('contact.search') }}", // Using Laravel's route helper
+                type: 'GET',
+                data: { term: query },
+                success: function(data) {
+                    console.log("Received data:", data);
+                    $('#contact-suggestions').empty().removeClass('hidden');
 
-    function searchContacts(query) {
-        $.ajax({
-            url: '/contacts/search',
-            type: 'GET',
-            data: { term: query },
-            success: function(data) {
-                displayContactSuggestions(data);
-            },
-            error: function(xhr) {
-                console.error('AJAX error:', xhr);
-                $('#contact-suggestions').html('<li class="p-2 text-red-500">Error fetching contacts</li>').removeClass('hidden');
-            }
-        });
-    }
+                    if (data.length === 0) {
+                        $('#contact-suggestions').append('<li class="p-2 text-gray-500">No contacts found</li>');
+                    } else {
+                        data.forEach(contact => {
+                            let contactItem = $('<li/>', {
+                                text: contact.name,
+                                class: 'cursor-pointer hover:bg-gray-100 p-2'
+                            }).on('click', function() {
+                                addContact(contact);
+                            });
 
-    function displayContactSuggestions(contacts) {
-        $('#contact-suggestions').empty().removeClass('hidden');
-        if (contacts.length > 0) {
-            contacts.forEach(contact => {
-                let contactName = `${contact.first_name || 'Unnamed'} ${contact.last_name || 'Unnamed'}`;
-                let contactItem = $('<li/>', {
-                    text: contactName,
-                    class: 'cursor-pointer hover:bg-gray-100 p-2'
-                }).on('click', function() {
-                    addContact(contact);
-                });
-                $('#contact-suggestions').append(contactItem);
+                            $('#contact-suggestions').append(contactItem);
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error searching contacts:", status, error);
+                    $('#contact-suggestions').empty().removeClass('hidden')
+                        .append('<li class="p-2 text-red-500">Error searching contacts</li>');
+                }
             });
         } else {
-            $('#contact-suggestions').append('<li class="p-2 text-gray-500">No contacts found</li>');
+            $('#contact-suggestions').addClass('hidden');
         }
-    }
+    });
 
     function addContact(contact) {
-        if (!selectedContacts.has(contact.id)) {
-            selectedContacts.add(contact.id);
-            let contactName = `${contact.first_name || 'Unnamed'} ${contact.last_name || 'Unnamed'}`;
+        if (!selectedContacts.includes(contact.id)) {
+            selectedContacts.push(contact.id);
 
             $('#selected-contacts').append(
-                `<div class="bg-blue-100 px-2 py-1 rounded inline-block mt-2 mr-2" id="selected-contact-${contact.id}">
-                    ${contactName}
+                `<div class="bg-blue-100 px-2 py-1 rounded inline-block mt-2 mr-2">
+                    ${contact.name}
                     <button type="button" class="delete-contact text-red-500 ml-2" data-id="${contact.id}">&times;</button>
                 </div>`
             );
-            $('form').append(`<input type="hidden" name="contacts[]" value="${contact.id}">`);
+            $('#hidden-contact-inputs').append(
+                `<input type="hidden" name="contacts[]" value="${contact.id}">`
+            );
+
+            // Add shipping section for the new contact
             $('#shipping-sections').append(createShippingSection(contact));
         }
+
         $('#contact-suggestions').addClass('hidden');
         $('#contact-search').val('');
     }
@@ -273,7 +327,7 @@
     function createShippingSection(contact) {
         return `
             <div id="shipping-section-${contact.id}" class="mt-10">
-                <h3 class="text-lg font-medium text-gray-900">Shipping address for ${contact.first_name || 'Unnamed'} ${contact.last_name || 'Unnamed'}</h3>
+                <h3 class="text-lg font-medium text-gray-900">Shipping address for ${contact.name || 'Unnamed'}</h3>
                 <div class="mt-6 grid grid-cols-1 gap-x-4 gap-y-6 sm:grid-cols-3">
                     <div class="sm:col-span-3">
                         <label for="address-${contact.id}" class="block text-sm font-medium text-gray-700">Address</label>
@@ -284,30 +338,30 @@
                     <div>
                         <label for="city-${contact.id}" class="block text-sm font-medium text-gray-700">City</label>
                         <div class="mt-1">
-                            <input type="text" id="city-${contact.id}" name="city[${contact.id}]" value="${contact.city || ''}" required autocomplete="address-level2" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Enter city">
+                            <input type="text" id="city-${contact.id}" name="city[${contact.id}]" value="" required autocomplete="address-level2" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Enter city">
                         </div>
                     </div>
                     <div>
                         <label for="region-${contact.id}" class="block text-sm font-medium text-gray-700">State / Province</label>
                         <div class="mt-1">
-                            <input type="text" id="region-${contact.id}" name="region[${contact.id}]" value="${contact.state || ''}" required autocomplete="address-level1" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Enter state or province">
+                            <input type="text" id="region-${contact.id}" name="region[${contact.id}]" value="" required autocomplete="address-level1" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Enter state or province">
                         </div>
                     </div>
                     <div>
                         <label for="postal-code-${contact.id}" class="block text-sm font-medium text-gray-700">Postal code</label>
                         <div class="mt-1">
-                            <input type="text" id="postal-code-${contact.id}" name="postal-code[${contact.id}]" value="${contact.zip || ''}" required autocomplete="postal-code" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Enter postal code">
+                            <input type="text" id="postal-code-${contact.id}" name="postal-code[${contact.id}]" value="" required autocomplete="postal-code" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" placeholder="Enter postal code">
                         </div>
                     </div>
                     <div class="sm:col-span-3">
-                        <label for="note-${contact.id}" class="block text-sm font-medium text-gray-700">Note to ${contact.first_name || 'Recipient'}</label>
+                        <label for="note-${contact.id}" class="block text-sm font-medium text-gray-700">Note to ${contact.name || 'Recipient'}</label>
                         <div class="mt-1 flex items-center">
                             <textarea
                                 id="note-${contact.id}"
                                 name="notes[${contact.id}]"
                                 rows="3"
                                 class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
-                                placeholder="Enter any notes here">${contact.note || ''}</textarea>
+                                placeholder="Enter any notes here"></textarea>
                         </div>
                     </div>
                 </div>
@@ -315,13 +369,18 @@
         `;
     }
 
-
-
+    // Delete selected contact
     $(document).on('click', '.delete-contact', function() {
         const contactId = $(this).data('id');
-        selectedContacts.delete(contactId);
-        $(`#selected-contact-${contactId}`).remove();
-        $(`input[name="contacts[]"][value="${contactId}"]`).remove();
+        selectedContacts = selectedContacts.filter(id => id !== contactId);
+
+        // Remove the contact from the displayed list
+        $(this).parent().remove();
+
+        // Remove the corresponding hidden input
+        $('#hidden-contact-inputs input[value="' + contactId + '"]').remove();
+
+        // Remove the shipping section for this contact
         $(`#shipping-section-${contactId}`).remove();
     });
 
@@ -332,6 +391,4 @@
     });
 });
 </script>
-
-
 

@@ -26,12 +26,16 @@ class Order extends Model
         'contact_ids',
         'shipping_addresses',
         'notes',
+        'delivery_date',   // Add this field to make it mass-assignable
+        'delivered_at',    // Add this field as well if you intend to update it later
     ];
 
     protected $casts = [
         'contact_ids' => 'array',
         'shipping_addresses' => 'array',
         'notes' => 'array',
+        'delivery_date' => 'datetime',  // Cast delivery_date as datetime
+        'delivered_at' => 'datetime',
     ];
 
     public function user()
@@ -57,5 +61,10 @@ class Order extends Model
     public function sender()
     {
         return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function contact()
+    {
+        return $this->belongsTo(Contact::class);
     }
 }

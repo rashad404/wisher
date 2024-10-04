@@ -90,20 +90,25 @@
 
 
 <script type="text/javascript">
-    $(document).ready(function() {
-        let selectedContacts = [];
+$(document).ready(function() {
+    let selectedContacts = [];
 
-        $('#contact-search').on('keyup', function() {
-            let query = $(this).val();
+    $('#contact-search').on('keyup', function() {
+        let query = $(this).val();
+        console.log("Search query:", query);
 
-            if (query.length >= 2) {
-                $.ajax({
-                    url: '{{ route("contacts.search") }}',
-                    type: 'GET',
-                    data: { term: query },
-                    success: function(data) {
-                        $('#contact-suggestions').empty().removeClass('hidden');
+        if (query.length >= 2) {
+            $.ajax({
+                url: "{{ route('contact.search') }}", // Using Laravel's route helper
+                type: 'GET',
+                data: { term: query },
+                success: function(data) {
+                    console.log("Received data:", data);
+                    $('#contact-suggestions').empty().removeClass('hidden');
 
+                    if (data.length === 0) {
+                        $('#contact-suggestions').append('<li class="p-2 text-gray-500">No contacts found</li>');
+                    } else {
                         data.forEach(contact => {
                             let contactItem = $('<li/>', {
                                 text: contact.name,
@@ -112,7 +117,6 @@
                                 if (!selectedContacts.includes(contact.id)) {
                                     selectedContacts.push(contact.id);
 
-                                    // Display selected contacts with delete button
                                     $('#selected-contacts').append(
                                         `<div class="bg-blue-100 px-2 py-1 rounded inline-block mt-2 mr-2">
                                             ${contact.name}
@@ -130,37 +134,31 @@
 
                             $('#contact-suggestions').append(contactItem);
                         });
-
-                        if (data.length === 0) {
-                            $('#contact-suggestions').append('<li class="p-2 text-gray-500">No contacts found</li>');
-                        }
                     }
-                });
-            } else {
-                $('#contact-suggestions').addClass('hidden');
-            }
-        });
-
-        $('#send-wish-form').on('submit', function(e) {
-            var sendViaOptions = $('input[name="sendVia[]"]:checked').length;
-            if (sendViaOptions === 0) {
-                e.preventDefault();
-                alert('Please select at least one "Send via" option.');
-            }
-        });
-
-        // Delete selected contact
-        $(document).on('click', '.delete-contact', function() {
-            const contactId = $(this).data('id');
-            selectedContacts = selectedContacts.filter(id => id !== contactId);
-
-            // Remove the contact from the displayed list
-            $(this).parent().remove();
-
-            // Remove the corresponding hidden input
-            $('#hidden-contact-inputs input[value="' + contactId + '"]').remove();
-        });
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error searching contacts:", status, error);
+                    $('#contact-suggestions').empty().removeClass('hidden')
+                        .append('<li class="p-2 text-red-500">Error searching contacts</li>');
+                }
+            });
+        } else {
+            $('#contact-suggestions').addClass('hidden');
+        }
     });
+
+    // Delete selected contact
+    $(document).on('click', '.delete-contact', function() {
+        const contactId = $(this).data('id');
+        selectedContacts = selectedContacts.filter(id => id !== contactId);
+
+        // Remove the contact from the displayed list
+        $(this).parent().remove();
+
+        // Remove the corresponding hidden input
+        $('#hidden-contact-inputs input[value="' + contactId + '"]').remove();
+    });
+});
 </script>
 
 <script>

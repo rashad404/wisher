@@ -420,14 +420,14 @@ class ContactController extends Controller
 
     // ContactController.php
 
-    public function search(Request $request)
-    {
-        $term = $request->get('term');
-        $contacts = UserProfile::where('first_name', 'like', "%{$term}%")
-                               ->orWhere('last_name', 'like', "%{$term}%")
-                               ->get(['id', 'first_name', 'last_name', 'address', 'city', 'state', 'zip', 'country', 'phone_number']);
+    // public function search(Request $request)
+    // {
+    //     $term = $request->get('term');
+    //     $contacts = UserProfile::where('first_name', 'like', "%{$term}%")
+    //                            ->orWhere('last_name', 'like', "%{$term}%")
+    //                            ->get(['id', 'first_name', 'last_name', 'address', 'city', 'state', 'zip', 'country', 'phone_number']);
 
-        return response()->json($contacts);
-    }
+    //     return response()->json($contacts);
+    // }
 
 }

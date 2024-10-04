@@ -122,4 +122,15 @@ class SendWishController extends Controller
             'is_seen' => false,
         ]);
     }
+
+    public function searchContacts(Request $request)
+    {
+        $query = $request->input('term');
+        $contacts = Contact::where('name', 'LIKE', "%{$query}%")
+                           ->orWhere('email', 'LIKE', "%{$query}%")
+                           ->orWhere('phone_number', 'LIKE', "%{$query}%")
+                           ->get(['id', 'name', 'email', 'phone_number']);
+
+        return response()->json($contacts);
+    }
 }
