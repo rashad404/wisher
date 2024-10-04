@@ -37,7 +37,9 @@
                                                     @endphp
                                                     @if (!empty($contactIds))
                                                         @foreach ($contactIds as $index => $contactId)
-                                                            <span class="text-sm text-gray-800">{{ getProfileNameById($contactId) }}</span>
+                                                            <a href="{{ url('/user/contacts/' . $contactId) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-500 transition duration-150 ease-in-out hover:underline font-medium" title="View profile of {{ getProfileNameById($contactId) }}">
+                                                                {{ getProfileNameById($contactId) }}
+                                                            </a>
                                                             @if ($index < count($contactIds) - 1)
                                                                 <!-- Subtle separator using dot instead of pipe -->
                                                                 <span class="text-gray-400">&bull;</span>
@@ -74,6 +76,6 @@
 // Function to get profile name by ID
 function getProfileNameById($id) {
     $profile = \App\Models\Contact::find($id);
-    return $profile ? $profile->name: 'Me'; // Return 'Me' if profile is not found
+    return $profile ? $profile->name : 'Me'; // Return 'Me' if profile is not found
 }
 @endphp
