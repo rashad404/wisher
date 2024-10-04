@@ -25,7 +25,10 @@
                                         <img src="{{ Storage::url($order->product->main_image) }}" alt="{{ $order->product->name }}" class="h-32 w-32 object-cover rounded-md">
 
                                         <div>
-                                            <p class="text-lg font-medium text-gray-900">{{ $order->product->name }}</p>
+                                            <!-- Make the product name a clickable link with lighter hover color -->
+                                            <a href="{{ url('/products/' . $order->product->id) }}" class="text-lg font-medium text-indigo-600 hover:text-indigo-500 transition duration-150 ease-in-out no-underline">
+                                                {{ $order->product->name }}
+                                            </a>
                                             <p class="text-sm text-gray-500">Quantity: {{ $order->quantity }}</p>
 
                                             <!-- Improved "Purchased for" section with horizontal layout and refined styling -->
@@ -37,7 +40,7 @@
                                                     @endphp
                                                     @if (!empty($contactIds))
                                                         @foreach ($contactIds as $index => $contactId)
-                                                            <a href="{{ url('/user/contacts/' . $contactId) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-500 transition duration-150 ease-in-out hover:underline font-medium" title="View profile of {{ getProfileNameById($contactId) }}">
+                                                            <a href="{{ url('/user/contacts/' . $contactId) }}" target="_blank" class="text-sm text-indigo-600 hover:text-indigo-500 transition duration-150 ease-in-out no-underline font-medium" title="View profile of {{ getProfileNameById($contactId) }}">
                                                                 {{ getProfileNameById($contactId) }}
                                                             </a>
                                                             @if ($index < count($contactIds) - 1)
