@@ -58,14 +58,14 @@
 
                                     <div class="text-center sm:text-right">
                                         <p class="text-sm text-gray-500">Total:</p>
-                                        <p class="text-lg font-bold text-gray-900">${{ number_format($order->total, 2) }}</p>
+                                        <p class="text-lg font-bold text-gray-900">${{ number_format($order->subtotal, 2) }}</p>
                                     </div>
                                 </div>
                             @endforeach
                         </div>
 
                         <div class="flex justify-between items-center mt-6 pt-4 border-t border-gray-200">
-                            <p class="text-xl font-semibold text-gray-900">Grand Total: ${{ number_format($orderGroup->sum('total'), 2) }}</p>
+                            <p class="text-xl font-semibold text-gray-900">Grand Total: ${{ number_format($order->total, 2) }}</p>
                         </div>
                     </div>
                 @endforeach
@@ -79,6 +79,6 @@
 // Function to get profile name by ID
 function getProfileNameById($id) {
     $profile = \App\Models\Contact::find($id);
-    return $profile ? $profile->name : 'Me'; // Return 'Me' if profile is not found
+    return $profile ? $profile->name : 'Me';
 }
 @endphp
