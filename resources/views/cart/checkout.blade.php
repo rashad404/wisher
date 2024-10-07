@@ -24,6 +24,7 @@
                                 <h3 class="text-white">{{ $item->product->name }}</h3>
                                 <p>{{ $item->product->color }}</p>
                                 <p>{{ $item->product->size }}</p>
+                                <p class="text-indigo-200">Quantity: {{ $item->quantity }}</p>
                             </div>
                             <p class="flex-none text-base font-medium text-white">${{ number_format($item->product->price * $item->quantity, 2) }}</p>
                         </li>
