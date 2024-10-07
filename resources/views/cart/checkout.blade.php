@@ -14,7 +14,7 @@
                     <h2 id="summary-heading" class="sr-only">Order summary</h2>
                     <dl>
                         <dt class="text-sm font-medium">Amount due</dt>
-                        <dd class="mt-1 text-3xl font-bold tracking-tight text-white">${{ number_format($total, 2) }}</dd>
+                        <dd class="mt-1 text-3xl font-bold tracking-tight text-white" id="total-amount">${{ number_format($total, 2) }}</dd>
                     </dl>
                     <ul role="list" class="divide-y divide-white divide-opacity-10 text-sm font-medium">
                         @foreach ($cartItems as $item)
@@ -24,30 +24,31 @@
                                 <h3 class="text-white">{{ $item->product->name }}</h3>
                                 <p>{{ $item->product->color }}</p>
                                 <p>{{ $item->product->size }}</p>
-                                <p class="text-indigo-200">Quantity: {{ $item->quantity }}</p>
+                                <p class="text-indigo-200">Quantity: <span class="item-quantity" data-base-quantity="{{ $item->quantity }}">{{ $item->quantity }}</span></p>
                             </div>
-                            <p class="flex-none text-base font-medium text-white">${{ number_format($item->product->price * $item->quantity, 2) }}</p>
+                            <p class="flex-none text-base font-medium text-white item-total-price" data-base-price="{{ $item->product->price * $item->quantity }}">${{ number_format($item->product->price * $item->quantity, 2) }}</p>
                         </li>
                         @endforeach
                     </ul>
                     <dl class="space-y-6 border-t border-white border-opacity-10 pt-6 text-sm font-medium">
                         <div class="flex items-center justify-between">
                             <dt>Subtotal</dt>
-                            <dd>${{ number_format($subtotal, 2) }}</dd>
+                            <dd id="subtotal">${{ number_format($subtotal, 2) }}</dd>
                         </div>
                         <div class="flex items-center justify-between">
                             <dt>Shipping</dt>
-                            <dd>${{ number_format($shipping, 2) }}</dd>
+                            <dd id="shipping">${{ number_format($shipping, 2) }}</dd>
                         </div>
                         <div class="flex items-center justify-between">
                             <dt>Taxes</dt>
-                            <dd>${{ number_format($tax, 2) }}</dd>
+                            <dd id="taxes">${{ number_format($tax, 2) }}</dd>
                         </div>
                         <div class="flex items-center justify-between border-t border-white border-opacity-10 pt-6 text-white">
                             <dt class="text-base">Total</dt>
-                            <dd class="text-base">${{ number_format($total, 2) }}</dd>
+                            <dd class="text-base" id="grand-total">${{ number_format($total, 2) }}</dd>
                         </div>
                     </dl>
+                    <div class="mt-6 text-sm text-indigo-200" id="contacts-note"></div>
                 </div>
             </section>
 
@@ -258,50 +259,50 @@
     });
 </script>
 
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
     let selectedContacts = [];
+    let baseSubtotal = {{ $subtotal }};
+    let baseShipping = {{ $shipping }};
+    let baseTax = {{ $tax }};
 
-    $('#contact-search').on('keyup', function() {
-        let query = $(this).val();
-        console.log("Search query:", query);
+    function updatePrices() {
+        let contactCount = Math.max(selectedContacts.length, 1);
+        let subtotal = baseSubtotal * contactCount;
+        let shipping = baseShipping * contactCount;
+        let taxes = baseTax * contactCount;
+        let total = subtotal + shipping + taxes;
 
-        if (query.length >= 2) {
-            $.ajax({
-                url: "{{ route('contact.search') }}", // Using Laravel's route helper
-                type: 'GET',
-                data: { term: query },
-                success: function(data) {
-                    console.log("Received data:", data);
-                    $('#contact-suggestions').empty().removeClass('hidden');
+        $('.item-quantity').each(function() {
+            let baseQuantity = $(this).data('base-quantity');
+            $(this).text(baseQuantity * contactCount);
+        });
 
-                    if (data.length === 0) {
-                        $('#contact-suggestions').append('<li class="p-2 text-gray-500">No contacts found</li>');
-                    } else {
-                        data.forEach(contact => {
-                            let contactItem = $('<li/>', {
-                                text: contact.name,
-                                class: 'cursor-pointer hover:bg-gray-100 p-2'
-                            }).on('click', function() {
-                                addContact(contact);
-                            });
+        $('.item-total-price').each(function() {
+            let basePrice = $(this).data('base-price');
+            $(this).text('$' + (basePrice * contactCount).toFixed(2));
+        });
 
-                            $('#contact-suggestions').append(contactItem);
-                        });
-                    }
-                },
-                error: function(xhr, status, error) {
-                    console.error("Error searching contacts:", status, error);
-                    $('#contact-suggestions').empty().removeClass('hidden')
-                        .append('<li class="p-2 text-red-500">Error searching contacts</li>');
-                }
-            });
+        $('#subtotal').text('$' + subtotal.toFixed(2));
+        $('#shipping').text('$' + shipping.toFixed(2));
+        $('#taxes').text('$' + taxes.toFixed(2));
+        $('#grand-total').text('$' + total.toFixed(2));
+        $('#total-amount').text('$' + total.toFixed(2));
+
+        updateContactsNote();
+    }
+
+    function updateContactsNote() {
+        let noteElem = $('#contacts-note');
+        if (selectedContacts.length > 1) {
+            noteElem.text(`Note: You are sending to ${selectedContacts.length} contacts. Quantities and prices have been adjusted accordingly.`);
+        } else if (selectedContacts.length === 1) {
+            noteElem.text(`Note: You are sending to 1 contact.`);
         } else {
-            $('#contact-suggestions').addClass('hidden');
+            noteElem.text('');
         }
-    });
+    }
 
     function addContact(contact) {
         if (!selectedContacts.includes(contact.id)) {
@@ -319,6 +320,8 @@ $(document).ready(function() {
 
             // Add shipping section for the new contact
             $('#shipping-sections').append(createShippingSection(contact));
+
+            updatePrices();
         }
 
         $('#contact-suggestions').addClass('hidden');
@@ -383,12 +386,74 @@ $(document).ready(function() {
 
         // Remove the shipping section for this contact
         $(`#shipping-section-${contactId}`).remove();
+
+        updatePrices();
     });
 
+    // Contact search functionality
+    $('#contact-search').on('keyup', function() {
+        let query = $(this).val();
+        console.log("Search query:", query);
+
+        if (query.length >= 2) {
+            $.ajax({
+                url: "{{ route('contact.search') }}", // Using Laravel's route helper
+                type: 'GET',
+                data: { term: query },
+                success: function(data) {
+                    console.log("Received data:", data);
+                    $('#contact-suggestions').empty().removeClass('hidden');
+
+                    if (data.length === 0) {
+                        $('#contact-suggestions').append('<li class="p-2 text-gray-500">No contacts found</li>');
+                    } else {
+                        data.forEach(contact => {
+                            let contactItem = $('<li/>', {
+                                text: contact.name,
+                                class: 'cursor-pointer hover:bg-gray-100 p-2'
+                            }).on('click', function() {
+                                addContact(contact);
+                            });
+
+                            $('#contact-suggestions').append(contactItem);
+                        });
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error searching contacts:", status, error);
+                    $('#contact-suggestions').empty().removeClass('hidden')
+                        .append('<li class="p-2 text-red-500">Error searching contacts</li>');
+                }
+            });
+        } else {
+            $('#contact-suggestions').addClass('hidden');
+        }
+    });
+
+    // Hide contact suggestions when clicking outside
     $(document).click(function(event) {
         if (!$(event.target).closest('#contact-search, #contact-suggestions').length) {
             $('#contact-suggestions').addClass('hidden');
         }
+    });
+
+    // Initialize date picker functionality
+    document.addEventListener('DOMContentLoaded', function () {
+        const sendNowRadio = document.getElementById('send-now-contact');
+        const sendLaterRadio = document.getElementById('send-later-contact');
+        const datePickerSection = document.getElementById('date-picker-contact-section');
+
+        if (sendNowRadio.checked) {
+            datePickerSection.classList.add('hidden');
+        }
+
+        sendNowRadio.addEventListener('change', function() {
+            datePickerSection.classList.add('hidden');
+        });
+
+        sendLaterRadio.addEventListener('change', function() {
+            datePickerSection.classList.remove('hidden');
+        });
     });
 });
 </script>
