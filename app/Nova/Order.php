@@ -10,6 +10,9 @@ use Laravel\Nova\Fields\DateTime;
 use Laravel\Nova\Fields\Select;
 use Illuminate\Http\Request;
 use App\Models\Contact; // Import Contact model
+use App\Models\Product; // Import Product model
+use App\Models\Color;   // Import Color model
+use App\Models\Size;    // Import Size model
 
 class Order extends Resource
 {
@@ -68,15 +71,36 @@ class Order extends Resource
                     return '$' . number_format($value, 2);
                 }),
 
-            BelongsTo::make('Product'),
+            // Display ordered products, quantities, colors, and sizes in a user-friendly way
+            Text::make('Ordered Products', function () {
+                // Fetch the product details based on product_id, color_id, size_id
+                $product = Product::find($this->product_id);
+                $color = Color::find($this->color_id);
+                $size = Size::find($this->size_id);
 
-            BelongsTo::make('Color'),
+                $productName = $product ? $product->name : 'Unknown Product';
+                $colorName = $color ? $color->name : 'No Color';
+                $sizeName = $size ? $size->name : 'No Size';
+                $quantity = $this->quantity;
 
-            BelongsTo::make('Size'),
+                // Display the details in a table format
+                $productList = '<div style="padding: 10px; border: 1px solid var(--border-color); border-radius: 5px; background-color: var(--background-color); margin-top: 20px;">';
+                $productList .= '<table style="width: 100%; border-collapse: collapse; color: var(--text-color);">';
+                $productList .= '<thead><tr><th style="text-align: left; padding: 8px; border-bottom: 2px solid var(--border-color);">Product Name</th><th style="text-align: left; padding: 8px; border-bottom: 2px solid var(--border-color);">Quantity</th><th style="text-align: left; padding: 8px; border-bottom: 2px solid var(--border-color);">Color</th><th style="text-align: left; padding: 8px; border-bottom: 2px solid var(--border-color);">Size</th></tr></thead>';
+                $productList .= '<tbody>';
 
-            Number::make('Quantity')
-                ->step(1)
-                ->rules('required', 'min:1'),
+                $productList .= "
+                    <tr>
+                        <td style='padding: 8px; border-bottom: 1px solid var(--border-color);'>{$productName}</td>
+                        <td style='padding: 8px; border-bottom: 1px solid var(--border-color);'>{$quantity}</td>
+                        <td style='padding: 8px; border-bottom: 1px solid var(--border-color);'>{$colorName}</td>
+                        <td style='padding: 8px; border-bottom: 1px solid var(--border-color);'>{$sizeName}</td>
+                    </tr>
+                ";
+
+                $productList .= '</tbody></table></div>';
+                return $productList;
+            })->asHtml(),
 
             Select::make('Status')
                 ->options([
@@ -93,7 +117,6 @@ class Order extends Resource
                 ->displayUsingLabels()
                 ->rules('required'),
 
-            // Contact IDs section (now using the Contact model)
             Text::make('Contacts', function () {
                 $contacts = is_array($this->contact_ids) ? $this->contact_ids : json_decode($this->contact_ids, true);
                 $contactList = '';
@@ -109,7 +132,6 @@ class Order extends Resource
                 return $contactList;
             })->asHtml(),
 
-            // Shipping Addresses Section
             Text::make('Shipping Addresses', function () {
                 $addresses = is_array($this->shipping_addresses) ? $this->shipping_addresses : json_decode($this->shipping_addresses, true);
                 $addressList = '<div style="padding: 10px; border: 1px solid var(--border-color); border-radius: 5px; background-color: var(--background-color); margin-top: 20px;">';
@@ -138,7 +160,6 @@ class Order extends Resource
                 return $addressList;
             })->asHtml(),
 
-            // Notes Section
             Text::make('Notes', function () {
                 $notes = is_array($this->notes) ? $this->notes : json_decode($this->notes, true);
                 $notesList = '<div style="padding: 10px; border: 1px solid var(--border-color); border-radius: 5px; background-color: var(--background-color); margin-top: 20px;">';
@@ -164,12 +185,10 @@ class Order extends Resource
                 return $notesList;
             })->asHtml(),
 
-            // Add Delivery Date field
             DateTime::make('Delivery Date')
                 ->sortable()
                 ->rules('nullable', 'date'),
 
-            // Add Delivered At field (when the order is marked as delivered)
             DateTime::make('Delivered At')
                 ->sortable()
                 ->rules('nullable', 'date'),
@@ -179,13 +198,10 @@ class Order extends Resource
         ];
     }
 
-    /**
-     * Fetch the contact name from the Contact model based on the contact ID.
-     */
     protected function getContactNameById($id)
     {
         $contact = Contact::find($id);
-        return $contact ? $contact->name : 'Me'; // Return 'Me' if the contact is not found
+        return $contact ? $contact->name : 'Me';
     }
 
     public function cards(Request $request)
