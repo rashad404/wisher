@@ -73,34 +73,41 @@ class Order extends Resource
 
             // Display ordered products, quantities, colors, and sizes in a user-friendly way
             Text::make('Ordered Products', function () {
-                // Fetch the product details based on product_id, color_id, size_id
-                $product = Product::find($this->product_id);
-                $color = Color::find($this->color_id);
-                $size = Size::find($this->size_id);
+                // Fetch all products for this order based on order_number
+                $orderProducts = Order::where('order_number', $this->order_number)->get();
 
-                $productName = $product ? $product->name : 'Unknown Product';
-                $colorName = $color ? $color->name : 'No Color';
-                $sizeName = $size ? $size->name : 'No Size';
-                $quantity = $this->quantity;
-
-                // Display the details in a table format
+                // Start building the product list as a table
                 $productList = '<div style="padding: 10px; border: 1px solid var(--border-color); border-radius: 5px; background-color: var(--background-color); margin-top: 20px;">';
                 $productList .= '<table style="width: 100%; border-collapse: collapse; color: var(--text-color);">';
                 $productList .= '<thead><tr><th style="text-align: left; padding: 8px; border-bottom: 2px solid var(--border-color);">Product Name</th><th style="text-align: left; padding: 8px; border-bottom: 2px solid var(--border-color);">Quantity</th><th style="text-align: left; padding: 8px; border-bottom: 2px solid var(--border-color);">Color</th><th style="text-align: left; padding: 8px; border-bottom: 2px solid var(--border-color);">Size</th></tr></thead>';
                 $productList .= '<tbody>';
 
-                $productList .= "
-                    <tr>
-                        <td style='padding: 8px; border-bottom: 1px solid var(--border-color);'>{$productName}</td>
-                        <td style='padding: 8px; border-bottom: 1px solid var(--border-color);'>{$quantity}</td>
-                        <td style='padding: 8px; border-bottom: 1px solid var(--border-color);'>{$colorName}</td>
-                        <td style='padding: 8px; border-bottom: 1px solid var(--border-color);'>{$sizeName}</td>
-                    </tr>
-                ";
+                // Loop through each ordered product and fetch the associated details
+                foreach ($orderProducts as $orderProduct) {
+                    $product = Product::find($orderProduct->product_id);
+                    $color = Color::find($orderProduct->color_id);
+                    $size = Size::find($orderProduct->size_id);
+
+                    $productName = $product ? $product->name : 'Unknown Product';
+                    $colorName = $color ? $color->name : 'No Color';
+                    $sizeName = $size ? $size->name : 'No Size';
+                    $quantity = $orderProduct->quantity;
+
+                    // Append each product's details to the table
+                    $productList .= "
+                        <tr>
+                            <td style='padding: 8px; border-bottom: 1px solid var(--border-color);'>{$productName}</td>
+                            <td style='padding: 8px; border-bottom: 1px solid var(--border-color);'>{$quantity}</td>
+                            <td style='padding: 8px; border-bottom: 1px solid var(--border-color);'>{$colorName}</td>
+                            <td style='padding: 8px; border-bottom: 1px solid var(--border-color);'>{$sizeName}</td>
+                        </tr>
+                    ";
+                }
 
                 $productList .= '</tbody></table></div>';
                 return $productList;
             })->asHtml(),
+
 
             Select::make('Status')
                 ->options([
