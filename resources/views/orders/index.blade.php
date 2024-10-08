@@ -101,10 +101,16 @@
                     </div>
                 @endforeach
             </div>
+
+            <!-- Add pagination links -->
+            <div class="mt-8">
+                {{ $orders->links() }}
+            </div>
         @endif
     </div>
 </div>
 @endsection
+
 
 @php
 function getProfileNameById($id) {
