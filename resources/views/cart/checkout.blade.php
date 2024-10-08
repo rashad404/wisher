@@ -8,6 +8,11 @@
         <div class="relative mx-auto grid max-w-7xl grid-cols-1 gap-x-16 lg:grid-cols-2 lg:px-8 lg:pt-16">
             <h1 class="sr-only">Checkout</h1>
 
+            <div id="warning-message" class="hidden mb-4 p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700">
+                <p class="font-bold">Warning</p>
+                <p id="warning-text"></p>
+            </div>
+
             <!-- Order Summary Section -->
             <section aria-labelledby="summary-heading" class="bg-indigo-900 py-12 text-indigo-300 md:px-10 lg:col-start-2 lg:row-start-1 lg:mx-auto lg:w-full lg:max-w-lg lg:bg-transparent lg:px-0 lg:pt-0">
                 <div class="mx-auto max-w-2xl px-4 lg:max-w-none lg:px-0">
@@ -294,14 +299,20 @@ $(document).ready(function() {
     }
 
     function updateContactsNote() {
-        let noteElem = $('#contacts-note');
+        console.log("Updating contacts note. Selected contacts:", selectedContacts.length); // Debug log
+        let warningElem = $('#warning-message');
+        let warningTextElem = $('#warning-text');
+
         if (selectedContacts.length > 1) {
-            noteElem.text(`Note: You are sending to ${selectedContacts.length} contacts. Quantities and prices have been adjusted accordingly.`);
+            warningTextElem.text(`You are sending to ${selectedContacts.length} contacts. Quantities and prices have been adjusted accordingly.`);
+            warningElem.removeClass('hidden').show();
         } else if (selectedContacts.length === 1) {
-            noteElem.text(`Note: You are sending to 1 contact.`);
+            warningTextElem.text(`You are sending to 1 contact.`);
+            warningElem.removeClass('hidden').show();
         } else {
-            noteElem.text('');
+            warningElem.addClass('hidden').hide();
         }
+        console.log("Warning message visibility:", !warningElem.hasClass('hidden')); // Debug log
     }
 
     function addContact(contact) {
