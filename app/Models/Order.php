@@ -11,21 +11,31 @@ class Order extends Model
 
     protected $fillable = [
         'user_id',
-        'total',
-        'email_address',
+        'order_number',
         'payment_method',
-        'address',
-        'city',
-        'region',
-        'postal_code',
+        'email_address',
         'subtotal',
         'shipping',
         'tax',
+        'total',
         'product_id',
         'color_id',
         'size_id',
         'quantity',
-        'order_number'
+        'status',
+        'contact_ids',
+        'shipping_addresses',
+        'notes',
+        'delivery_date',   // Add this field to make it mass-assignable
+        'delivered_at',    // Add this field as well if you intend to update it later
+    ];
+
+    protected $casts = [
+        'contact_ids' => 'array',
+        'shipping_addresses' => 'array',
+        'notes' => 'array',
+        'delivery_date' => 'datetime',  // Cast delivery_date as datetime
+        'delivered_at' => 'datetime',
     ];
 
     public function user()
@@ -46,5 +56,15 @@ class Order extends Model
     public function size()
     {
         return $this->belongsTo(Size::class);
+    }
+
+    public function sender()
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function contact()
+    {
+        return $this->belongsTo(Contact::class);
     }
 }

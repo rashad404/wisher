@@ -6,11 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateOrdersTable extends Migration
 {
-    /**
-     * Run the migrations.
-     *
-     * @return void
-     */
     public function up()
     {
         Schema::create('orders', function (Blueprint $table) {
@@ -19,34 +14,27 @@ class CreateOrdersTable extends Migration
             $table->string('order_number');
             $table->string('payment_method');
             $table->string('email_address');
-            $table->string('address');
-            $table->string('city');
-            $table->string('region');
-            $table->string('postal_code');
             $table->decimal('subtotal', 10, 2);
             $table->decimal('shipping', 10, 2);
             $table->decimal('tax', 10, 2);
             $table->decimal('total', 10, 2);
-
-            // Product-specific fields
             $table->foreignId('product_id')->constrained('products')->onDelete('cascade');
             $table->foreignId('color_id')->constrained('colors')->onDelete('cascade');
             $table->foreignId('size_id')->constrained('sizes')->onDelete('cascade');
             $table->integer('quantity')->default(1);
+            $table->tinyInteger('status')->default(0);
+            $table->json('contact_ids')->nullable();
+            $table->json('shipping_addresses')->nullable();
+            $table->json('notes')->nullable();
 
-            // Add the status field
-            $table->tinyInteger('status')->default(0); // status field added here
-            // $table->foreign('status')->references('id')->on('order_statuses')->onDelete('restrict'); // Add foreign key constraint
+            // New date fields for delivery time
+            $table->date('delivery_date')->nullable(); // The selected delivery date, if "Send Later" was chosen
+            $table->timestamp('delivered_at')->nullable(); // Timestamp when the order was actually delivered
 
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
     public function down()
     {
         Schema::dropIfExists('orders');

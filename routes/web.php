@@ -23,6 +23,7 @@ use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\SendWishController;
 use App\Http\Controllers\UserEventController;
 use App\Http\Controllers\TestimonialController;
+use App\Http\Controllers\UserProfileController;
 use App\Http\Controllers\ContactEventController;
 use App\Http\Controllers\ContactGroupController;
 use App\Http\Controllers\SubscriptionController;
@@ -195,6 +196,7 @@ Route::middleware('auth')->prefix('user')->group(function () {
 
     // My orders part
     Route::get('my-orders', [OrderController::class, 'index'])->name('orders.index');
+    Route::get('orders/{order}', [OrderController::class, 'view'])->name('orders.view');
 
     // Send wish part
     Route::get('send-wish', [SendWishController::class, 'index'])->name('send-wish.index');
@@ -283,4 +285,7 @@ Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.in
 Route::post('/checkout/payment', [CheckoutController::class, 'processPayment'])->name('payment.process');
 Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
 
-Route::get('/contacts/search', [ContactController::class, 'search'])->name('contacts.search');
+// Route::get('/contacts/search', [ContactController::class, 'search'])->name('contacts.search');
+Route::get('/search-contacts', [SendWishController::class, 'searchContacts'])->name('contact.search');
+//Route::get('/user_profiles', [UserProfileController::class, 'getUserProfiles'])->name('user_profiles.get');
+Route::get('/contacts/search/checkout', [CheckoutController::class, 'searchContacts'])->name('contacts.search.checkout');
