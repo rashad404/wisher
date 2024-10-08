@@ -7,16 +7,16 @@
         <div class="absolute right-0 top-0 hidden h-full w-1/2 bg-indigo-900 lg:block" aria-hidden="true"></div>
         <div class="relative mx-auto grid max-w-7xl grid-cols-1 gap-x-16 lg:grid-cols-2 lg:px-8 lg:pt-16">
             <h1 class="sr-only">Checkout</h1>
-
-            <div id="warning-message" class="hidden mb-4 p-4 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-700">
-                <p class="font-bold">Warning</p>
-                <p id="warning-text"></p>
-            </div>
-
             <!-- Order Summary Section -->
             <section aria-labelledby="summary-heading" class="bg-indigo-900 py-12 text-indigo-300 md:px-10 lg:col-start-2 lg:row-start-1 lg:mx-auto lg:w-full lg:max-w-lg lg:bg-transparent lg:px-0 lg:pt-0">
                 <div class="mx-auto max-w-2xl px-4 lg:max-w-none lg:px-0">
                     <h2 id="summary-heading" class="sr-only">Order summary</h2>
+                    <!--Warning Message-->
+                    <div id="warning-message" style="display: none; padding: 1rem; margin-bottom: 1rem; font-size: 0.875rem; line-height: 1.25rem; color: #713f12; background-color: #fef9c3; border-radius: 0.5rem; border-left-width: 4px; border-left-color: #ca8a04;" role="alert">
+                        <p style="font-weight: 500;">Warning!</p>
+                        <p id="warning-text"></p>
+                    </div>
+
                     <dl>
                         <dt class="text-sm font-medium">Amount due</dt>
                         <dd class="mt-1 text-3xl font-bold tracking-tight text-white" id="total-amount">${{ number_format($total, 2) }}</dd>
@@ -300,6 +300,7 @@ $(document).ready(function() {
 
     function updateContactsNote() {
         console.log("Updating contacts note. Selected contacts:", selectedContacts.length); // Debug log
+
         let warningElem = $('#warning-message');
         let warningTextElem = $('#warning-text');
 
@@ -312,8 +313,11 @@ $(document).ready(function() {
         } else {
             warningElem.addClass('hidden').hide();
         }
+
         console.log("Warning message visibility:", !warningElem.hasClass('hidden')); // Debug log
     }
+
+
 
     function addContact(contact) {
         if (!selectedContacts.includes(contact.id)) {
