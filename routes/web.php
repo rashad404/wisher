@@ -20,6 +20,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ActivityController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\SendWishController;
 use App\Http\Controllers\UserEventController;
 use App\Http\Controllers\TestimonialController;
 use App\Http\Controllers\ContactEventController;
@@ -194,7 +195,20 @@ Route::middleware('auth')->prefix('user')->group(function () {
 
     // My orders part
     Route::get('my-orders', [OrderController::class, 'index'])->name('orders.index');
+
+    // Send wish part
+    Route::get('send-wish', [SendWishController::class, 'index'])->name('send-wish.index');
+    Route::post('send-wishes', [SendWishController::class, 'sendWish'])->name('send.wish');
 });
+
+Route::get('/check-twilio-credentials', function () {
+    return [
+        'TWILIO_SID' => env('TWILIO_SID'),
+        'TWILIO_TOKEN' => env('TWILIO_TOKEN'),
+        'TWILIO_FROM' => env('TWILIO_FROM'),
+    ];
+});
+
 
 //Adding events from Contacts
 Route::prefix('contacts/{contact}/events')->name('contacts.events.')->group(function () {
@@ -268,3 +282,5 @@ Route::post('/cart/update', [CartController::class, 'updateCart'])->name('cart.u
 Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
 Route::post('/checkout/payment', [CheckoutController::class, 'processPayment'])->name('payment.process');
 Route::get('/checkout/success', [CheckoutController::class, 'success'])->name('checkout.success');
+
+Route::get('/contacts/search', [ContactController::class, 'search'])->name('contacts.search');

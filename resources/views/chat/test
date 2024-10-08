@@ -1,0 +1,183 @@
+@extends('layouts.user.app')
+
+@section('content')
+    <x-breadcrumbs :links="[
+        ['url' => route('main.index'), 'label' => __('Main')],
+        ['url' => route('chat.index'), 'label' => __('Chats')]
+    ]"/>
+
+<div class="container mx-auto">
+    <h2 class="text-xl font-bold mb-4">Chats</h2>
+
+    <!-- Send Message Button -->
+    <div class="mb-4">
+        <button onclick="toggleNewMessageModal()" class="bg-blue-500 text-white py-2 px-4 rounded">Send Message</button>
+    </div>
+
+    <ul>
+        @foreach($conversations as $conversation)
+            @php
+                // Get the contact associated with the conversation
+                $contactId = ($conversation->user1_id === auth()->id()) ? $conversation->user2_id : $conversation->user1_id;
+                $contact = $contacts->find($contactId);
+                $lastMessage = $conversation->messages()->orderBy('id', 'desc')->first();
+                $lastMessage = $lastMessage ? $lastMessage : (object) ['body' => 'No messages yet', 'created_at' => now()];
+            @endphp
+            <li class="mb-2 p-2 border-b">
+                <a href="{{ route('chat.show', $conversation) }}" class="flex justify-between items-center">
+                    <div class="flex items-center">
+                        @if($contact) <!-- Check if contact is not null -->
+                            <img src="{{ Storage::url($contact->photo ?? 'default.png') }}" class="w-10 h-10 rounded-full mr-3">
+                            <div>
+                                <p class="font-semibold">{{ $contact->name }}</p>
+                                <p class="text-sm text-gray-600">{{ Str::limit($lastMessage->body, 30) }}</p>
+                            </div>
+                        @else
+                            <div>
+                                <p class="font-semibold">Unknown User</p>
+                                <p class="text-sm text-gray-600">{{ Str::limit($lastMessage->body, 30) }}</p>
+                            </div>
+                        @endif
+                    </div>
+                    <div class="text-sm text-gray-500">
+                        {{ $lastMessage->created_at->isToday() ? $lastMessage->created_at->format('H:i A') : $lastMessage->created_at->format('d M Y H:i') }}
+                    </div>
+                </a>
+            </li>
+        @endforeach
+    </ul>
+
+
+    <!-- New Message Modal -->
+    <div id="newMessageModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 hidden flex items-center justify-center">
+        <div class="bg-white p-6 rounded-lg w-1/2">
+            <h3 class="text-xl font-bold mb-4">Start a New Conversation</h3>
+            <form action="{{ route('chat.create') }}" method="POST">
+                @csrf
+                <div class="mb-4">
+                    <label for="user_id" class="block text-sm font-medium text-gray-700">Select User</label>
+                    <select name="user_id" id="user_id" class="w-full p-2 border rounded">
+                        @foreach($contacts as $contact)
+                            <option value="{{ $contact->id }}">{{ $contact->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="flex justify-end">
+                    <button type="button" onclick="toggleNewMessageModal()" class="bg-gray-500 text-white py-2 px-4 rounded mr-2">Cancel</button>
+                    <button type="submit" class="bg-blue-500 text-white py-2 px-4 rounded">Start Conversation</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function toggleNewMessageModal() {
+        document.getElementById('newMessageModal').classList.toggle('hidden');
+    }
+</script>
+@endsection
+
+
+namespace App\Http\Controllers;
+
+use App\Models\User;
+use App\Models\Contact;
+use App\Models\Message;
+use App\Models\Conversation;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
+class ChatController extends Controller
+{
+    public function index()
+    {
+        $conversations = Conversation::where('user1_id', Auth::id())
+                        ->orWhere('user2_id', Auth::id())
+                        ->with(['user1', 'user2', 'messages' => function ($query) {
+                            $query->orderBy('created_at', 'desc')->limit(1);
+                        }])
+                        ->get();
+
+        // Get all contacts
+        $contacts = Contact::all(); // Fetch all contacts
+        return view('chat.index', compact('conversations', 'contacts'));
+    }
+
+
+    public function show(Conversation $conversation)
+    {
+        $this->authorize('view', $conversation);
+
+        $messages = $conversation->messages()->orderBy('created_at', 'asc')->get();
+
+        return view('chat.show', compact('conversation', 'messages'));
+    }
+
+    public function storeMessage(Request $request, Conversation $conversation)
+    {
+        $this->authorize('view', $conversation);
+
+        $message = $conversation->messages()->create([
+            'sender_id' => Auth::id(),
+            'body' => $request->body,
+            'is_seen' => false,
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function deleteMessage(Message $message)
+    {
+        $this->authorize('delete', $message);
+
+        $message->delete();
+
+        return redirect()->back();
+    }
+
+    public function deleteConversation(Conversation $conversation)
+    {
+        $this->authorize('delete', $conversation);
+
+        $conversation->delete();
+
+        return redirect()->route('chat.index');
+    }
+
+    public function create(Request $request)
+    {
+        $request->validate([
+            'user_id' => 'required|exists:users,id',
+        ]);
+
+        // Find or create a conversation between the two users
+        $conversation = Conversation::firstOrCreate([
+            'user1_id' => Auth::id(),
+            'user2_id' => $request->user_id,
+        ], [
+            'user1_id' => Auth::id(),
+            'user2_id' => $request->user_id,
+        ]);
+
+        return redirect()->route('chat.show', $conversation);
+    }
+
+    public function chatWithUser($id)
+    {
+        $user = User::findOrFail($id);
+
+        $conversation = Conversation::firstOrCreate(
+            [
+                'user1_id' => Auth::id(),
+                'user2_id' => $id,
+            ],
+            [
+                'user1_id' => Auth::id(),
+                'user2_id' => $id,
+            ]
+        );
+
+        return redirect()->route('chat.show', $conversation);
+    }
+}
