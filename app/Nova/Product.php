@@ -227,7 +227,7 @@ class Product extends Resource
                 $model->features = json_encode($features);
             } else {
                 Log::warning('Features is neither a string nor an array', ['type' => gettype($features)]);
-                $model->features = '{}'; // Set to empty object for unexpected types
+                $model->features = '{}';
             }
 
             try {
