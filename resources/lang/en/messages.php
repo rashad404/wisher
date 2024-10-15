@@ -196,4 +196,5 @@ return [
     'giftsTitle' => 'Thoughtful Gifts for Every Occasion',
     'giftsSubTitle' => 'Explore our curated selection of gifts perfect for your loved ones. From birthdays to anniversaries, find something special for everyone.',
     'viewAllGifts' => 'View All Gifts',
+    'buy_now' => 'Buy Now',
 ];

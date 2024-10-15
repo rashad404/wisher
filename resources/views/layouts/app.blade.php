@@ -1,38 +1,26 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full bg-white">
+<html lang="{{ app()->getLocale() }}" class="h-full">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!--Font Awesome-->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Alpine JS-->
+    <title>Wisher.az - {{ __('Your Wishes, Our Priority') }}</title>
+    <!-- Tailwind CSS -->
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
+    <!-- Font Awesome -->
+    <script src="https://kit.fontawesome.com/yourkit.js" crossorigin="anonymous"></script>
+    <!-- Alpine.js -->
     <script src="//unpkg.com/alpinejs" defer></script>
-    <!-- Select2 CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <!-- Select2 JS -->
-    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-    <link rel="stylesheet" href="{{ asset('css/app.css?123') }}?ref={{rand(11111,99999)}}">
-    <script src="{{ asset('js/app.js') }}?ref={{rand(11111,99999)}}" defer></script>
-    <title>Wisher.az - Hədiyyə və Arzuların Ünvanı</title>
+    @stack('head')
 </head>
-<body class="h-full">
-    <header>
-        @include('/layouts/header')
-    </header>
+<body class="h-full bg-gray-50">
+    @include('layouts.header')
 
-    <nav>
-        <!-- Include your navigation menu here -->
-    </nav>
-
-    <main>
+    <main class="container mx-auto py-8 px-6">
         @yield('content')
     </main>
 
-    <footer>
-        @include('/layouts/footer')
-    </footer>
+    @include('layouts.footer')
 
-    <!-- Scripts -->
     @stack('scripts')
 </body>
 </html>
