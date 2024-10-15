@@ -71,37 +71,36 @@
                 @endif
             @endforeach
         </div>
+
         <div class="flex flex-1 items-center justify-end gap-x-6">
             <!-- Language Dropdown -->
-            <div class="flex flex-1 items-center justify-end gap-x-6">
-                <!-- Language Dropdown -->
-                <div class="relative z-50 flex items-center">
-                    <button type="button" class="text-white text-sm font-semibold leading-6 focus:outline-none" id="languageButton">
-                        {{ strtoupper(app()->getLocale()) }}
-                    </button>
-                    <div class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden" id="languageDropdown">
-                        <div class="py-1">
-                            @foreach (['en', 'az', 'es', 'fr', 'de', 'pt', 'ru', 'zh-CN', 'ar', 'hi', 'ja', 'it'] as $lang)
-                                <a href="{{ route('switchLang', $lang) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                    {{ __('messages.' . $lang) }}
-                                </a>
-                            @endforeach
-                        </div>
+            <div class="relative z-50 flex items-center">
+                <button type="button" class="text-white text-sm font-semibold leading-6 focus:outline-none" id="languageButton">
+                    {{ strtoupper(app()->getLocale()) }}
+                </button>
+                <div class="absolute right-0 mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 hidden" id="languageDropdown" style="top: 100%; left: auto; right: 0;">
+                    <div class="py-1">
+                        @foreach (['en', 'az', 'es', 'fr', 'de', 'pt', 'ru', 'zh-CN', 'ar', 'hi', 'ja', 'it'] as $lang)
+                            <a href="{{ route('switchLang', $lang) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                {{ __('messages.' . $lang) }}
+                            </a>
+                        @endforeach
                     </div>
                 </div>
-
-                <!-- Shopping Cart -->
-                <div class="relative z-50 flex items-center">
-                    <a href="{{ route('cart.index') }}" class="relative">
-                        <i class="fas fa-shopping-cart text-2xl text-white"></i>
-                        @if(session('cart_count') > 0)
-                            <span class="absolute" style="top: -10px; left: -10px; display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; font-size: 12px; font-weight: bold; color: white; background-color: #FFCF31; border-radius: 9999px;">
-                                {{ session('cart_count') }}
-                            </span>
-                        @endif
-                    </a>
-                </div>
             </div>
+
+            <!-- Shopping Cart -->
+            <div class="relative z-50 flex items-center">
+                <a href="{{ route('cart.index') }}" class="relative">
+                    <i class="fas fa-shopping-cart text-2xl text-white"></i>
+                    @if(session('cart_count') > 0)
+                        <span class="absolute" style="top: -10px; left: -10px; display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; font-size: 12px; font-weight: bold; color: white; background-color: #FFCF31; border-radius: 9999px;">
+                            {{ session('cart_count') }}
+                        </span>
+                    @endif
+                </a>
+            </div>
+        </div>
 
 
             @auth
