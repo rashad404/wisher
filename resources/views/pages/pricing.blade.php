@@ -1,48 +1,56 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="bg-white py-24 sm:py-32">
-  <div class="mx-auto max-w-7xl px-6 lg:px-8">
-    <div class="mx-auto max-w-4xl text-center">
-      <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('messages.choose_your_plan') }}</h2>
-      <p class="mt-4 text-lg text-gray-600">{{ __('messages.plan_description') }}</p>
-    </div>
-    <div class="isolate mx-auto mt-10 grid max-w-md grid-cols-1 gap-8 lg:mx-0 lg:max-w-none lg:grid-cols-3">
-      
-      @foreach($plans as $plan)
-      <div class="rounded-3xl p-8 ring-1 ring-gray-200 xl:p-10">
-        <div class="flex items-center justify-between gap-x-4">
-          <h3 id="tier-{{ strtolower($plan->name) }}" class="text-lg font-semibold leading-8 text-gray-900">{{ $plan->getTranslation('name', app()->getLocale()) }}</h3>
+<div class="bg-gray-50 py-16">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="text-center">
+            <h2 class="text-3xl font-extrabold text-gray-900">{{ __('messages.choose_your_plan') }}</h2>
+            <p class="mt-4 text-lg text-gray-600">{{ __('messages.plan_description') }}</p>
         </div>
-        <p class="mt-6 flex items-baseline gap-x-1">
-          <span class="text-4xl font-bold tracking-tight text-gray-900">
-            @if($plan->price_monthly)
-              ${{ number_format($plan->price_monthly, 2) }}
-            @else
-              {{ __('Custom') }}
-            @endif
-          </span>
-          <span class="text-sm font-semibold leading-6 text-gray-600">
-            @if($plan->price_monthly)
-              /{{ __('month') }}
-            @endif
-          </span>
-        </p>
-        <a href="#" aria-describedby="tier-{{ strtolower($plan->name) }}" class="mt-6 block rounded-md px-3 py-2 text-center text-sm font-semibold leading-6 text-indigo-600 ring-1 ring-inset ring-indigo-200 hover:ring-indigo-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">{{ __('Buy plan') }}</a>
-        <ul role="list" class="mt-8 space-y-3 text-sm leading-6 text-gray-600 xl:mt-10">
-          @foreach($plan->features as $feature)
-          <li class="flex gap-x-3">
-            <svg class="h-6 w-5 flex-none text-indigo-600" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-              <path fill-rule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clip-rule="evenodd" />
-            </svg>
-            {{ $feature->getTranslation('feature_key', app()->getLocale()) }}
-          </li>
-          @endforeach
-        </ul>
-      </div>
-      @endforeach
-
+        <div class="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            @foreach($plans as $plan)
+            <div class="border rounded-lg shadow-sm overflow-hidden flex flex-col h-full hover:shadow-lg hover:-translate-y-2 transform transition-all duration-300">
+                <!-- Plan Header (Name and Description) -->
+                <div class="px-6 py-8 bg-white">
+                    <h3 class="text-xl font-semibold text-gray-900">{{ $plan->getTranslation('name', app()->getLocale()) }}</h3>
+                    <p class="mt-4 text-gray-600 min-h-[50px]">
+                        {{ $plan->description ?? __('messages.plan_default_description') }}
+                    </p>
+                </div>
+                <!-- Pricing Info -->
+                <div class="px-6 py-4 bg-gray-50 flex justify-center items-center min-h-[100px]">
+                    <div class="text-center">
+                        <span class="text-4xl font-extrabold text-gray-900">${{ number_format($plan->price_monthly, 2) }}</span>
+                        <span class="text-base font-medium text-gray-600">/{{ __('messages.month') }}</span>
+                    </div>
+                </div>
+                <!-- Plan Features -->
+                <div class="px-6 py-6 bg-white flex-grow">
+                    <ul class="space-y-4">
+                        @foreach($plan->features as $feature)
+                        <li class="flex items-start">
+                            <div class="flex-shrink-0">
+                                <svg class="h-6 w-6 text-[#E9654B]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <p class="ml-3 text-base text-gray-700">{{ $feature->getTranslation('feature_key', app()->getLocale()) }}</p>
+                        </li>
+                        @endforeach
+                    </ul>
+                </div>
+                <!-- Sign Up Button -->
+                <div class="px-6 py-6 bg-gray-50 text-center">
+                    <a href="/pricing" class="block w-full text-center px-6 py-3 border border-transparent text-base font-medium rounded-md text-white bg-[#E9654B] hover:bg-[#d45a43] transition-colors duration-300">
+                        {{ __('messages.sign_up') }}
+                    </a>
+                </div>
+            </div>
+            @endforeach
+        </div>
+        <div class="mt-10 text-center">
+            <a href="/pricing" class="text-[#E9654B] font-semibold hover:underline">{{ __('messages.view_all_plans') }} &rarr;</a>
+        </div>
     </div>
-  </div>
 </div>
 @endsection

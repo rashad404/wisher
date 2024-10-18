@@ -5,7 +5,7 @@
           <!-- Logo and Description -->
           <div>
               <a href="/" class="flex items-center">
-                  <img src="{{ asset('images/logo_white.svg') }}" alt="Wisher.az" class="h-10">
+                  <img src="{{ asset('images/logo.svg') }}" alt="Wisher.az" class="h-10">
               </a>
               <p class="mt-4 text-sm">
                   {{ __('messages.footer_description') }}

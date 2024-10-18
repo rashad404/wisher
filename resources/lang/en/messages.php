@@ -29,10 +29,12 @@ return [
     'create_wish_photo_title' => 'Create Your Custom Wish Photo',
     'create_wish_photo_description' => 'Make your wishes extra special with personalized wish photos. Start designing now!',
     'create_your_wish_photo' => 'Create Your Wish Photo',
-    
+
     // Blog related
     'from_the_blog' => 'Latest Stories from Wisher.az',
     'blog_subtitle' => 'Discover tips, ideas, and inspiration for your celebrations.',
+    'read_more' => 'Read More',
+    'view_all_posts' => 'View All Posts',
 
     // index
     'gifts' => 'Gifts',
@@ -48,6 +50,7 @@ return [
     'learn_more' => 'Learn More',
 
     // Footer
+    'footer_description' => 'Wisher.az helps you celebrate special moments with personalized gifts and greetings.',
     'footer_heading' => 'Footer',
     'quick_links' => 'Quick Links',
     'about_us' => 'About Us',
@@ -88,16 +91,16 @@ return [
     'how_it_works_title' => 'How It Works',
     'how_it_works_description' => 'A simple and intuitive process to help you send gifts and greetings effortlessly.',
 
-    'how_it_works_step1_title' => '1. Sign Up',
+    'how_it_works_step1_title' => 'Sign Up',
     'how_it_works_step1_description' => 'Create your free account and start organizing your special dates.',
 
-    'how_it_works_step2_title' => '2. Organize Dates',
+    'how_it_works_step2_title' => 'Organize Dates',
     'how_it_works_step2_description' => 'Add and manage important dates for friends and family.',
 
-    'how_it_works_step3_title' => '3. Choose Gifts',
+    'how_it_works_step3_title' => 'Choose Gifts',
     'how_it_works_step3_description' => 'Select and customize gifts to be sent on special occasions.',
 
-    'how_it_works_step4_title' => '4. Track & Relax',
+    'how_it_works_step4_title' => 'Track & Relax',
     'how_it_works_step4_description' => 'Track the delivery status and enjoy the special moments with your loved ones.',
 
     // index pricing section
@@ -106,6 +109,7 @@ return [
     'month' => 'month',
     'sign_up' => 'Sign Up',
     'log_out' => 'Logout',
+    'plan_default_description' => 'This plan offers a range of features to help you get started and grow.',
     'view_all_plans' => 'View All Pricing Plans',
 
     // index testimonials section

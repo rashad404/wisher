@@ -3,7 +3,7 @@
         <!-- Left Side: Logo -->
         <div class="flex items-center space-x-6">
             <a href="/" class="flex items-center">
-                <img src="{{ asset('images/logo.svg') }}" alt="Wisher.az" class="w-40">
+            <img src="{{ asset('images/logo.svg') }}" alt="Wisher.az" class="w-40">
             </a>
             <!-- Horizontal Divider -->
             <div class="hidden lg:block   mr-96"></div>
