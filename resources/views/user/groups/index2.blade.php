@@ -8,7 +8,7 @@
             ['url' => route('user.groups.index'), 'label' => 'Groups']
         ]"/>
     </div>
-    
+
 <div class="px-4 sm:px-6 lg:px-8 pt-8">
     <div class="sm:flex sm:items-center">
         <div class="sm:flex-auto">

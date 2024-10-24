@@ -1,53 +1,55 @@
 <!-- resources/views/components/product-card.blade.php -->
 
-<div class="bg-white group relative border-b border-r border-gray-200 p-4 sm:p-6 m-1">
-    <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-200 group-hover:opacity-75">
-        <img src="{{ asset('storage/' . $product->main_image) }}" alt="{{ $product->name }}" class="h-full w-full object-cover object-center">
-    </div>
-    <div class="pb-4 pt-10 text-center">
-        <h3 class="text-sm font-medium text-gray-900">
-            <a href="{{ route('products.show', $product->id) }}">
-                <span aria-hidden="true" class="absolute inset-0"></span>
+<div class="group relative bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 m-2">
+    <a href="{{ route('products.show', $product->id) }}">
+        <!-- Product Image -->
+        <div class="aspect-w-1 aspect-h-1 bg-gray-200">
+            <img src="{{ asset('storage/' . $product->main_image) }}" alt="{{ $product->name }}" class="object-cover object-center w-full h-full">
+        </div>
+        <!-- Product Details -->
+        <div class="p-4 text-center">
+            <h3 class="text-lg font-semibold text-gray-900">
                 {{ $product->name }}
-            </a>
-        </h3>
-        <div class="mt-3 flex flex-col items-center">
+            </h3>
+            <!-- Product Rating -->
             @php
-                $averageRating = min($product->reviews->avg('rating'), 5); // Ensure rating does not exceed 5
+                $averageRating = min($product->reviews->avg('rating'), 5);
                 $fullStars = floor($averageRating);
                 $halfStar = ($averageRating - $fullStars) >= 0.5 ? 1 : 0;
                 $emptyStars = 5 - $fullStars - $halfStar;
             @endphp
-
-            <div class="flex items-center">
+            <div class="mt-2 flex items-center justify-center">
                 @for ($i = 0; $i < $fullStars; $i++)
-                    <svg class="text-yellow-400 h-5 w-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 17.27l5.18 3.43-1.39-6.06L22 9.24l-6.16-.53L12 2 8.16 8.71 2 9.24l4.21 4.4-1.39 6.06L12 17.27z"/>
+                    <svg class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.243 3.845a1 1 0 00.95.69h4.049c.969 0 1.371 1.24.588 1.81l-3.3 2.39a1 1 0 00-.364 1.118l1.243 3.845c.3.921-.755 1.688-1.538 1.118l-3.3-2.39a1 1 0 00-1.176 0l-3.3 2.39c-.783.57-1.838-.197-1.538-1.118l1.243-3.845a1 1 0 00-.364-1.118l-3.3-2.39c-.783-.57-.38-1.81.588-1.81h4.049a1 1 0 00.95-.69l1.243-3.845z" />
                     </svg>
                 @endfor
-
                 @if ($halfStar)
-                    <svg class="text-yellow-400 h-5 w-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                    <svg class="h-5 w-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
                         <defs>
-                            <mask id="half-mask">
-                                <rect x="0" y="0" width="100%" height="100%" fill="white"/>
-                                <rect x="50%" y="0" width="50%" height="100%" fill="black"/>
-                            </mask>
+                            <linearGradient id="halfGradient">
+                                <stop offset="50%" stop-color="currentColor"></stop>
+                                <stop offset="50%" stop-color="transparent"></stop>
+                            </linearGradient>
                         </defs>
-                        <path d="M12 17.27l5.18 3.43-1.39-6.06L22 9.24l-6.16-.53L12 2 8.16 8.71 2 9.24l4.21 4.4-1.39 6.06L12 17.27z" mask="url(#half-mask)" />
+                        <path fill="url(#halfGradient)" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.243 3.845a1 1 0 00.95.69h4.049c.969 0 1.371 1.24.588 1.81l-3.3 2.39a1 1 0 00-.364 1.118l1.243 3.845c.3.921-.755 1.688-1.538 1.118l-3.3-2.39a1 1 0 00-1.176 0l-3.3 2.39c-.783.57-1.838-.197-1.538-1.118l1.243-3.845a1 1 0 00-.364-1.118l-3.3-2.39c-.783-.57-.38-1.81.588-1.81h4.049a1 1 0 00.95-.69l1.243-3.845z" />
                     </svg>
                 @endif
-
                 @for ($i = 0; $i < $emptyStars; $i++)
-                    <svg class="text-gray-300 h-5 w-5 flex-shrink-0" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                        <path d="M12 17.27l5.18 3.43-1.39-6.06L22 9.24l-6.16-.53L12 2 8.16 8.71 2 9.24l4.21 4.4-1.39 6.06L12 17.27z"/>
+                    <svg class="h-5 w-5 text-gray-300" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.243 3.845a1 1 0 00.95.69h4.049c.969 0 1.371 1.24.588 1.81l-3.3 2.39a1 1 0 00-.364 1.118l1.243 3.845c.3.921-.755 1.688-1.538 1.118l-3.3-2.39a1 1 0 00-1.176 0l-3.3 2.39c-.783.57-1.838-.197-1.538-1.118l1.243-3.845a1 1 0 00-.364-1.118l-3.3-2.39c-.783-.57-.38-1.81.588-1.81h4.049a1 1 0 00.95-.69l1.243-3.845z" />
                     </svg>
                 @endfor
             </div>
-
-            <p class="sr-only">{{ number_format($averageRating, 1) }} out of 5 stars</p>
-            <p class="mt-1 text-sm text-gray-500">{{ $product->reviews->count() }} reviews</p>
+            <p class="mt-1 text-sm text-gray-500">{{ number_format($averageRating, 1) }} / 5 ({{ $product->reviews->count() }} {{ __('reviews') }})</p>
+            <!-- Product Price -->
+            <p class="mt-4 text-xl font-bold text-gray-900">${{ number_format($product->price, 2) }}</p>
+            <!-- Buy Now Button -->
+            <div class="mt-4">
+                <a href="{{ route('products.show', $product->id) }}" class="inline-block px-4 py-2 bg-[#E9654B] text-white rounded-md hover:bg-[#d45a43] transition-colors duration-300">
+                    {{ __('messages.buy_now') }}
+                </a>
+            </div>
         </div>
-        <p class="mt-4 text-base font-medium text-gray-900">${{ $product->price }}</p>
-    </div>
+    </a>
 </div>

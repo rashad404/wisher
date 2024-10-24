@@ -2,6 +2,7 @@
 
 @section('content')
 
+<!-- Breadcrumb Section -->
 <div class="p-6">
     <x-breadcrumbs :links="[
         ['url' => route('main.index'), 'label' => __('messages.home')],
@@ -9,39 +10,38 @@
     ]"/>
 </div>
 
-
-<div class="bg-white py-24 sm:py-32">
-    <div class="mx-auto max-w-7xl px-6 lg:px-8">
-        <div class="mx-auto max-w-2xl text-center">
-            <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ __('messages.from_the_blog') }}</h2>
-            <p class="mt-2 text-lg leading-8 text-gray-600">{{ __('messages.blog_subtitle') }}</p>
+<!-- Blog Section -->
+<div class="bg-gray-50 py-16">
+    <div class="max-w-7xl mx-auto px-6 lg:px-8">
+        <div class="text-center">
+            <h2 class="text-3xl font-extrabold text-gray-900">{{ __('messages.from_the_blog') }}</h2>
+            <p class="mt-4 text-lg text-gray-600">{{ __('messages.blog_subtitle') }}</p>
         </div>
-        <div class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-3">
+
+        <!-- Blog Posts Grid -->
+        <div class="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
             @foreach($blogs as $blog)
-            <article class="flex flex-col items-start justify-between">
-                <div class="relative w-full">
-                    <img src="{{Storage::url($blog->image ?? "default_images/blog.jpg")}}" alt="{{ $blog->getTranslation('title', app()->getLocale()) }}" class="aspect-[16/9] w-full rounded-2xl bg-gray-100 object-cover sm:aspect-[2/1] lg:aspect-[3/2]">
-                    <div class="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10"></div>
+            <div class="border rounded-lg shadow-sm overflow-hidden flex flex-col h-full hover:shadow-lg hover:-translate-y-2 transform transition-all duration-300">
+                <div class="flex-shrink-0">
+                    <!-- Blog Image -->
+                    <img class="h-48 w-full object-cover" src="{{ Storage::url($blog->image ?? 'default_images/blog.jpg') }}" alt="{{ $blog->title }}">
                 </div>
-                <div class="max-w-xl">
-                    <div class="mt-8 flex items-center gap-x-4 text-xs">
-                        <time datetime="{{ $blog->published_at->format('Y-m-d') }}" class="text-gray-500">{{ $blog->published_at->format('M d, Y') }}</time>
-                        <a href="#" class="relative z-10 rounded-full bg-gray-50 px-3 py-1.5 font-medium text-gray-600 hover:bg-gray-100">{{ __('messages.blog') }}</a>
-                    </div>
-                    <div class="group relative">
-                        <h3 class="mt-3 text-lg font-semibold leading-6 text-gray-900 group-hover:text-gray-600">
-                            <a href="{{ route('blog.show', ['id' => $blog->id, 'title' => Str::slug($blog->trans('title'))]) }}">
-                                <span class="absolute inset-0"></span>
-                                {{ $blog->trans('title') }}
-                            </a>
-                            </a>
-                        </h3>
-                        <p class="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">{{ Str::limit(strip_tags($blog->getTranslation('content', app()->getLocale())), 150) }}</p>
+                <div class="flex-1 bg-white p-6 flex flex-col justify-between">
+                    <!-- Blog Title -->
+                    <h3 class="text-xl font-semibold text-gray-900">
+                        <a href="{{ route('blog.show', ['id' => $blog->id, 'title' => Str::slug($blog->title)]) }}">{{ $blog->title }}</a>
+                    </h3>
+                    <!-- Blog Excerpt -->
+                    <p class="mt-3 text-base text-gray-600">{{ Str::limit(strip_tags($blog->content), 100) }}</p>
+                    <!-- Read More Link -->
+                    <div class="mt-6">
+                        <a href="{{ route('blog.show', ['id' => $blog->id, 'title' => Str::slug($blog->title)]) }}" class="text-[#E9654B] font-semibold hover:underline">{{ __('messages.read_more') }}</a>
                     </div>
                 </div>
-            </article>
+            </div>
             @endforeach
         </div>
     </div>
 </div>
+
 @endsection

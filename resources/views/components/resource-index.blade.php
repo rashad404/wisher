@@ -1,10 +1,9 @@
-<!-- resources/views/components/resource-index.blade.php -->
 @props([
     'title',
     'subtitle',
     'createRoute',
-    'bulkDeleteRoute',
-    'bulkStatusUpdateRoute',
+    'bulkDeleteRoute' => null,  // Make bulkDeleteRoute optional
+    'bulkStatusUpdateRoute' => null,  // Make bulkStatusUpdateRoute optional
     'searchRoute',
     'items',
 ])
@@ -47,20 +46,27 @@
 
     <!-- Items list -->
     <div class="bg-white shadow overflow-hidden sm:rounded-md">
-        <div class="px-4 py-4 sm:px-6 flex items-center justify-between bg-gray-50">
-            <div>
-                <input type="checkbox" id="select-all" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
-                <label for="select-all" class="ml-2 text-sm text-gray-700">Select All</label>
+        @if($bulkDeleteRoute || $bulkStatusUpdateRoute)
+            <div class="px-4 py-4 sm:px-6 flex items-center justify-between bg-gray-50">
+                <div>
+                    <input type="checkbox" id="select-all" class="rounded border-gray-300 text-indigo-600 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50">
+                    <label for="select-all" class="ml-2 text-sm text-gray-700">Select All</label>
+                </div>
+                <div>
+                    @if($bulkDeleteRoute)
+                        <button id="delete-selected" class="bg-red-500 text-white px-4 py-2 rounded-md text-sm mr-2" disabled>Delete Selected</button>
+                    @endif
+                    @if($bulkStatusUpdateRoute)
+                        <select id="change-status" class="rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" disabled>
+                            <option value="">Change Status</option>
+                            <option value="1">Active</option>
+                            <option value="0">Inactive</option>
+                        </select>
+                    @endif
+                </div>
             </div>
-            <div>
-                <button id="delete-selected" class="bg-red-500 text-white px-4 py-2 rounded-md text-sm mr-2" disabled>Delete Selected</button>
-                <select id="change-status" class="rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" disabled>
-                    <option value="">Change Status</option>
-                    <option value="1">Active</option>
-                    <option value="0">Inactive</option>
-                </select>
-            </div>
-        </div>
+        @endif
+
         <ul class="divide-y divide-gray-200">
             {{ $list }}
         </ul>
@@ -72,72 +78,78 @@
     </div>
 </div>
 
+@if($bulkDeleteRoute || $bulkStatusUpdateRoute)
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const selectAllCheckbox = document.getElementById('select-all');
         const itemCheckboxes = document.querySelectorAll('.resource-checkbox');
-        
+
         const deleteSelectedButton = document.getElementById('delete-selected');
         const changeStatusSelect = document.getElementById('change-status');
 
         function updateActionButtons() {
             const selectedCount = document.querySelectorAll('.resource-checkbox:checked').length;
-            deleteSelectedButton.disabled = selectedCount === 0;
-            changeStatusSelect.disabled = selectedCount === 0;
-            
+            if(deleteSelectedButton) deleteSelectedButton.disabled = selectedCount === 0;
+            if(changeStatusSelect) changeStatusSelect.disabled = selectedCount === 0;
         }
 
-        selectAllCheckbox.addEventListener('change', function() {
-            
-            itemCheckboxes.forEach(checkbox => checkbox.checked = this.checked);
-            updateActionButtons();
-        });
+        if (selectAllCheckbox) {
+            selectAllCheckbox.addEventListener('change', function() {
+                itemCheckboxes.forEach(checkbox => checkbox.checked = this.checked);
+                updateActionButtons();
+            });
+        }
 
         itemCheckboxes.forEach(checkbox => {
             checkbox.addEventListener('change', updateActionButtons);
         });
 
-        deleteSelectedButton.addEventListener('click', function() {
-            if (confirm('Are you sure you want to delete the selected items?')) {
-                const selectedItems = Array.from(document.querySelectorAll('.resource-checkbox:checked')).map(checkbox => checkbox.value);
-                fetch('{{ $bulkDeleteRoute }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ ids: selectedItems })
-                }).then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        location.reload();
-                    } else {
-                        alert('An error occurred while deleting items');
-                    }
-                });
-            }
-        });
+        if (deleteSelectedButton) {
+            deleteSelectedButton.addEventListener('click', function() {
+                if (confirm('Are you sure you want to delete the selected items?')) {
+                    const selectedItems = Array.from(document.querySelectorAll('.resource-checkbox:checked')).map(checkbox => checkbox.value);
+                    fetch('{{ $bulkDeleteRoute }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({ ids: selectedItems })
+                    }).then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            alert('An error occurred while deleting items');
+                        }
+                    });
+                }
+            });
+        }
 
-        changeStatusSelect.addEventListener('change', function() {
-            const selectedItems = Array.from(document.querySelectorAll('.resource-checkbox:checked')).map(checkbox => checkbox.value);
-            const newStatus = this.value;
-            if (newStatus && selectedItems.length > 0) {
-                fetch('{{ $bulkStatusUpdateRoute }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({ ids: selectedItems, status: newStatus })
-                }).then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        location.reload();
-                    } else {
-                        alert('An error occurred while updating item status');
-                    }
-                });
-            }
-        });
+        if (changeStatusSelect) {
+            changeStatusSelect.addEventListener('change', function() {
+                const selectedItems = Array.from(document.querySelectorAll('.resource-checkbox:checked')).map(checkbox => checkbox.value);
+                const newStatus = this.value;
+                if (newStatus && selectedItems.length > 0) {
+                    fetch('{{ $bulkStatusUpdateRoute }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({ ids: selectedItems, status: newStatus })
+                    }).then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            location.reload();
+                        } else {
+                            alert('An error occurred while updating item status');
+                        }
+                    });
+                }
+            });
+        }
     });
 </script>
+@endif

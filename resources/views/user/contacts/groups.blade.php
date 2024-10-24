@@ -10,17 +10,17 @@
     ]"/>
 </div>
 
-<div class="py-12">
+<div class="py-12 max-w-4xl mx-auto">
     <!-- Form to add a new group related to the contact -->
-    <form action="{{ route('contacts.groups.store', $contact) }}" method="POST" class="mb-8">
+    <form action="{{ route('contacts.groups.store', $contact) }}" method="POST" class="mb-8 bg-white p-6 rounded-lg shadow-md">
         @csrf
 
-        <!-- Dropdown to select the group -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Dropdown to select the group -->
             <div>
-                <label for="group_id" class="block text-sm font-medium text-gray-700">Group*</label>
-                <select name="group_id" id="group_id" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" required>
-                    <option value="">Select a Group</option>
+                <label for="group_id" class="block text-sm font-medium text-gray-700">Select Group*</label>
+                <select name="group_id" id="group_id" class="mt-2 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-orange-500 focus:border-orange-500" required>
+                    <option value="">Choose a Group</option>
                     @foreach($allGroups as $group)
                         <option value="{{ $group->id }}">{{ $group->name }}</option>
                     @endforeach
@@ -31,32 +31,30 @@
             <input type="hidden" name="contact_id" value="{{ $contact->id }}">
         </div>
 
-        <div class="mt-6">
-            <button type="submit" class="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition">
+        <div class="mt-6 text-right">
+            <button type="submit" class="inline-flex items-center px-4 py-2 bg-orange-500 text-white font-semibold rounded-lg shadow-sm hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition ease-in-out duration-200">
                 Add Group
             </button>
         </div>
     </form>
 
     <!-- Display current groups related to the contact -->
-    <div class="mt-12">
-        <h2 class="text-xl font-semibold mb-4 text-gray-800">Groups</h2>
-        <ul class="space-y-4">
+    <div class="bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-2xl font-semibold mb-6 text-gray-800">Groups</h2>
+        <ul class="divide-y divide-gray-200">
             @forelse($groups as $group)
-                <li class="flex justify-between items-center bg-gray-50 p-4 rounded-lg shadow-sm">
-                    <div>
-                        <span class="block text-gray-700">{{ $group->name }}</span>
-                    </div>
+                <li class="flex justify-between items-center py-4">
+                    <span class="text-lg text-gray-700">{{ $group->name }}</span>
                     <form action="{{ route('contacts.groups.destroy', [$contact, $group->id]) }}" method="POST">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="text-red-600 hover:text-red-800 transition">
+                        <button type="submit" class="inline-block px-4 py-2 bg-orange-500 text-white font-semibold rounded-lg shadow-sm hover:bg-orange-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 transition ease-in-out duration-200">
                             Remove
                         </button>
                     </form>
                 </li>
             @empty
-                <li class="text-gray-500">No groups added yet.</li>
+                <li class="py-4 text-center text-gray-500">No groups added yet.</li>
             @endforelse
         </ul>
     </div>

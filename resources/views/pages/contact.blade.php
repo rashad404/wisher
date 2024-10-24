@@ -4,8 +4,9 @@
 
 @section('content')
 <div class="relative isolate bg-white">
-  
+
   <div class="mx-auto grid max-w-7xl grid-cols-1 lg:grid-cols-2">
+    <!-- Contact Information Section -->
     <div class="relative px-6 pb-20 pt-24 sm:pt-32 lg:static lg:px-8 lg:py-48">
       <div class="mx-auto max-w-xl lg:mx-0 lg:max-w-lg">
         <div class="absolute inset-y-0 left-0 -z-10 w-full overflow-hidden bg-gray-100 ring-1 ring-gray-900/10 lg:w-1/2">
@@ -25,6 +26,7 @@
         <h2 class="text-3xl font-bold tracking-tight text-gray-900">{{ __('messages.get_in_touch') }}</h2>
         <p class="mt-6 text-lg leading-8 text-gray-600">{{ __('messages.contact_intro') }}</p>
         <dl class="mt-10 space-y-4 text-base leading-7 text-gray-600">
+          <!-- Address -->
           <div class="flex gap-x-4">
             <dt class="flex-none">
               <span class="sr-only">{{ __('messages.address') }}</span>
@@ -34,6 +36,7 @@
             </dt>
             <dd>123 Example Street<br>Baku, Azerbaijan</dd>
           </div>
+          <!-- Telephone -->
           <div class="flex gap-x-4">
             <dt class="flex-none">
               <span class="sr-only">{{ __('messages.telephone') }}</span>
@@ -43,6 +46,7 @@
             </dt>
             <dd><a class="hover:text-gray-900" href="tel:+994551234567">+994 55 123 45 67</a></dd>
           </div>
+          <!-- Email -->
           <div class="flex gap-x-4">
             <dt class="flex-none">
               <span class="sr-only">{{ __('messages.email') }}</span>
@@ -55,6 +59,8 @@
         </dl>
       </div>
     </div>
+
+    <!-- Contact Form Section -->
     <form action="{{ route('contact.submit') }}" method="POST" class="px-6 pb-24 pt-20 sm:pb-32 lg:px-8 lg:py-48">
       @csrf
       <div class="mx-auto max-w-xl lg:mr-0 lg:max-w-lg">
@@ -64,42 +70,55 @@
           </div>
         @endif
         <div class="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+          <!-- First Name -->
           <div>
             <label for="first-name" class="block text-sm font-semibold leading-6 text-gray-900">{{ __('messages.first_name') }}</label>
             <div class="mt-2.5">
-              <input type="text" name="first-name" id="first-name" autocomplete="given-name" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required>
+              <input type="text" name="first-name" id="first-name" autocomplete="given-name" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#E9654B] sm:text-sm sm:leading-6" required>
             </div>
           </div>
+
+          <!-- Last Name -->
           <div>
             <label for="last-name" class="block text-sm font-semibold leading-6 text-gray-900">{{ __('messages.last_name') }}</label>
             <div class="mt-2.5">
-              <input type="text" name="last-name" id="last-name" autocomplete="family-name" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required>
+              <input type="text" name="last-name" id="last-name" autocomplete="family-name" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#E9654B] sm:text-sm sm:leading-6" required>
             </div>
           </div>
+
+          <!-- Email -->
           <div class="sm:col-span-2">
             <label for="email" class="block text-sm font-semibold leading-6 text-gray-900">{{ __('messages.email') }}</label>
             <div class="mt-2.5">
-                <input type="email" name="email" id="email" autocomplete="email" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required>
+              <input type="email" name="email" id="email" autocomplete="email" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#E9654B] sm:text-sm sm:leading-6" required>
             </div>
-        </div>
-        <div class="sm:col-span-2">
+          </div>
+
+          <!-- Phone Number -->
+          <div class="sm:col-span-2">
             <label for="phone-number" class="block text-sm font-semibold leading-6 text-gray-900">{{ __('messages.phone_number') }}</label>
             <div class="mt-2.5">
-                <input type="tel" name="phone-number" id="phone-number" autocomplete="tel" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+              <input type="tel" name="phone-number" id="phone-number" autocomplete="tel" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#E9654B] sm:text-sm sm:leading-6">
             </div>
-        </div>
-        <div class="sm:col-span-2">
+          </div>
+
+          <!-- Message -->
+          <div class="sm:col-span-2">
             <label for="message" class="block text-sm font-semibold leading-6 text-gray-900">{{ __('messages.message') }}</label>
             <div class="mt-2.5">
-                <textarea name="message" id="message" rows="4" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" required></textarea>
+              <textarea name="message" id="message" rows="4" class="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-[#E9654B] sm:text-sm sm:leading-6" required></textarea>
             </div>
+          </div>
         </div>
-        </div>
+
+        <!-- Submit Button -->
         <div class="mt-8 flex justify-end">
-            <button type="submit" class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">{{ __('messages.send_message') }}</button>
+            <button type="submit" class="rounded-md bg-[#E9654B] px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-[#d45a43] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#E9654B]">
+                {{ __('messages.send_message') }}
+            </button>
         </div>
-        </div>
-        </form>
-        </div>
-        </div>
+      </div>
+    </form>
+  </div>
+</div>
 @endsection
