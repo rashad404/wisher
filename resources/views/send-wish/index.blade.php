@@ -1,90 +1,101 @@
 @extends('layouts.user.app')
 
 @section('content')
-
-<div class="mb-8">
-    <h3 class="text-xl font-bold text-gray-900 mb-4">Send Wish</h3>
-
-    <!-- Display Flash Messages -->
-    @if (session('status'))
-    <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 mb-4" role="alert">
-        <p class="font-bold">Success!</p>
-        <p>{{ session('status') }}</p>
+<div class="min-h-screen">
+    <!-- Breadcrumbs -->
+    <div class="mb-6">
+        <x-breadcrumbs :links="[
+            ['url' => route('user.index'), 'label' => 'Home'],
+            ['url' =>'#', 'label' => 'Send a Wish'],
+        ]"/>
     </div>
-    @endif
 
-    @if (session('error'))
-    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
-        <p class="font-bold">Error!</p>
-        <p>{{ session('error') }}</p>
-    </div>
-    @endif
-
-    @if ($errors->any())
-    <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 mb-4" role="alert">
-        <p class="font-bold">Oops!</p>
-        <ul>
-            @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-            @endforeach
-        </ul>
-    </div>
-    @endif
-
-    <form action="{{ route('send.wish') }}" method="POST">
+    <!-- Form to send a wish -->
+    <form id="send-wish-form" action="{{ route('send.wish') }}" method="POST">
         @csrf
-        <!-- Contacts List -->
-        <div class="mt-4">
-            <div class="flex items-center">
-                <label class="block text-sm font-semibold text-gray-900 mr-2">To:</label>
-                <input type="text" id="contact-search" class="w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500" placeholder="Start typing a contact name...">
+
+        <!-- Display Flash Messages -->
+        @if (session('status'))
+            <div class="bg-green-100 border-l-4 border-green-500 text-green-700 p-4 rounded-md mb-4" role="alert">
+                <p class="font-bold">Success!</p>
+                <p>{{ session('status') }}</p>
             </div>
+        @endif
 
-            <ul id="contact-suggestions" class="mt-2 bg-white border border-gray-300 rounded-md shadow-md hidden"></ul>
+        @if (session('error'))
+            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md mb-4" role="alert">
+                <p class="font-bold">Error!</p>
+                <p>{{ session('error') }}</p>
+            </div>
+        @endif
 
+        @if ($errors->any())
+            <div class="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded-md mb-4" role="alert">
+                <p class="font-bold">Oops! Something went wrong.</p>
+                <ul class="mt-2 space-y-1">
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+        <!-- Contact Selection -->
+        <div class="mt-6">
+            <label class="block text-sm font-semibold text-gray-900 mb-2">To:</label>
+            <div class="relative">
+                <input type="text" id="contact-search" class="w-full border border-gray-300 rounded-md shadow-sm focus:ring-[#E9654B] focus:border-[#E9654B] p-3" placeholder="Start typing a contact name...">
+                <ul id="contact-suggestions" class="absolute mt-1 bg-white border border-gray-300 rounded-md shadow-lg hidden w-full z-10"></ul>
+            </div>
             <div id="selected-contacts" class="mt-4 space-y-2"></div>
         </div>
 
+        <!-- Hidden Contact Inputs -->
         <div id="hidden-contact-inputs"></div>
 
         <!-- Message Input -->
-        <div class="mt-4 flex items-start">
-            <label for="messageTextArea" class="block text-sm font-semibold text-gray-900 mr-2">Message:</label>
-            <div class="relative flex w-full">
-                <textarea id="messageTextArea" name="message" class="w-full border border-gray-300 rounded-md p-2 pr-12" required></textarea>
-                <!-- Use Template Icon inside textarea container -->
-                <button type="button" id="useTemplate" class="ml-2 text-gray-600 hover:text-gray-800 focus:outline-none">
+        <div class="mt-6">
+            <label for="messageTextArea" class="block text-sm font-semibold text-gray-900 mb-2">Message:</label>
+            <div class="relative">
+                <textarea id="messageTextArea" name="message" class="w-full border border-gray-300 rounded-md p-3 focus:ring-[#E9654B] focus:border-[#E9654B]" rows="4" placeholder="Write your message here..." required></textarea>
+                <!-- Template Button Icon -->
+                <button type="button" id="useTemplate" class="absolute top-2 right-2 text-gray-600 hover:text-gray-800 focus:outline-none">
                     <i class="fas fa-file-alt text-2xl"></i>
                 </button>
             </div>
         </div>
 
-        <!-- Send via Part -->
-        <div class="flex justify-between items-center mt-4">
-            <!-- Send via options -->
-            <div class="flex items-center">
-                <label class="block text-sm font-semibold text-gray-900 mr-2">Send via:</label>
+        <!-- Send via Options -->
+        <div class="mt-6 flex justify-between items-center">
+            <div class="flex items-center space-x-6">
+                <span class="block text-sm font-semibold text-gray-900">Send via:</span>
 
-                <input type="checkbox" id="sendSms" name="sendVia[]" value="sms" class="ml-4 mr-2" />
-                <label for="sendSms" class="text-sm font-medium text-gray-900">SMS</label>
+                <label class="flex items-center">
+                    <input type="checkbox" id="sendSms" name="sendVia[]" value="sms" class="rounded text-[#E9654B] focus:ring-[#E9654B]" />
+                    <span class="ml-2 text-sm font-medium text-gray-900">SMS</span>
+                </label>
 
-                <input type="checkbox" id="sendEmail" name="sendVia[]" value="email" class="ml-4 mr-2" />
-                <label for="sendEmail" class="text-sm font-medium text-gray-900">Email</label>
+                <label class="flex items-center">
+                    <input type="checkbox" id="sendEmail" name="sendVia[]" value="email" class="rounded text-[#E9654B] focus:ring-[#E9654B]" />
+                    <span class="ml-2 text-sm font-medium text-gray-900">Email</span>
+                </label>
 
-                <input type="checkbox" id="sendChat" name="sendVia[]" value="chat" class="ml-4 mr-2" />
-                <label for="sendChat" class="text-sm font-medium text-gray-900">In the Chat</label>
+                <label class="flex items-center">
+                    <input type="checkbox" id="sendChat" name="sendVia[]" value="chat" class="rounded text-[#E9654B] focus:ring-[#E9654B]" />
+                    <span class="ml-2 text-sm font-medium text-gray-900">Chat</span>
+                </label>
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" class="w-1/3 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-600">
-                Send Message
+            <button type="submit" class="bg-[#E9654B] text-white py-2 px-6 rounded-md shadow hover:bg-[#e65b39] focus:outline-none focus:ring-2 focus:ring-[#E9654B] focus:ring-offset-2 transition duration-300">
+                Send Wish
             </button>
         </div>
     </form>
+
+    <!-- Modals for templates -->
+    @include('modals.wish-modal')
 </div>
-
-
-@include('modals.wish-modal')
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 

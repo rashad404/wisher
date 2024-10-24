@@ -21,7 +21,7 @@
             </p>
         </div>
         <div class="mt-4 flex md:mt-0 md:ml-4 space-x-2">
-            <a href="{{ route('user.contacts.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            <a href="{{ route('user.contacts.create') }}" class="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#E9654B] hover:bg-[#d45a43] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#E9654B]">
                 <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
                     <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
                 </svg>
@@ -52,7 +52,7 @@
                         <path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd" />
                     </svg>
                 </div>
-                <input id="search" name="search" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Search by name, phone, or email" type="search" value="{{ request('search') }}">
+                <input id="search" name="search" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-500 focus:outline-none focus:placeholder-gray-400 focus:ring-1 focus:ring-[#E9654B] focus:border-[#E9654B] sm:text-sm" placeholder="Search by name, phone, or email" type="search" value="{{ request('search') }}">
             </div>
         </form>
     </div>
@@ -65,7 +65,7 @@
                 <label for="select-all" class="ml-2 text-sm text-gray-700">Select All</label>
             </div>
             <div>
-                <button id="delete-selected" class="bg-red-500 text-white px-4 py-2 rounded-md text-sm mr-2" disabled>Delete Selected</button>
+                <button id="delete-selected" class="bg-red-500 text-white px-4 py-2 rounded-md text-sm mr-2 hover:bg-red-600 transition duration-300 ease-in-out" disabled>Delete Selected</button>
                 <select id="change-status" class="rounded-md border-gray-300 shadow-sm focus:border-indigo-300 focus:ring focus:ring-indigo-200 focus:ring-opacity-50" disabled>
                     <option value="">Change Status</option>
                     <option value="1">Active</option>
@@ -92,7 +92,7 @@
                                     @endif
                                 </div>
                                 <div class="ml-4">
-                                    <div class="text-sm font-medium text-indigo-600 hover:text-indigo-900">
+                                    <div class="text-sm font-medium text-[#E9654B] hover:text-[#d45a43]">
                                         <a href="{{ route('user.contacts.show', $contact->id) }}">{{ $contact->name }}</a>
                                     </div>
                                     <div class="text-sm text-gray-500">
@@ -110,7 +110,7 @@
                                     </span>
                                 @else
                                     <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
-                                        InActive
+                                        Inactive
                                     </span>
                                 @endif
 
@@ -122,7 +122,7 @@
                                     @endif
                                 </div>
                                 <div class="flex space-x-2">
-                                    <a href="{{ route('user.contacts.edit', $contact->id) }}" class="text-indigo-600 hover:text-indigo-900">
+                                    <a href="{{ route('user.contacts.edit', $contact->id) }}" class="text-[#E9654B] hover:text-[#d45a43]">
                                         <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
                                             <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
                                             <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
@@ -229,7 +229,6 @@
             }
         });
     });
-
 
     // Phone number toggle functionality
     document.getElementById('toggle-phone-numbers').addEventListener('click', function() {

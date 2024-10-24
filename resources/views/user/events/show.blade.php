@@ -2,7 +2,7 @@
 
 @section('content')
 
-
+<!-- Breadcrumbs -->
 <div class="py-6">
     <x-breadcrumbs :links="[
         ['url' => route('user.index'), 'label' => 'Home'],
@@ -11,41 +11,54 @@
     ]"/>
 </div>
 
-<div class="flex justify-center h-screen">
-
-    <div class="w-full max-w-lg flex-none flex-col divide-y divide-gray-100">
-        <div class="flex-none p-6 text-center">
-            <h2 class="mt-3 text-lg font-semibold text-gray-900">{{ $event->name }}</h2>
-            <p class="text-sm leading-6 text-gray-500">
+<!-- Event Details Container -->
+<div class="flex justify-center items-center h-screen">
+    <div class="w-full max-w-lg bg-white rounded-lg shadow-lg">
+        <!-- Event Name and Date -->
+        <div class="p-6 text-center border-b border-gray-200">
+            <h2 class="text-2xl font-bold text-gray-900">{{ $event->name }}</h2>
+            <p class="mt-2 text-sm text-gray-500">
                 {{ \Carbon\Carbon::parse($event->date)->format('d M Y') }} -
                 {{ $event->is_annual ? 'Annually' : ($event->is_monthly ? 'Monthly' : 'No Recurrence') }}
             </p>
         </div>
-        <div class="flex flex-auto flex-col justify-between p-6">
-            <div class="space-y-4">
-                <div class="flex justify-between text-sm text-gray-700">
-                    <span class="font-semibold text-gray-900">Recurrence</span>
-                    <span>
-                        {{ $event->is_annual ? 'Annually' : ($event->is_monthly ? 'Monthly' : 'No Recurrence') }}
-                    </span>
-                </div>
-                <div class="flex justify-between text-sm text-gray-700">
-                    <span class="font-semibold text-gray-900">Status</span>
-                    <span>{{ $event->status ?: 'No Status' }}</span>
-                </div>
-                <div class="flex justify-between text-sm text-gray-700">
-                    <span class="font-semibold text-gray-900">Group</span>
-                    <span>{{ $event->group->name ?? 'No Group' }}</span>
-                </div>
-                <div class="flex justify-between text-sm text-gray-700">
-                    <span class="font-semibold text-gray-900">Contact</span>
-                    <span>{{ $event->contact->name ?? 'No Contact' }}</span>
-                </div>
+
+        <!-- Event Info -->
+        <div class="p-6 space-y-4">
+            <!-- Recurrence -->
+            <div class="flex justify-between items-center text-gray-700">
+                <span class="font-semibold">Recurrence</span>
+                <span class="text-gray-500">{{ $event->is_annual ? 'Annually' : ($event->is_monthly ? 'Monthly' : 'No Recurrence') }}</span>
             </div>
-            <div class="mt-6 flex gap-6 justify-center">
-                <button type="button" onclick="window.history.back()" class="w-32 rounded-md bg-gray-300 px-4 py-2 text-sm font-semibold text-gray-900 shadow-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-300">Back</button>
+
+            <!-- Status -->
+            <div class="flex justify-between items-center text-gray-700">
+                <span class="font-semibold">Status</span>
+                <span class="text-gray-500">{{ $event->status ? 'Active' : 'Inactive' }}</span>
+            </div>
+
+            <!-- Group -->
+            <div class="flex justify-between items-center text-gray-700">
+                <span class="font-semibold">Group</span>
+                <span class="text-gray-500">{{ $event->group->name ?? 'No Group' }}</span>
+            </div>
+
+            <!-- Contact -->
+            <div class="flex justify-between items-center text-gray-700">
+                <span class="font-semibold">Contact</span>
+                <span class="text-gray-500">{{ $event->contact->name ?? 'No Contact' }}</span>
+            </div>
+        </div>
+
+        <!-- Back Button -->
+        <div class="p-6 border-t border-gray-200">
+            <div class="flex justify-center">
+                <button type="button" onclick="window.history.back()" class="inline-flex items-center px-4 py-2 bg-[#E9654B] text-white font-semibold rounded-md shadow hover:bg-[#e65b39] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#E9654B]">
+                    Back
+                </button>
             </div>
         </div>
     </div>
 </div>
+
 @endsection

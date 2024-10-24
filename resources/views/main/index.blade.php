@@ -80,7 +80,9 @@
         <div class="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
             @foreach($features as $feature)
             <div class="text-center">
-                <img class="mx-auto h-12 w-12" src="{{ Storage::url($feature->image) }}" alt="{{ $feature->trans('title') }} Icon">
+                <!-- Use real icon names for each feature -->
+                <i class="fas fa-key mx-auto text-[#E9654B]" style="font-size: 3rem;"></i>
+
                 <h3 class="mt-6 text-lg font-semibold text-gray-900">{{ $feature->trans('title') }}</h3>
                 <p class="mt-4 text-base text-gray-600">{{ $feature->trans('text') }}</p>
             </div>
@@ -91,6 +93,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- How It Works Section -->
 <div class="bg-gray-50 py-16">
