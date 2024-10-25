@@ -228,7 +228,7 @@
 
                         <!-- Submit Button -->
                         <div class="mt-10">
-                            <button type="submit" class="block w-full rounded-md bg-indigo-600 py-3 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+                            <button type="submit" class="block w-full rounded-md bg-[#E9654B] py-3 text-sm font-medium text-white hover:bg-[#d45a43] focus:outline-none focus:ring-2 focus:ring-[#E9654B] focus:ring-offset-2">
                                 Order now
                             </button>
                         </div>

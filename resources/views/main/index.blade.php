@@ -80,8 +80,8 @@
         <div class="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
             @foreach($features as $feature)
             <div class="text-center">
-                <!-- Use real icon names for each feature -->
-                <i class="fas fa-key mx-auto text-[#E9654B]" style="font-size: 3rem;"></i>
+                <!-- Render the Heroicon component dynamically -->
+                <x-dynamic-component :component="'heroicon-o-' . $feature->icon" class="mx-auto text-[#E9654B] w-12 h-12" />
 
                 <h3 class="mt-6 text-lg font-semibold text-gray-900">{{ $feature->trans('title') }}</h3>
                 <p class="mt-4 text-base text-gray-600">{{ $feature->trans('text') }}</p>
