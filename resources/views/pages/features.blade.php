@@ -19,9 +19,9 @@
                     // Check if feature icon exists in array; otherwise, use 'sparkles'
                     $iconName = in_array($feature->icon, $icons) ? $feature->icon : 'sparkles';
                 @endphp
-
-                <x-dynamic-component :component="'heroicon-o-' . $iconName" class="mx-auto text-[#E9654B] w-12 h-12" />
-
+                @if ($iconName)
+                    <x-dynamic-component :component="'heroicon-o-' . $iconName" class="mx-auto text-[#E9654B] w-12 h-12" />
+                @endif
                 <h3 class="mt-6 text-xl font-semibold text-gray-900">{{ $feature->getTranslation('title', app()->getLocale()) }}</h3>
                 <p class="mt-4 text-base text-gray-600">{{ $feature->getTranslation('text', app()->getLocale()) }}</p>
             </div>

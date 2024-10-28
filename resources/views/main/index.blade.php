@@ -81,7 +81,9 @@
             @foreach($features as $feature)
             <div class="text-center">
                 <!-- Render the Heroicon component dynamically -->
-                <x-dynamic-component :component="'heroicon-o-' . $feature->icon" class="mx-auto text-[#E9654B] w-12 h-12" />
+                @if ($feature->icon)
+                    <x-dynamic-component :component="'heroicon-o-' . $feature->icon" class="mx-auto text-[#E9654B] w-12 h-12" />
+                @endif
 
                 <h3 class="mt-6 text-lg font-semibold text-gray-900">{{ $feature->trans('title') }}</h3>
                 <p class="mt-4 text-base text-gray-600">{{ $feature->trans('text') }}</p>
