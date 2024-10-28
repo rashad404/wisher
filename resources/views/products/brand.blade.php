@@ -271,25 +271,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
                         // Create product card
                         productsGrid.innerHTML += `
-                            <div class="bg-white group relative border-b border-r border-gray-200 p-4 sm:p-6 m-1">
-                                <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-200 group-hover:opacity-75">
-                                    <img src="{{ asset('storage/') }}/${product.main_image}" alt="${product.name}" class="h-full w-full object-cover object-center">
-                                </div>
-                                <div class="pb-4 pt-10 text-center">
-                                    <h3 class="text-sm font-medium text-gray-900">
-                                        <a href="/products/${product.id}">
-                                            <span aria-hidden="true" class="absolute inset-0"></span>
-                                            ${product.name}
-                                        </a>
-                                    </h3>
-                                    <div class="mt-3 flex flex-col items-center">
-                                        <div class="flex items-center">
-                                            ${stars}
-                                        </div>
-                                        <p class="mt-1 text-sm text-gray-500">${numberOfReviews} reviews</p>
+                            <div class="group relative bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 m-2">
+                                <a href="/products/${product.id}">
+                                    <!-- Product Image -->
+                                    <div class="aspect-w-1 aspect-h-1 bg-gray-200">
+                                        <img src="{{ asset('storage/') }}/${product.main_image}" alt="${product.name}" class="object-cover object-center w-full h-full">
                                     </div>
-                                    <p class="mt-4 text-base font-medium text-gray-900">$${parseFloat(product.price).toFixed(2)}</p>
-                                </div>
+                                    <!-- Product Details -->
+                                    <div class="p-4 text-center">
+                                        <h3 class="text-lg font-semibold text-gray-900">
+                                            ${product.name}
+                                        </h3>
+                                        <!-- Product Rating -->
+                                        <div class="mt-2 flex items-center justify-center">
+                                            ${stars} <!-- Placeholder for dynamically generated star ratings -->
+                                        </div>
+                                        <p class="mt-1 text-sm text-gray-500">${parseFloat(product.average_rating).toFixed(1)} / 5 (${numberOfReviews} reviews)</p>
+                                        <!-- Product Price -->
+                                        <p class="mt-4 text-xl font-bold text-gray-900">$${parseFloat(product.price).toFixed(2)}</p>
+                                        <!-- Buy Now Button -->
+                                        <div class="mt-4">
+                                            <a href="/products/${product.id}" class="inline-block px-4 py-2 bg-[#E9654B] text-white rounded-md hover:bg-[#d45a43] transition-colors duration-300">
+                                                Buy Now
+                                            </a>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>`;
                     });
                 }
@@ -330,25 +337,32 @@ document.addEventListener('DOMContentLoaded', function() {
 
                         // Create product card
                         productsGrid.innerHTML += `
-                            <div class="bg-white group relative border-b border-r border-gray-200 p-4 sm:p-6 m-1">
-                                <div class="aspect-h-1 aspect-w-1 overflow-hidden rounded-lg bg-gray-200 group-hover:opacity-75">
-                                    <img src="{{ asset('storage/') }}/${product.main_image}" alt="${product.name}" class="h-full w-full object-cover object-center">
-                                </div>
-                                <div class="pb-4 pt-10 text-center">
-                                    <h3 class="text-sm font-medium text-gray-900">
-                                        <a href="/products/${product.id}">
-                                            <span aria-hidden="true" class="absolute inset-0"></span>
-                                            ${product.name}
-                                        </a>
-                                    </h3>
-                                    <div class="mt-3 flex flex-col items-center">
-                                        <div class="flex items-center">
-                                            ${stars}
-                                        </div>
-                                        <p class="mt-1 text-sm text-gray-500">${numberOfReviews} reviews</p>
+                            <div class="group relative bg-white border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 m-2">
+                                <a href="/products/${product.id}">
+                                    <!-- Product Image -->
+                                    <div class="aspect-w-1 aspect-h-1 bg-gray-200">
+                                        <img src="{{ asset('storage/') }}/${product.main_image}" alt="${product.name}" class="object-cover object-center w-full h-full">
                                     </div>
-                                    <p class="mt-4 text-base font-medium text-gray-900">$${parseFloat(product.price).toFixed(2)}</p>
-                                </div>
+                                    <!-- Product Details -->
+                                    <div class="p-4 text-center">
+                                        <h3 class="text-lg font-semibold text-gray-900">
+                                            ${product.name}
+                                        </h3>
+                                        <!-- Product Rating -->
+                                        <div class="mt-2 flex items-center justify-center">
+                                            ${stars} <!-- Placeholder for dynamically generated star ratings -->
+                                        </div>
+                                        <p class="mt-1 text-sm text-gray-500">${parseFloat(product.average_rating).toFixed(1)} / 5 (${numberOfReviews} reviews)</p>
+                                        <!-- Product Price -->
+                                        <p class="mt-4 text-xl font-bold text-gray-900">$${parseFloat(product.price).toFixed(2)}</p>
+                                        <!-- Buy Now Button -->
+                                        <div class="mt-4">
+                                            <a href="/products/${product.id}" class="inline-block px-4 py-2 bg-[#E9654B] text-white rounded-md hover:bg-[#d45a43] transition-colors duration-300">
+                                                Buy Now
+                                            </a>
+                                        </div>
+                                    </div>
+                                </a>
                             </div>`;
                     });
                 }

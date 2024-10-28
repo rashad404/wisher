@@ -15,6 +15,7 @@ use Laravel\Nova\Fields\KeyValue;
 use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Trix;
+use Illuminate\Support\Facades\Log;
 
 class Product extends Resource
 {
@@ -55,11 +56,9 @@ class Product extends Resource
             ID::make()->sortable(),
 
             Image::make('Main Image', 'main_image')
-                ->disk('public') // Specify the disk you are using
+                ->disk('public')
                 ->nullable(),
 
-
-                
             Text::make('Name')
                 ->sortable()
                 ->rules('required', 'max:255'),
@@ -72,45 +71,43 @@ class Product extends Resource
                 ->displayUsingLabels()
                 ->sortable()
                 ->rules('required'),
-            
+
             Number::make('Price')
                 ->step(0.01),
 
             Number::make('Discounted Price', 'discounted_price')
                 ->step(0.01)
                 ->nullable(),
-            
+
             Text::make('SKU')
                 ->nullable(),
-            
+
             BelongsTo::make('Category'),
-            
+
             BelongsTo::make('Brand', 'brand', Brand::class)
                 ->nullable(),
 
-            // Conditional ProductModel field based on selected Brand
-            // BelongsTo::make('Product Model', 'productModel', ProductModel::class)
-            //     ->nullable()
-            //     ->dependsOn('brand', fn () => null) // This line ensures the field is dependent on the Brand selection
-            //     // ->searchable()
-            //     ->onlyOnForms(), // Show this field only on forms
-            
-            // Dynamic relationship field for ProductModel filtered by Brand
             BelongsTo::make('Product Model')
                 ->nullable()
-                // ->searchable()
                 ->required()
                 ->withMeta(['belongsToId' => $this->brand]),
 
             KeyValue::make('Features')
                 ->keyLabel('Feature')
                 ->valueLabel('Value')
-                ->rules('json')
+                ->rules('nullable', 'json')
+                ->resolveUsing(function ($value) {
+                    return is_string($value) ? json_decode($value, true) : $value;
+                })
+                ->fillUsing(function ($request, $model, $attribute, $requestAttribute) {
+                    $value = $request->input($attribute);
+                    $model->{$attribute} = is_array($value) ? json_encode($value) : $value;
+                })
                 ->nullable(),
+
             Textarea::make('Description')
                 ->rules('required'),
 
-            // Assuming you have a separate resource for ProductVariant
             HasMany::make('Variants', 'variants', ProductVariant::class),
         ];
     }
@@ -159,18 +156,88 @@ class Product extends Resource
         return [];
     }
 
-
+    /**
+     * Modify the query for the index endpoint.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \Illuminate\Database\Eloquent\Builder  $query
+     * @return \Illuminate\Database\Eloquent\Builder
+     */
     public static function indexQuery(NovaRequest $request, $query)
     {
-        // Check if the 'brand' filter is applied in the index request
         if ($request->has('filter.brand')) {
-            // Get the selected brand ID from the filter
             $brandId = $request->input('filter.brand');
-    
-            // Modify the query for the 'product_model' field based on the selected brand
             $query->where('brand_id', $brandId);
         }
-    
+
         return $query;
+    }
+
+    /**
+     * Handle any post-create operations.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \App\Models\Product  $model
+     * @return void
+     */
+    public static function afterCreate(NovaRequest $request, $model)
+    {
+        static::processFeatures($request, $model);
+    }
+
+    /**
+     * Handle any post-update operations.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \App\Models\Product  $model
+     * @return void
+     */
+    public static function afterUpdate(NovaRequest $request, $model)
+    {
+        static::processFeatures($request, $model);
+    }
+
+    /**
+     * Process and save the features field.
+     *
+     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param  \App\Models\Product  $model
+     * @return void
+     */
+    protected static function processFeatures(NovaRequest $request, $model)
+    {
+        Log::info('Processing features for product', ['product_id' => $model->id]);
+
+        if ($request->has('features')) {
+            $features = $request->get('features');
+            Log::info('Raw features data', ['features' => $features]);
+
+            if (is_string($features)) {
+                Log::info('Features is a string, attempting to decode');
+                $decodedFeatures = json_decode($features, true);
+                if (json_last_error() === JSON_ERROR_NONE) {
+                    Log::info('Successfully decoded features string');
+                    $model->features = $features; // It's already a valid JSON string
+                } else {
+                    Log::error('Failed to decode features string', ['json_error' => json_last_error_msg()]);
+                    $model->features = '{}'; // Set to empty object if decoding fails
+                }
+            } elseif (is_array($features)) {
+                Log::info('Features is an array, encoding to JSON');
+                $model->features = json_encode($features);
+            } else {
+                Log::warning('Features is neither a string nor an array', ['type' => gettype($features)]);
+                $model->features = '{}';
+            }
+
+            try {
+                $model->save();
+                Log::info('Product saved successfully', ['product_id' => $model->id]);
+            } catch (\Exception $e) {
+                Log::error('Failed to save product', ['error' => $e->getMessage()]);
+            }
+        } else {
+            Log::info('No features data in request');
+        }
     }
 }

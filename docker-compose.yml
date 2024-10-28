@@ -1,0 +1,56 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: laravel_app
+    restart: unless-stopped
+    working_dir: /var/www
+    volumes:
+      - .:/var/www
+      - ./php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    environment:
+      SERVICE_NAME: app
+      SERVICE_TAGS: dev
+    ports:
+      - "9000:9000"
+    networks:
+      - app-network
+
+  webserver:
+    image: nginx:alpine
+    container_name: nginx_web
+    restart: unless-stopped
+    volumes:
+      - .:/var/www
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    ports:
+      - "8080:80"
+    networks:
+      - app-network
+    depends_on:
+      - app
+
+  db:
+    image: mariadb:10.4.32
+    container_name: mariadb_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: "a"     # No password for the root user
+      MYSQL_DATABASE: laravel     # The name of the default database
+      MYSQL_USER: root            # Using root as the user
+      MYSQL_PASSWORD: "a"          # No password for the root user
+    ports:
+      - "3306:3306"
+    volumes:
+      - dbdata:/var/lib/mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  dbdata:
+    driver: local
