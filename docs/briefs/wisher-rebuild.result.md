@@ -79,3 +79,9 @@ See [README](../../README.md), [roadmap](../roadmap.md), [feature inventory](../
 ## Design revision
 
 See [Section 1 audit and implementation](../knowledge/design-review-result.md). The previous opening was backed up before replacing decorative imagery with a labeled, downloadable greeting example and applying the neutral/rust palette across the application. [Revised desktop](../screenshots/revised-home-1440.png) and [revised mobile](../screenshots/revised-home-375.png).
+
+## Direct Kimlik popup sign-in
+
+Sign-in and protected navigation links now open Kimlik directly in a popup, following the interaction in sayt.az. The original page remains open; successful sign-in returns to the intended account or product destination. Existing server-side PKCE/state validation and httpOnly cookies remain in place. Messages are accepted only from the opened popup and the same origin. Blocked popups, cancellation, timeout and provider errors have retry feedback. Direct account URLs retain an access gate and local-only demo entry.
+
+The real Kimlik sign-in screen was opened from the preview without submitting credentials. Browser tests mock the OAuth exchange to cover success, destination return, invalid message source, blocked popup, cancellation, provider errors and signed-in navigation. Real-user consent is still not claimed verified.

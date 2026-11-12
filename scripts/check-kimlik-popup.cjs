@@ -1,0 +1,23 @@
+const {chromium}=require('/Users/macmini/projects/elek/frontend/node_modules/playwright');
+const assert=require('node:assert/strict');
+(async()=>{
+ const browser=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true});
+ const context=await browser.newContext();let authenticated=false,startFail=false,callbackFail=false;const requests=[];
+ await context.route('**/api/workspace/auth/me',r=>r.fulfill({status:authenticated?200:401,json:authenticated?{user:{id:1,name:'Example',language:'az',timezone:'Asia/Baku'}}:{error:'unauthorized'}}));
+ await context.route('**/api/workspace/auth/kimlik/start',r=>{requests.push(r.request().postDataJSON());return r.fulfill({status:startFail?503:200,json:startFail?{error:'unavailable'}:{url:'http://127.0.0.1:3022/mock-provider'}})});
+ await context.route('**/mock-provider',r=>r.fulfill({contentType:'text/html',body:'<title>Test provider</title><button onclick="location.href=\'/az/auth/kimlik/callback?code=example&state=example\'">Complete</button>'}));
+ await context.route('**/api/workspace/auth/kimlik/callback',r=>{authenticated=!callbackFail;return r.fulfill({status:callbackFail?401:200,json:callbackFail?{error:'login_failed'}:{return_to:'/user'}})});
+ const page=await context.newPage();const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto('http://127.0.0.1:3022/');await page.waitForLoadState('networkidle');
+ let opened=page.waitForEvent('popup');await page.getByRole('link',{name:'Daxil ol',exact:true}).click();let popup=await opened;await popup.waitForURL('**/mock-provider');assert.equal(new URL(page.url()).pathname,'/');
+ await page.evaluate(()=>dispatchEvent(new MessageEvent('message',{origin:location.origin,source:window,data:{type:'wisher:auth:success'}})));assert.equal(new URL(page.url()).pathname,'/');
+ await popup.close();await page.getByRole('alert').filter({hasText:'tamamlanmadı'}).waitFor();
+ await page.evaluate(()=>{window.originalOpen=window.open;window.open=()=>null});await page.getByRole('link',{name:'Daxil ol',exact:true}).click();await page.getByRole('alert').filter({hasText:'icazə'}).waitFor();await page.evaluate(()=>window.open=window.originalOpen);
+ startFail=true;opened=page.waitForEvent('popup');await page.getByRole('link',{name:'Daxil ol',exact:true}).click();await opened;await page.getByRole('alert').filter({hasText:'açıla bilmədi'}).waitFor();startFail=false;
+ callbackFail=true;opened=page.waitForEvent('popup');await page.getByRole('link',{name:'Daxil ol',exact:true}).click();popup=await opened;await popup.waitForURL('**/mock-provider');await popup.getByRole('button',{name:'Complete'}).click();await page.getByRole('alert').filter({hasText:'Daxil olmaq alınmadı'}).waitFor();callbackFail=false;
+ await page.setViewportSize({width:375,height:812});await page.goto('http://127.0.0.1:3022/wishes');await page.waitForLoadState('networkidle');
+ opened=page.waitForEvent('popup');await page.getByRole('link',{name:'Təbrik hazırlamağa başla'}).click();popup=await opened;await popup.waitForURL('**/mock-provider');assert.equal(new URL(page.url()).pathname,'/wishes');assert.equal(requests.at(-1).return_to,'/user/wishes');await popup.getByRole('button',{name:'Complete'}).click();await page.waitForURL('**/user/wishes');await page.getByRole('heading',{name:'Yaxınınız üçün təbrik hazırlayın.'}).waitFor();assert(popup.isClosed());assert.deepEqual(errors,[]);
+ await page.locator('header').getByRole('link',{name:'Hesabım'}).click();await page.waitForURL('**/user');
+ console.log('Popup tests passed: direct desktop/mobile entry, original page preserved, source validation, cancel/retry, blocked popup, start/callback errors, destination return and signed-in navigation. OAuth responses mocked.');
+ await browser.close();
+})().catch(e=>{console.error(e);process.exit(1)});
