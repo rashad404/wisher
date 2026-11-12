@@ -1,0 +1,89 @@
+[
+  {
+    "id": 4,
+    "title": "Qəhvə dəmləyən Tognana Marble Floatec (V443006AMNF)",
+    "store": "Baku Electronics",
+    "source_url": "https://bakuelectronics.az/mehsul/tognana-coffee-maker-6-cups-grancucina-marble-nero-floatec-229130",
+    "image_url": "https://media.bakuelectronics.az/media/inventImages/Qəhvə_dəmləyən_Tognana_Marble_Floatec_V443006AMNF.webp",
+    "description": "Qəhvə dəmləyən Tognana Marble Floatec (V443006AMNF) endirim və sərfəli qiymətlə Baku Electronics-də",
+    "category": "home",
+    "occasions": [
+      "birthday",
+      "thanks",
+      "newyear"
+    ],
+    "recipients": [
+      "friend",
+      "family",
+      "colleague"
+    ],
+    "price_minor": 3299,
+    "currency": "AZN",
+    "availability": "in_stock",
+    "active": true,
+    "checked_at": "2026-11-12T06:51:51.000000Z",
+    "discovered_at": "2026-11-12T06:51:51.000000Z",
+    "created_at": "2026-11-12T06:48:44.000000Z",
+    "updated_at": "2026-11-12T06:51:51.000000Z",
+    "stale": false,
+    "local_image": "/concepts/product-4.webp"
+  },
+  {
+    "id": 3,
+    "title": "Konstruktor LEGO Creator Flowers in Watering Can 5702017585116 (31149)",
+    "store": "Baku Electronics",
+    "source_url": "https://bakuelectronics.az/mehsul/constructor-lego-creator-flowers-in-watering-can-5702017585116-235869",
+    "image_url": "https://media.bakuelectronics.az/media/inventImages/Konstruktor_LEGO_Creator_Flowers_in_Watering_Can_4.webp",
+    "description": "Konstruktor LEGO Creator Flowers in Watering Can 5702017585116 (31149) endirim və sərfəli qiymətlə Baku Electronics-də",
+    "category": "hobby",
+    "occasions": [
+      "birthday",
+      "thanks",
+      "newyear"
+    ],
+    "recipients": [
+      "friend",
+      "family",
+      "colleague"
+    ],
+    "price_minor": 7999,
+    "currency": "AZN",
+    "availability": "in_stock",
+    "active": true,
+    "checked_at": "2026-11-12T06:51:49.000000Z",
+    "discovered_at": "2026-11-12T06:51:49.000000Z",
+    "created_at": "2026-11-12T06:48:42.000000Z",
+    "updated_at": "2026-11-12T06:51:49.000000Z",
+    "stale": false,
+    "local_image": "/concepts/product-3.webp"
+  },
+  {
+    "id": 1,
+    "title": "Konstruktor LEGO Botanicals Lucky Bamboo 5702017814650 (10344)",
+    "store": "Baku Electronics",
+    "source_url": "https://bakuelectronics.az/mehsul/constructor-lego-botanicals-lucky-bamboo-5702017814650-235865",
+    "image_url": "https://media.bakuelectronics.az/media/inventImages/Konstruktor_LEGO_Botanicals_Lucky_Bamboo_7.webp",
+    "description": "Konstruktor LEGO Botanicals Lucky Bamboo 5702017814650 (10344) endirim və sərfəli qiymətlə Baku Electronics-də",
+    "category": "hobby",
+    "occasions": [
+      "birthday",
+      "thanks",
+      "newyear"
+    ],
+    "recipients": [
+      "friend",
+      "family",
+      "colleague"
+    ],
+    "price_minor": 7999,
+    "currency": "AZN",
+    "availability": "in_stock",
+    "active": true,
+    "checked_at": "2026-11-12T06:51:45.000000Z",
+    "discovered_at": "2026-11-12T06:51:45.000000Z",
+    "created_at": "2026-11-12T06:48:15.000000Z",
+    "updated_at": "2026-11-12T06:51:45.000000Z",
+    "stale": false,
+    "local_image": "/concepts/product-1.webp"
+  }
+]

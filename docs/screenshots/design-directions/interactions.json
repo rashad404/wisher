@@ -1,0 +1,23 @@
+[
+  {
+    "direction": "a",
+    "primaryEvents": 4,
+    "ctaDestination": true,
+    "keyboardFocus": true,
+    "imageFailure": true
+  },
+  {
+    "direction": "b",
+    "primaryEvents": 4,
+    "ctaDestination": true,
+    "keyboardFocus": true,
+    "imageFailure": true
+  },
+  {
+    "direction": "c",
+    "primaryEvents": 4,
+    "ctaDestination": true,
+    "keyboardFocus": true,
+    "imageFailure": true
+  }
+]
