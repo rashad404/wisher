@@ -6,7 +6,7 @@ Status: Product direction captured from Rashad's discussion. Detailed scope, lau
 
 ## The idea
 
-Wisher helps people celebrate people. Remember important dates, create a personal greeting, find a suitable gift, and prepare a personal greeting. Initially, gift purchases happen on the websites of the Azerbaijani stores listed on Wisher. Companies can use Wisher to celebrate employees, thank customers, and manage gifting.
+Wisher helps people celebrate people. Remember important dates, find a suitable gift and create a personal greeting. Initially, gift purchases happen on the websites of the Azerbaijani stores listed on Wisher. Companies can use Wisher to celebrate employees, thank customers, and manage gifting.
 
 Wisher brings occasions, greetings, and gift discovery together for individuals and companies. AI helps create personal messages and, eventually, richer greeting formats. It is a supporting capability, not the entire product.
 
@@ -92,7 +92,7 @@ The previous greeting-focused four-tab proposal is not final. Navigation must be
 
 ## Planning before further implementation
 
-Rashad asked to stop jumping into code, understand the full product, and plan it properly first. Do not generate more wishes or resume feature implementation while product planning is being settled.
+Rashad initially paused implementation for product planning. After approving the header and opening screen, Rashad authorized full implementation on 2026-11-12. Preserve that approved visual direction and implement the first release below; own products and other expressly later phases remain deferred.
 
 1. Define the audiences and use cases for individuals, gift buyers, and companies.
 2. Define the gift offering: initial Azerbaijani stores and categories, product collection and refresh rules, and the outbound purchase experience. Plan Wisher's own products as a later phase.

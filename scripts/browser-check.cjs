@@ -1,0 +1,22 @@
+const {chromium}=require('/Users/macmini/projects/elek/frontend/node_modules/playwright');
+const fs=require('node:fs');
+(async()=>{
+ const b=await chromium.launch({executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',headless:true});
+ const c=await b.newContext({viewport:{width:1440,height:1000},reducedMotion:'reduce'});const p=await c.newPage();const errors=[];p.on('pageerror',e=>errors.push(e.message));
+ const base='http://100.89.150.50:3022';
+ for(const width of [375,1440]){await p.setViewportSize({width,height:1000});await p.goto(base,{waitUntil:'networkidle'});await p.evaluate(()=>window.scrollTo(0,0));await p.screenshot({path:`docs/screenshots/home-${width}.png`,fullPage:true});console.log('home',width,await p.evaluate(()=>document.documentElement.scrollWidth));}
+ await p.goto(base+'/user',{waitUntil:'networkidle'});await p.getByRole('button',{name:'Nümunə hesabı aç',exact:true}).click();await p.waitForURL('**/user');await p.getByRole('heading',{name:'Nümunə hesab'}).waitFor();
+ for(const width of [375,1440]){await p.setViewportSize({width,height:1000});await p.evaluate(()=>window.scrollTo(0,0));await p.screenshot({path:`docs/screenshots/dashboard-${width}.png`,fullPage:true});console.log('dashboard',width,await p.evaluate(()=>document.documentElement.scrollWidth));}
+ await p.goto(base+'/user/contacts',{waitUntil:'networkidle'});await p.getByRole('button',{name:'Yaxınını əlavə et',exact:true}).click();await p.getByLabel('Ad',{exact:true}).fill('Test Dost');await p.getByLabel('E-poçt',{exact:true}).fill('friend@example.com');await p.getByRole('button',{name:'Saxla',exact:true}).click();await p.getByRole('heading',{name:'Test Dost',exact:true}).waitFor();console.log('contact create passed');
+ await p.goto(base+'/user/occasions',{waitUntil:'networkidle'});await p.getByRole('button',{name:'Özəl gün əlavə et',exact:true}).click();await p.getByLabel('Başlıq',{exact:true}).fill('Test ad günü');await p.getByLabel('Tarix',{exact:true}).fill('2027-03-21');await p.getByRole('button',{name:'Saxla',exact:true}).click();await p.getByText('Test ad günü',{exact:true}).waitFor();console.log('occasion create passed');
+ await p.goto(base+'/user/wishes',{waitUntil:'networkidle'});await p.getByLabel('Kimə?',{exact:true}).fill('Aysel');await p.getByLabel('Əlavə etmək istədiyin bir detal',{exact:true}).fill('Məktəbdən dostuq, birlikdə kitab oxumağı sevirik.');
+ const response=p.waitForResponse(r=>r.url().endsWith('/wishes/generate')&&r.request().method()==='POST',{timeout:40000});await p.getByRole('button',{name:'3 variant hazırla',exact:true}).click();const res=await response;console.log('generation status',res.status());
+ if(res.ok()) {await p.getByRole('button',{name:'Variant 1',exact:true}).waitFor();await p.getByRole('button',{name:'Saxla',exact:true}).click();await p.getByRole('status').filter({hasText:'Saxlanıldı'}).waitFor();console.log('generation and save passed');await p.getByRole('button',{name:'Kart kimi göstər',exact:true}).click();const downloadPromise=p.waitForEvent('download');await p.getByRole('button',{name:'Kartı endir',exact:true}).click();const download=await downloadPromise;await download.saveAs('docs/screenshots/generated-card.png');console.log('card download passed');await p.getByRole('button',{name:'Mətnə qayıt',exact:true}).click();}
+ for(const width of [375,1440]){await p.setViewportSize({width,height:1000});await p.evaluate(()=>window.scrollTo(0,0));await p.screenshot({path:`docs/screenshots/wishes-${width}.png`,fullPage:true});console.log('wishes',width,await p.evaluate(()=>document.documentElement.scrollWidth));}
+ await p.goto(base+'/user/saved',{waitUntil:'networkidle'});console.log('saved entries',await p.locator('.saved-card').count());
+ await p.goto(base+'/user/settings',{waitUntil:'networkidle'});await p.getByLabel('Saat qurşağı').selectOption('Europe/London');await p.getByRole('button',{name:'Saxla',exact:true}).click();await p.getByRole('status').waitFor();console.log('settings save passed');
+ // Cross-origin writes must be rejected by the browser-facing proxy.
+ const forbidden=await c.request.post(base+'/api/workspace/contacts',{headers:{Origin:'https://example.com'},data:{name:'Wrong origin',relationship:'Dost'}});console.log('cross origin',forbidden.status());
+ console.log('page errors',errors);
+ await b.close();
+})().catch(e=>{console.error(e.message);process.exit(1)});

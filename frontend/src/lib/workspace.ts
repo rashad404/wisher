@@ -1,0 +1,5 @@
+export class ApiError extends Error {constructor(public status:number,public errors?:Record<string,string[]>){super(status===401?'Davam etmək üçün hesabınıza daxil olun.':status===429?'Çox sayda sorğu göndərildi. Bir az sonra yenidən yoxlayın.':'Əməliyyat alınmadı. Məlumatları yoxlayıb yenidən cəhd edin.')}}
+export async function api(path:string,method='GET',body?:unknown){const response=await fetch('/api/workspace/'+path,{method,headers:{'Content-Type':'application/json'},body:body===undefined?undefined:JSON.stringify(body),cache:'no-store'});const data=await response.json();if(!response.ok)throw new ApiError(response.status,data.errors);return data;}
+export type Product={id:number;title:string;store:string;source_url:string;image_url:string|null;description:string;category:string;occasions:string[];recipients:string[];price_minor:number|null;currency:string;availability:string;active:boolean;stale:boolean;checked_at:string|null};
+export type Page<T>={data:T[];current_page:number;last_page:number;total:number};
+export const money=(n:number)=>new Intl.NumberFormat('az-AZ',{style:'currency',currency:'AZN'}).format(n/100);

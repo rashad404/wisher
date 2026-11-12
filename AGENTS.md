@@ -8,3 +8,5 @@ Read docs/roadmap.md and docs/feature-inventory.md. Laravel 12 backend, Next.js 
 - Secrets only in ignored env files. Never print keys; never track auth.json. No production writes, DNS changes, pushes or deployments. Commit locally, plain messages, no tool/AI mentions.
 - Plain ASCII punctuation, preserve Azerbaijani letters. All example domains/emails use example.com. Azerbaijani copy is draft pending owner review. Communicate in English.
 - Scope every private query to its owner. Paginate, index, and rate-limit expensive work. Local demo login must be off outside local environment. Fake generation must be labeled.
+
+Before any page, logo or brand work, read docs/knowledge/design-not-ai-looking.md.

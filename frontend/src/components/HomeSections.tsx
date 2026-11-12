@@ -1,0 +1,8 @@
+import Link from 'next/link';
+import FeaturedGifts from './FeaturedGifts';
+import {Icon} from './HomeOpening';
+export default function HomeSections(){return <div className="home-sections"><FeaturedGifts/>
+ <section className="purchase-explainer"><h2>Hədiyyəni haradan alırsınız?</h2><div><p>Wisher-də məhsulu və mağazanı seçirsiniz. Ödəniş, çatdırılma və qaytarma həmin mağazanın saytında həll olunur.</p><Link href="/faq" className="text-action">Alış-veriş haqqında <Icon name="arrow"/></Link></div></section>
+ <section className="occasion-editorial"><div><span className="kicker">Növbəti özəl gün üçün</span><h2>Ad gününü<br/>təqviminizə əlavə edin.</h2><p>Yaxınınızın adını və tarixi saxlayın. Qarşıdakı yeddi günün qeydləri hesabınızın xatırlatmalar bölməsində görünəcək.</p><Link href="/user/occasions" className="text-action">Özəl gün əlavə et <Icon name="arrow"/></Link></div><div className="occasion-links"><Link href="/gifts?occasion=birthday"><span>Ad günü</span><span>Hədiyyə seç <Icon name="arrow"/></span></Link><Link href="/wishes"><span>Novruz</span><span>Təbrik hazırla <Icon name="arrow"/></span></Link><Link href="/gifts?occasion=thanks"><span>Təşəkkür</span><span>Hədiyyə seç <Icon name="arrow"/></span></Link></div></section>
+ <section className="company-editorial"><span className="kicker">Şirkətlər üçün</span><h2>Əməkdaşların və müştərilərin<br/>özəl günlərini planlaşdırın.</h2><div><p>Alıcıları seçin, hədiyyə büdcəsini qeyd edin və şirkətinizin imzası ilə təbrik kartı hazırlayın. Alış-verişi və paylaşmanı özünüz tamamlayırsınız.</p><Link href="/companies" className="button">Şirkət sahəsinə bax <Icon name="arrow"/></Link></div></section>
+ </div>}

@@ -1,3 +1,5 @@
+> Historical first opening. Superseded by the November 12 design review in design-review-result.md. The original is preserved in docs/evidence/design/before-design-review.tar.gz.
+
 # Homepage opening - 2026-11-12
 
 Scope: Header and opening homepage screen only. No catalog collection, checkout, new account features, or greeting generation in this pass.

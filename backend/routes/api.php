@@ -1,0 +1,46 @@
+<?php
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\{KimlikController,WorkspaceController,WishController};
+Route::middleware('throttle:workspace')->group(function(){
+ Route::get('catalog',[\App\Http\Controllers\CatalogController::class,'index']);
+ Route::get('catalog/{id}',[\App\Http\Controllers\CatalogController::class,'show'])->whereNumber('id');
+});
+Route::get('config',[WorkspaceController::class,'configuration']);
+Route::middleware('throttle:auth')->group(function(){
+ Route::post('auth/demo',[WorkspaceController::class,'demo']);
+ Route::post('auth/kimlik/start',[KimlikController::class,'start']);
+ Route::post('auth/kimlik/callback',[KimlikController::class,'callback']);
+});
+Route::middleware(['auth:sanctum','throttle:workspace'])->group(function(){
+ Route::get('auth/me',[KimlikController::class,'me']);
+ Route::post('auth/logout',[KimlikController::class,'logout']);
+ Route::get('calendar',[\App\Http\Controllers\CalendarController::class,'index']);
+ Route::get('dashboard',[WorkspaceController::class,'dashboard']);
+ Route::get('contacts',[WorkspaceController::class,'contacts']);
+ Route::post('contacts',[WorkspaceController::class,'saveContact']);
+ Route::put('contacts/{id}',[WorkspaceController::class,'saveContact'])->whereNumber('id');
+ Route::delete('contacts/{id}',[WorkspaceController::class,'deleteContact'])->whereNumber('id');
+ Route::get('occasions',[WorkspaceController::class,'occasions']);
+ Route::post('occasions',[WorkspaceController::class,'saveOccasion']);
+ Route::put('occasions/{id}',[WorkspaceController::class,'saveOccasion'])->whereNumber('id');
+ Route::delete('occasions/{id}',[WorkspaceController::class,'deleteOccasion'])->whereNumber('id');
+ Route::put('settings',[WorkspaceController::class,'settings']);
+ Route::get('wishes',[WishController::class,'index']);
+ Route::post('wishes/generate',[WishController::class,'generate'])->middleware('throttle:generation');
+ Route::put('wishes/{id}',[WishController::class,'save'])->whereNumber('id');
+ Route::delete('wishes/{id}',[WishController::class,'delete'])->whereNumber('id');
+});
+
+Route::middleware(['auth:sanctum','throttle:workspace'])->group(function(){
+ $catalog=\App\Http\Controllers\CatalogController::class;
+ Route::get('wishlist',[$catalog,'wishlist']);
+ Route::put('wishlist/{id}',[$catalog,'save'])->whereNumber('id');
+ Route::delete('wishlist/{id}',[$catalog,'remove'])->whereNumber('id');
+ $company=\App\Http\Controllers\CompanyController::class;
+ Route::get('company',[$company,'show']);Route::put('company',[$company,'save']);
+ Route::get('company/people',[$company,'people']);Route::post('company/people',[$company,'savePerson']);
+ Route::put('company/people/{id}',[$company,'savePerson'])->whereNumber('id');Route::delete('company/people/{id}',[$company,'deletePerson'])->whereNumber('id');
+ Route::get('company/campaigns',[$company,'campaigns']);Route::post('company/campaigns',[$company,'saveCampaign']);
+ Route::get('company/campaigns/{id}',[$company,'campaign'])->whereNumber('id');Route::put('company/campaigns/{id}',[$company,'saveCampaign'])->whereNumber('id');Route::delete('company/campaigns/{id}',[$company,'deleteCampaign'])->whereNumber('id');
+ Route::get('reminders',[\App\Http\Controllers\ReminderController::class,'index']);Route::put('reminders/{id}',[\App\Http\Controllers\ReminderController::class,'read'])->whereNumber('id');
+});

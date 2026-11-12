@@ -1,0 +1,34 @@
+# *
+User-agent: *
+Disallow: /axtaris-neticesi
+Disallow: /oyun
+Disallow: /sebet
+Disallow: /istifadeci
+Disallow: /sebet/**
+Disallow: /sebet/*
+Disallow: /istifadeci/**
+Disallow: /istifadeci/*
+Disallow: /sevimli-mehsullar
+Disallow: /checkout
+Disallow: /muqayise-et
+Disallow: /giris
+Disallow: /giris/*
+Disallow: /giris/**
+Disallow: /sifaris
+Disallow: /sifaris/*
+Disallow: /sifaris/**
+Disallow: /abune-tesdiq
+Disallow: /aktiv-muqavileler
+Disallow: /musteri-karti
+Disallow: /musteri-karti/**
+Disallow: /musteri-karti/*
+Disallow: /zemanet
+Disallow: /kampaniyalar
+Disallow: /rus
+Disallow: /mexfilik-siyaseti
+
+# Host
+Host: https://bakuelectronics.az
+
+# Sitemaps
+Sitemap: https://bakuelectronics.az/sitemap.xml
