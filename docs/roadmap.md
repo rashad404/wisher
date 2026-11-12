@@ -22,11 +22,21 @@ Design revision authorized after the anti-generic design review: neutral paper s
 | --- | --- | --- | --- |
 | Foundation and first release | Public/private flows above, isolation tests, local previews and inventory | 12-20 person-days total, including existing work | Kimlik and DeepSeek credentials already supplied; actual retailer source access |
 | Pilot readiness | Scheduled worker/cron, monitoring, backups, reviewed legal/copy, merchant content arrangements, production benchmark and rollback rehearsal | 4-8 days | Rashad's source choices, production infrastructure, editorial/legal review and deployment authorization |
-| Delivery and revenue | Owner email reminders, optional recipient delivery, paid limits, company seats/roles and affiliate reporting | 8-15 days | Alert sender configuration, consent decisions, payment/affiliate agreements and pricing |
+| Delivery and revenue | Owner SMS/email reminders and optional recipient/company greeting delivery through Alert.az, paid limits, company seats/roles and affiliate reporting | 8-15 days | Alert.az API credentials/documentation and sender configuration, delivery preferences, payment/affiliate agreements and pricing |
 | Own products | Catalog ownership, checkout, payment verification, fulfillment, returns and order support | Separate scope after product selection | Products, merchant account, operational owner and fulfillment decisions |
 | Later extensions | Partner vouchers, provider-managed group gifting, AI images, video/voice, native apps | Estimate separately | Provider agreements, image budget, operational support and explicit app publication scope |
 
 Estimates are planning ranges, not promises or statements of completion. First release can be fully exercised locally without sending mail or charging anyone. External readiness gaps must be reported explicitly.
+
+## SMS and email through Alert.az
+
+Confirmed by Rashad on 2026-11-12: Alert.az is our own startup and provides SMS and email APIs. Use Alert.az as Wisher's planned provider for both channels.
+
+Planned uses are upcoming-occasion reminders to account owners, optional delivery of personal greetings to recipients, and scheduled company greetings to selected employees/customers. Keep in-app reminders alongside these channels. Users choose the channel, recipient, content and send time; saving a greeting or campaign does not itself send it.
+
+Implement an Alert.az delivery adapter after reviewing its API documentation and supplied credentials. Use queued delivery, timezone-aware scheduling, duplicate-send protection, bounded retries, delivery status tracking where the API supports it, and per-user/company sending limits. Plan SMS/email preferences and opt-out handling, sender identity, and message costs before enabling delivery. API capabilities beyond SMS and email remain to be verified.
+
+This records the provider decision and future integration scope. Alert.az is not integrated yet; current reminders remain in-app and company campaigns remain drafts/plans. No messages are sent by this planning update.
 
 ## AI and cards
 

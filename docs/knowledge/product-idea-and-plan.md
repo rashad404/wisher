@@ -64,6 +64,12 @@ Example journey: A company prepares branded Novruz greetings and selects employe
 
 The company offering belongs in the product architecture and public explanation from the beginning. The exact capabilities included at launch remain a planning decision.
 
+## SMS and email delivery - Alert.az
+
+Rashad confirmed on 2026-11-12 that Alert.az is our own startup and offers SMS and email APIs. Plan to use Alert.az for Wisher's SMS and email delivery: occasion reminders, personal greetings sent at the user's request, and company greetings to selected recipients.
+
+In-app reminders remain available. Channel preferences, scheduling, sender identity, sending limits and costs need to be defined before enabling outbound delivery. The provider is decided; API integration details still require its documentation and credentials. This is planned functionality, not an implemented or active sending service. See the [roadmap](../roadmap.md#sms-and-email-through-alertaz) for implementation scope.
+
 ## Proposed website structure
 
 | Section | Purpose |
@@ -109,7 +115,7 @@ Rashad initially paused implementation for product planning. After approving the
 - How should product collection, price updates, and unavailable listings work?
 - Which products will Wisher sell itself later, and how will checkout and fulfillment work?
 - What greeting sharing experience should accompany a purchase made at another store?
-- Which reminders and delivery channels are included initially, and what can be scheduled?
+- Which Alert.az SMS/email reminders and greeting delivery flows launch first, and what scheduling and sending limits apply?
 - Which company features launch first: branded greetings, individual gifting, or bulk campaigns?
 - What are the free and paid features, gift margins or commissions, and company pricing?
 - When should wishlists and group gifting launch?
@@ -121,6 +127,7 @@ These are unresolved planning questions, not reasons to silently remove the gift
 
 - New Laravel 12 backend and Next.js 15 / React 19 frontend, following applicable Elek conventions.
 - Kimlik login; the client has already been created and credentials stay in ignored environment files.
+- Alert.az, our own SMS/email startup, is the planned outbound messaging provider.
 - DeepSeek for text generation, not Gemini. DeepSeek does not provide image generation; image generation needs a separate proposal.
 - Mobile-first and performance-first, with the brief's 100k-user scale requirement.
 - No production changes, pushes, or deployments under the current brief.
