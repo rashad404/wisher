@@ -17,7 +17,7 @@ export default function CompanyWorkspace(){
  async function loadCompany(){const d=await api('company');setCompany(d.company);if(d.company)setBrand(d.company);setLoaded(true)}
  async function loadPeople(){setPeople(await api('company/people?page='+personPage+'&q='+encodeURIComponent(search)))}
  async function loadCampaigns(){setCampaigns(await api('company/campaigns?page='+campaignPage))}
- useEffect(()=>{loadCompany().catch(e=>{setError(e.message);setLoaded(true)})},[]);
+ useEffect(()=>{const requested=new URLSearchParams(location.search).get('tab');if(requested&&['people','brand','campaigns'].includes(requested))setTab(requested);loadCompany().catch(e=>{setError(e.message);setLoaded(true)})},[]);
  useEffect(()=>{if(company)loadPeople().catch(e=>setError(e.message))},[company,personPage,search]);
  useEffect(()=>{if(company)loadCampaigns().catch(e=>setError(e.message))},[company,campaignPage]);
  useEffect(()=>{if(!campaignOpen)return;const timer=setTimeout(()=>{api('catalog?q='+encodeURIComponent(productSearch)).then(d=>setProducts(d.data)).catch(e=>setError(e.message))},250);return()=>clearTimeout(timer)},[campaignOpen,productSearch]);
