@@ -1,0 +1,23 @@
+# Wisher design decisions
+
+- Conversion goal: help visitors choose a gift; primary action is Hədiyyə tap. Greeting creation and company planning are secondary entry points. Retailer prices appear on product listings; no Wisher paid plan is advertised.
+- Personality: personal = real greetings and named examples; practical = prices and useful controls; warm = rust and peach accents with restrained typography.
+- Palette: canvas #f8f8f6, text #20201f, brand #9b3d24 for identity/selection/links, action #f2b705 with #302400 text, highlight #f3bd95 on dark surfaces, success #23512e, error #9c241b.
+- Typography: existing Archivo display and IBM Plex Sans body/UI retained under the owner's explicit Sayt reference instruction. This header-only revision does not change page typography. Wordmark uses a custom w symbol and tightly set lowercase type with a subordinate domain suffix.
+- Hero: existing dark full-width, centered two-tone heading, explicitly requested by Rashad. Unchanged in this revision.
+- Product moment: select a real gift with its price and prepare a personal greeting.
+- Signature detail: continuous rounded w stroke, used as the small brand mark and favicon. No gift box, sparkle, gradient or decorative AI symbol.
+- Imagery: actual retailer catalog images and the existing labeled greeting example.
+- Voice: short Azerbaijani action labels; gifts, greetings, and special dates remain distinct concepts.
+- Shapes: compact rounded-square logo mark; pill primary actions; understated navigation selection; 44px minimum controls.
+- Header: sticky solid white surface, brand and navigation grouped on the left, account and gift action on the right, full menu retained. Mobile keeps visible sign-in and menu controls plus existing bottom navigation.
+- Version history: previous header preserved in docs/evidence/design/before-header-refresh.tar.gz. New version is a proposal for owner review, not claimed approved.
+- Rejected: generic startup-design direction; previous header/wordmark requested to be fixed and made more modern on 2026-11-12.
+
+## Header revision verification
+
+Rendered and inspected at 1440 and 375; also checked layout and sticky positioning at 820 and 320. Menu opening, Escape and scroll restoration pass. Production build and TypeScript checks pass. Header entry retains direct Kimlik popup authentication. Current UI is Azerbaijani; no additional languages or themes are implied.
+
+Two logo treatments were rendered in actual header context: the implemented custom mark with wordmark (`header-detail-1440.png`, `header-detail-375.png`) and a quieter wordmark-only alternative (`header-wordmark-option-1440.png`, `header-wordmark-option-375.png`). Full opening views are `header-refresh-1440.png` and `header-refresh-375.png`. The icon uses the same vector mark and is served by the application as `/icon.svg`.
+
+Patterns addressed in this narrow change: generic plain-text identity becomes a recognizable small mark; equally prominent rounded controls become a clear navigation/account/action hierarchy. No proof claims, decorative product illustrations, new marketing copy or changes to the hero were added.
