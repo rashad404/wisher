@@ -14,7 +14,7 @@ Local offer: gift discovery, personal tools and company planning currently have 
 
 ## Brand and UX
 
-Design revision authorized after the anti-generic design review: neutral paper surfaces, charcoal text, rust primary actions, restrained wheat highlights, and a real provider-generated greeting in a labeled occasion example. The previous plum/illustrated opening is backed up. Use shared logo-left/header-right, full-screen phone menu, four mobile tabs and grouped footer principles from Sayt, Elek and DBscore. Keep Azerbaijani copy and readable account screens. Do not copy sibling branding.
+Design model: Sayt.az, as explicitly directed by Rashad. Do not use startup-design for Wisher. Use a full-width dark hero, centered white/peach headline, gold primary action, rust brand links/selection/search, pill controls and dense product surfaces. Show real gifts and prices alongside an example greeting. Self-host Archivo headings and IBM Plex Sans body/UI text. Retain the familiar header, mobile navigation and grouped footer. Read both design references before visual work. The previous split hero is backed up; see `docs/knowledge/sayt-redesign-result.md`.
 
 ## Phases and dependencies
 

@@ -31,7 +31,7 @@ Use Kimlik or the explicitly labeled local sample account. Each sample account i
 
 ## Validation
 
-- Frontend production build and TypeScript checks passed. First-load route JavaScript is approximately 126 KB according to Next's build report.
+- Frontend production build and TypeScript checks passed. First-load route JavaScript is approximately 128 KB according to Next's build report.
 - 26 backend tests, 149 assertions, all on forced in-memory SQLite. Includes cross-owner isolation, private wishlist, company recipient ownership, invalid branding, catalog filters/pagination/URL validation/atomic import, calendar recurrence and leap days, reminder idempotency, Kimlik state/identity tests, generation idempotency, quotas and provider failure behavior.
 - The existing synthetic 100k-user fixture verifies a bounded dashboard query count and an owner/date index. This is not proof of 100k concurrent users; production load testing remains required.
 - Chrome end-to-end journey: real product filtering/detail, login return, wishlist persistence, company/person/campaign create and reopen, calendar/event/reminder, explicit sample greeting, save and PNG export, mobile menu/Escape and scroll restoration. Twenty responsive route checks at 375 and 1440 pixels found no horizontal overflow or page errors.
@@ -85,3 +85,7 @@ See [Section 1 audit and implementation](../knowledge/design-review-result.md). 
 Sign-in and protected navigation links now open Kimlik directly in a popup, following the interaction in sayt.az. The original page remains open; successful sign-in returns to the intended account or product destination. Existing server-side PKCE/state validation and httpOnly cookies remain in place. Messages are accepted only from the opened popup and the same origin. Blocked popups, cancellation, timeout and provider errors have retry feedback. Direct account URLs retain an access gate and local-only demo entry.
 
 The real Kimlik sign-in screen was opened from the preview without submitting credentials. Browser tests mock the OAuth exchange to cover success, destination return, invalid message source, blocked popup, cancellation, provider errors and signed-in navigation. Real-user consent is still not claimed verified.
+
+## Sayt.az design direction
+
+The owner rejected the earlier split-hero design and startup-design guidance. The [new design record](../knowledge/sayt-redesign-result.md) documents the live Sayt.az reference inspection and implemented dark hero, product/price display, typography, color roles and working gift finder. [Desktop screenshot](../screenshots/sayt-direction-home-1440.png) and [mobile screenshot](../screenshots/sayt-direction-home-375.png).

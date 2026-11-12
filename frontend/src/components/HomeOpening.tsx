@@ -1,5 +1,8 @@
 'use client';
 
+import {useEffect,useState} from 'react';
+import {api,Product,money} from '@/lib/workspace';
+import {ProductImage} from './ProductCatalog';
 import {downloadCard} from '@/lib/card';
 import {opening as t} from '@/messages/opening';
 import Link from 'next/link';
@@ -13,6 +16,9 @@ export function Icon({name}:{name:string}) {
 }
 export function Brand(){return <Link href="/" className={s.brand} aria-label="Wisher ana səhifə">wisher<span>.az</span></Link>}
 export default function HomeOpening(){
+ const [products,setProducts]=useState<Product[]>([]),[selected,setSelected]=useState(0),[status,setStatus]=useState('loading'),[panel,setPanel]=useState('gift');
+ async function load(){setStatus('loading');try{const d=await api('catalog?occasion=birthday');const list=(d.data as Product[]).filter(p=>p.availability!=='out_of_stock');const flowers=list.find(p=>p.source_url.includes('flowers-in-watering-can'));const coffee=list.find(p=>p.category==='home');const speaker=list.find(p=>p.source_url.includes('jbl-go-5'));const picks=[flowers,coffee,speaker].filter((p):p is Product=>Boolean(p));setProducts(picks.length?picks:list.slice(0,3));setSelected(0);setStatus('ready')}catch{setStatus('error')}}
+ useEffect(()=>{load()},[]);const product=products[selected];
  return <><main className={s.main}>
   <section className={s.opening} aria-labelledby="opening-title">
    <div className={s.copy}>
@@ -22,11 +28,20 @@ export default function HomeOpening(){
     <div className={s.actions}><Link className={s.primary} href="/gifts">{t.primary}<Icon name="arrow"/></Link><Link className={s.secondary} href="/wishes">{t.secondary}</Link></div>
    </div>
    <div className={s.stage}>
-    <div className={s.stageTop}><span>{t.example}</span><span>Ad günü</span></div>
-    <div className={s.reminder}><Icon name="calendar"/><div><strong>{t.occasion}</strong><span>{t.date}</span></div><Link href="/user/occasions" aria-label="Özəl günləri aç"><Icon name="arrow"/></Link></div>
-    <p className={s.detail}>{t.detail}</p>
-    <article className={s.realCard}><span>{t.recipient}</span><p>{t.greeting}</p><span>wisher.az</span></article>
-    <div className={s.stageBottom}><span>{t.exampleNote}</span><button onClick={()=>downloadCard(t.greeting,t.recipient,'','#fffdf7','#242620')}>{t.download}<Icon name="arrow"/></button></div>
+    <div className={s.stageTop}><div><Icon name="calendar"/><strong>{t.occasion}</strong><span>{t.date}<span className={s.sampleInline}>{t.shortExample}</span></span></div><span>{t.example}</span></div>
+    <div className={s.mobileSwitch} aria-label={t.example}><button aria-pressed={panel==='gift'} onClick={()=>setPanel('gift')}>{t.gift}</button><button aria-pressed={panel==='card'} onClick={()=>setPanel('card')}>{t.card}</button></div>
+    <div className={s.productMoment}>
+     <section className={`${s.giftPanel} ${panel!=='gift'?s.mobileHidden:''}`} aria-label={t.gift}>
+      {product?<><Link className={s.bigProduct} href={'/gifts/'+product.id}><ProductImage key={product.id} product={product}/></Link><div className={s.giftInfo}><span className={s.store}>{product.store}</span><Link href={'/gifts/'+product.id}><h2>{product.title}</h2></Link><div className={s.priceRow}><strong>{product.price_minor===null?t.priceUnknown:money(product.price_minor)}</strong><Link href={'/gifts/'+product.id}>{t.viewGift}<Icon name="arrow"/></Link></div><span className={s.priceNote}>{product.stale?t.stale:t.priceNote}</span></div></>:<div className={s.giftState} role="status"><p>{status==='loading'?t.loading:status==='error'?t.failed:t.empty}</p>{status==='error'&&<button onClick={load}>{t.retry}</button>}</div>}
+      {products.length>1&&<div className={s.giftChoices} aria-label={t.chooseGift}>{products.map((p,i)=><button key={p.id} aria-pressed={selected===i} onClick={()=>setSelected(i)} aria-label={p.title}><ProductImage product={p}/><span>{p.price_minor===null?t.priceUnknown:money(p.price_minor)}</span></button>)}</div>}
+     </section>
+     <section className={`${s.cardPanel} ${panel!=='card'?s.mobileHidden:''}`} aria-label={t.card}>
+      <div className={s.cardLabel}><span>{t.card}</span><span>{t.recipient}</span></div>
+      <article className={s.realCard}><h2>{t.recipient}</h2><p>{t.greeting}</p><span>wisher.az</span></article>
+      <div className={s.stageBottom}><button onClick={()=>downloadCard(t.greeting,t.recipient,'','#fffdf7','#242620')}>{t.download}<Icon name="arrow"/></button><span>{t.exampleNote}</span></div>
+     </section>
+    </div>
+    <div className={s.personalDetail}><span>{t.detail}</span><Link href="/user/occasions"><Icon name="calendar"/>{t.date}<Icon name="arrow"/></Link></div>
    </div>
   </section>
  </main><HomeSections/></>;
