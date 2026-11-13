@@ -51,7 +51,7 @@ if [ "${1:-}" = --app ]; then
   if [ -f "$rel/.release-ready" ]; then exit 0; fi
   if [ -e "$rel" ]; then
    [ "$(git -C "$rel" rev-parse HEAD)" = "$sha" ]
-   git -C "$rel" diff --quiet HEAD
+   git -C "$rel" diff --quiet HEAD -- . ":!backend/storage" ":!frontend/next-env.d.ts"
   else
    cd "$SRC"; git worktree add --detach "$rel" "$sha"
   fi
