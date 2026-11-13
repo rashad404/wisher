@@ -113,7 +113,12 @@ PHP
    sleep 1
   done
   health "$port"
+  curl --max-time 20 -fsS -o /dev/null "http://127.0.0.1:$port/_next/static/$(cat "$rel/frontend/.next/BUILD_ID")/_buildManifest.js"
   pm2 save >/dev/null
+  ;;
+ verify-build)
+  valid_release "$1"; slot "$2" >/dev/null
+  curl --max-time 20 -fsS -o /dev/null "http://127.0.0.1:$2/_next/static/$(cat "$1/frontend/.next/BUILD_ID")/_buildManifest.js"
   ;;
  health) health "$1";;
  activate)
@@ -141,6 +146,11 @@ fi
 if [ "${1:-}" != --driver ]; then
  exec 9<"$BASE/deploy.lock"
  flock -n 9 || { echo "Another deployment is running"; exit 1; }
+ if [ "${1:-}" = --rollback ]; then
+  runner="$BASE/bin/release-fetched.sh"
+  [ -f "$runner" ] || runner="$SELF"
+  exec bash "$runner" --driver --rollback
+ fi
  app bootstrap
  exec bash "$BASE/bin/release-fetched.sh" --driver "$@"
 fi
@@ -157,6 +167,7 @@ if [ "${1:-}" = --rollback ]; then
  [ "$oldport" != "$port" ]
  # Previous slot stays running, so rollback requires no install or rebuild.
  app health "$port"
+ app verify-build "$rel" "$port"
 else
  sha=$(app resolve "${1:-origin/v2}")
  rel="$BASE/releases/$sha"

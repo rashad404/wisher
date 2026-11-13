@@ -18,7 +18,7 @@ const out=process.env.SCREENSHOT_DIR||'docs/screenshots/deploy-v2';
     return route.continue();
    });
    const page=await context.newPage();
-   page.on('pageerror',e=>report.errors.push(e.message));
+   page.on('pageerror',e=>report.errors.push({url:page.url(),message:e.message}));
    for(const path of ['/','/gifts','/gifts/1','/wishes','/companies','/about','/faq','/privacy','/terms','/user','/missing-wisher-page']) {
     const response=await page.goto(base+path,{waitUntil:'networkidle',timeout:45000});
     assert.equal(response.status(),path==='/missing-wisher-page'?404:200,path);
