@@ -16,7 +16,10 @@ REL="$BASE/releases/$SHA"
 git worktree add --detach "$REL" "$SHA"
 cd "$REL/backend"
 ln -s "$BASE/shared/backend.env" .env
-mkdir -p storage/framework/{cache/data,sessions,views} storage/logs bootstrap/cache
+mkdir -p "$BASE/shared/storage"/framework/{cache/data,sessions,views} "$BASE/shared/storage/logs" bootstrap/cache
+mv storage storage.release
+ln -s "$BASE/shared/storage" storage
+chmod 700 "$BASE" "$REL/backend"
 check_disk
 "$PHP" /usr/local/bin/composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
 "$PHP" artisan config:cache

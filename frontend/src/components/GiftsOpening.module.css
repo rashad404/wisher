@@ -35,3 +35,22 @@
 
 .occ:focus-visible, .occOn:focus-visible, .chip:focus-visible, .chipOn:focus-visible { outline: 3px solid #ffb627; outline-offset: 2px; }
 @media (prefers-reduced-motion: reduce) { .occ, .occOn { transition: none; } }
+
+@media (max-width: 900px) {
+ .intro { grid-template-columns: minmax(0, 1fr); gap: 24px; }
+ .search { min-width: 0; width: 100%; }
+ .occasions { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+ .page { padding: 32px 16px 48px !important; }
+ .intro h1 { max-width: 100%; }
+ .intro p { font-size: 16px; }
+ .search { padding-left: 12px; gap: 8px; }
+ .search input { width: 0; font-size: 16px; }
+ .search button { padding: 0 16px; }
+ .occasions { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 24px; }
+ .chip, .chipOn { height: 44px; }
+ .resultsHead { flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+ .resultsHead h2 { flex-basis: 100%; font-size: 26px; line-height: 1.15; }
+ .wishlist, .reset { min-height: 44px; display: inline-flex; align-items: center; }
+}
