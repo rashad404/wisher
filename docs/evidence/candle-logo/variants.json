@@ -1,0 +1,22 @@
+[
+  {
+    "number": 1,
+    "name": "Quiet serif",
+    "rationale": "A compact serif candle stays close to the original i; a single-color flame replaces its dot."
+  },
+  {
+    "number": 2,
+    "name": "Birthday candle",
+    "rationale": "A slightly taller wax stem and broad amber flame make the candle easier to see."
+  },
+  {
+    "number": 3,
+    "name": "Fine wick",
+    "rationale": "A narrower stem, tiny wick and leaning amber flame give the mark a handwritten warmth."
+  },
+  {
+    "number": 4,
+    "name": "Soft wax",
+    "rationale": "A broader, taller stem with a shallow wax dip supports a compact white flame and visible wick."
+  }
+]

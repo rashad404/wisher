@@ -1,0 +1,21 @@
+{
+  "results": [
+    {
+      "width": 1440,
+      "overflow": false,
+      "images": true,
+      "smallText": 0,
+      "smallTargets": 0,
+      "headers": true
+    },
+    {
+      "width": 375,
+      "overflow": false,
+      "images": true,
+      "smallText": 0,
+      "smallTargets": 0,
+      "headers": true
+    }
+  ],
+  "errors": []
+}

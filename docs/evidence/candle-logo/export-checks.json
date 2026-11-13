@@ -1,0 +1,30 @@
+[
+  {
+    "variant": "v1",
+    "raster_dimensions": "pass",
+    "opaque_icons": "pass",
+    "ico_sizes": "16/32/48",
+    "path_only_wordmarks": "pass"
+  },
+  {
+    "variant": "v2",
+    "raster_dimensions": "pass",
+    "opaque_icons": "pass",
+    "ico_sizes": "16/32/48",
+    "path_only_wordmarks": "pass"
+  },
+  {
+    "variant": "v4",
+    "raster_dimensions": "pass",
+    "opaque_icons": "pass",
+    "ico_sizes": "16/32/48",
+    "path_only_wordmarks": "pass"
+  },
+  {
+    "variant": "v3",
+    "raster_dimensions": "pass",
+    "opaque_icons": "pass",
+    "ico_sizes": "16/32/48",
+    "path_only_wordmarks": "pass"
+  }
+]
