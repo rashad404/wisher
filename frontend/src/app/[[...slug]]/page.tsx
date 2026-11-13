@@ -1,13 +1,16 @@
 import HomePage from '@/components/HomePage';
 import GiftsOpening from '@/components/GiftsOpening';
 import Workspace from '@/components/Workspace';
-import ProductCatalog,{ProductDetail} from '@/components/ProductCatalog';
-import {CompaniesLanding,GreetingsLanding,InfoPage} from '@/components/InfoPages';
+import ProductCatalog from '@/components/ProductCatalog';
+import {InfoPage} from '@/components/InfoPages';
 import AccountGate from '@/components/AccountGate';
 import CompanyWorkspace from '@/components/CompanyWorkspace';
 import Reminders from '@/components/Reminders';
 import Wishlist from '@/components/account/Wishlist';
 import KimlikCallback from '@/components/KimlikCallback';
+import WishesStudio from '@/components/WishesStudio';
+import CompaniesPage from '@/components/CompaniesLanding';
+import ProductDetail from '@/components/ProductDetail';
 import {notFound} from 'next/navigation';
 export async function generateMetadata({params}:{params:Promise<{slug?:string[]}>}) {
  const path='/'+((await params).slug||[]).join('/');
@@ -20,8 +23,9 @@ export default async function Page({params}:{params:Promise<{slug?:string[]}>}){
  if(path==='/'||path==='/az')return <HomePage/>;
  if(path==='/gifts')return <GiftsOpening/>;
  if(/^\/gifts\/\d+$/.test(path))return <ProductDetail id={path.split('/')[2]}/>;
- if(path==='/wishes')return <GreetingsLanding/>;
- if(path==='/companies')return <CompaniesLanding/>;
+ if(path==='/wishes')return <WishesStudio/>;
+ if(path==='/user/wishes')return <AccountGate><WishesStudio account/></AccountGate>;
+ if(path==='/companies')return <CompaniesPage/>;
  if(['/about','/faq','/privacy','/terms'].includes(path))return <InfoPage page={path.slice(1)}/>;
  if(path==='/user/wishlist')return <AccountGate><Wishlist/></AccountGate>;
  if(path==='/user/company')return <AccountGate><CompanyWorkspace/></AccountGate>;
