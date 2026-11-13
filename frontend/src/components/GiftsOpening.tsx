@@ -1,0 +1,15 @@
+'use client';
+import {FormEvent,useEffect,useState} from 'react';
+import {api,Product} from '@/lib/workspace';
+import {GiftCard,allowedGift} from './HomeInteractions';
+import {site} from '@/messages/site';
+import home from './HomePage.module.css';
+import s from './GiftsOpening.module.css';
+export default function GiftsOpening(){
+ const [query,setQuery]=useState<string|null>(null),[products,setProducts]=useState<Product[]|null>(null),[error,setError]=useState(''),[retry,setRetry]=useState(0);
+ useEffect(()=>setQuery(location.search.slice(1)),[]);
+ useEffect(()=>{if(query===null)return;let active=true;setProducts(null);setError('');api('catalog?'+query).then(d=>{if(active)setProducts(d.data.filter(allowedGift).slice(0,5))}).catch(e=>{if(active)setError(e.message)});return()=>{active=false}},[query,retry]);
+ function submit(e:FormEvent<HTMLFormElement>){e.preventDefault();const q=new URLSearchParams();new FormData(e.currentTarget).forEach((v,k)=>{if(v)q.set(k,String(v))});history.replaceState(null,'','/gifts?'+q);setQuery(q.toString())}
+ const params=new URLSearchParams(query||'');
+ return <main className={`${home.root} ${s.page}`}><div className={s.intro}><div><h1>Onu sevindirəcək<br/>hədiyyəni tapın.</h1><p>Azərbaycan mağazalarından seçimlər.<br/>Bəyəndiyiniz hədiyyəni mağazanın saytından alın.</p></div><a href="/user/wishlist" className={s.wishlist}>Hədiyyə siyahım</a></div>{query!==null&&<form key={query} className={s.filters} onSubmit={submit}><label className={s.search}>Nə axtarırsınız?<input name="q" placeholder="Məsələn, dinamik" maxLength={100} defaultValue={params.get('q')||''}/></label><label>Kimə?<select name="recipient" defaultValue={params.get('recipient')||''}><option value="">Hamısı</option>{Object.entries(site.recipients).map(([v,l])=><option value={v} key={v}>{l}</option>)}</select></label><label>Münasibət<select name="occasion" defaultValue={params.get('occasion')||''}><option value="">Hamısı</option>{Object.entries({...site.occasions,womens_day:'8 Mart',birth:'Uşaq doğuldu',teachers_day:'Müəllimlər günü'}).map(([v,l])=><option value={v} key={v}>{l}</option>)}</select></label><label>Büdcə, AZN<div className={s.budget}><input aria-label="Ən az" name="min" type="number" min="0" max="100000" placeholder="Min" defaultValue={params.get('min')||''}/><input aria-label="Ən çox" name="max" type="number" min="0" max="100000" placeholder="Maks" defaultValue={params.get('max')||''}/></div></label><button type="submit">Hədiyyə tap</button></form>}<div className={s.resultsHead}><h2>{query?'Seçiminizə uyğun hədiyyələr':'Bir az ilham'}</h2>{query&&<a href="/gifts">Filtrləri sıfırla</a>}<span>Alış-veriş mağazada tamamlanır</span></div>{error?<p role="alert">{error} <button onClick={()=>setRetry(retry+1)}>Yenidən yoxla</button></p>:products?<div className={home.giftGrid}>{products.length?products.map(p=><GiftCard key={p.id} product={p}/>):<p>Uyğun hədiyyə tapılmadı. Büdcəni və ya axtarış sözünü dəyişin.</p>}</div>:<p role="status">Hədiyyələr yüklənir...</p>}</main>;
+}

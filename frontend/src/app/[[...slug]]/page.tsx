@@ -1,4 +1,5 @@
-import HomeOpening from '@/components/HomeOpening';
+import HomePage from '@/components/HomePage';
+import GiftsOpening from '@/components/GiftsOpening';
 import Workspace from '@/components/Workspace';
 import ProductCatalog,{ProductDetail} from '@/components/ProductCatalog';
 import {CompaniesLanding,GreetingsLanding,InfoPage} from '@/components/InfoPages';
@@ -8,8 +9,8 @@ import Reminders from '@/components/Reminders';
 import {notFound} from 'next/navigation';
 export default async function Page({params}:{params:Promise<{slug?:string[]}>}){
  const path='/'+((await params).slug||[]).join('/');
- if(path==='/')return <HomeOpening/>;
- if(path==='/gifts')return <ProductCatalog/>;
+ if(path==='/'||path==='/az')return <HomePage/>;
+ if(path==='/gifts')return <GiftsOpening/>;
  if(/^\/gifts\/\d+$/.test(path))return <ProductDetail id={path.split('/')[2]}/>;
  if(path==='/wishes')return <GreetingsLanding/>;
  if(path==='/companies')return <CompaniesLanding/>;

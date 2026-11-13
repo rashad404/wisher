@@ -1,0 +1,2 @@
+:root{--ink:#1d1416;--muted:#5f5357;--accent:#0f6b4f;--deep:#a3122f;--highlight:#fff3f1;--line:#eadfe1;--canvas:#fff;--subtle:#fbf7f8}
+body{font-family:var(--d-text),sans-serif;background:#fff}h1,h2,h3{font-family:var(--d-display),Georgia,serif}button,input,select,textarea{font-family:inherit}strong{font-variant-numeric:tabular-nums}.button{background:#0f6b4f}.button:hover{background:#0a5740}.button.lime{background:#0f6b4f;color:#fff}a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid #a3122f;outline-offset:3px}

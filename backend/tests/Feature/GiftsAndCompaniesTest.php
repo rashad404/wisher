@@ -14,6 +14,12 @@ class GiftsAndCompaniesTest extends TestCase {
   $this->getJson('/api/catalog?category=books&max=15&occasion=birthday&recipient=friend')->assertOk()->assertJsonCount(1,'data')->assertJsonPath('data.0.id',$p->id)->assertJsonPath('data.0.stale',true);
   $this->getJson('/api/catalog')->assertJsonCount(12,'data')->assertJsonPath('total',16);$this->getJson('/api/catalog/'.$hidden->id)->assertNotFound();$this->getJson('/api/catalog?max=-1')->assertUnprocessable();
  }
+ public function test_catalog_budget_range_and_rejected_feature():void{
+  $this->product(['price_minor'=>4999]);$in=$this->product(['price_minor'=>9900]);$this->product(['price_minor'=>15001]);
+  $this->product(['title'=>'LEGO Creator Flowers in Watering Can','price_minor'=>9900]);
+  $this->getJson('/api/catalog?min=50&max=150')->assertOk()->assertJsonPath('total',1)->assertJsonPath('data.0.id',$in->id);
+  $this->getJson('/api/catalog?min=-1')->assertUnprocessable();
+ }
  public function test_wishlist_is_private_and_idempotent():void{
   $p=$this->product();$this->getJson('/api/wishlist')->assertUnauthorized();$this->login();$this->putJson('/api/wishlist/'.$p->id)->assertOk();$this->putJson('/api/wishlist/'.$p->id)->assertOk();$this->getJson('/api/wishlist')->assertJsonPath('total',1);$this->login('other@example.com');$this->getJson('/api/wishlist')->assertJsonCount(0,'data');$this->deleteJson('/api/wishlist/'.$p->id)->assertNoContent();$this->assertDatabaseCount('wishlist_items',1);
  }

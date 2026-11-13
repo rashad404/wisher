@@ -1,0 +1,50 @@
+[
+  {
+    "name": "home",
+    "width": 1440,
+    "errors": [],
+    "overflow": false,
+    "brokenImages": [],
+    "favicon": "/icon.svg"
+  },
+  {
+    "name": "home",
+    "width": 375,
+    "errors": [],
+    "overflow": false,
+    "brokenImages": [],
+    "favicon": "/icon.svg"
+  },
+  {
+    "name": "az",
+    "width": 1440,
+    "errors": [],
+    "overflow": false,
+    "brokenImages": [],
+    "favicon": "/icon.svg"
+  },
+  {
+    "name": "gifts",
+    "width": 1440,
+    "errors": [],
+    "overflow": false,
+    "brokenImages": [],
+    "favicon": "/icon.svg"
+  },
+  {
+    "name": "about",
+    "width": 1440,
+    "errors": [],
+    "overflow": false,
+    "brokenImages": [],
+    "favicon": "/icon.svg"
+  },
+  {
+    "name": "about",
+    "width": 375,
+    "errors": [],
+    "overflow": false,
+    "brokenImages": [],
+    "favicon": "/icon.svg"
+  }
+]
