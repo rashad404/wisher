@@ -23,6 +23,8 @@ const out='docs/screenshots/deploy-v2';
     const response=await page.goto(base+path,{waitUntil:'networkidle',timeout:45000});
     assert.equal(response.status(),path==='/missing-wisher-page'?404:200,path);
     await page.evaluate(()=>document.fonts.ready);
+    await page.evaluate(()=>document.querySelectorAll('img').forEach(img=>{img.loading='eager'}));
+    await page.waitForFunction(()=>Array.from(document.images).every(img=>img.complete),{},{timeout:15000});
     await page.locator('main').first().waitFor({timeout:10000}).catch(()=>{});
     const overflow=await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth+1);
     const file=(path==='/'?'home':path.slice(1).replaceAll('/','-'))+'-'+width+'.png';
