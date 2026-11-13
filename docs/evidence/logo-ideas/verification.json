@@ -1,0 +1,21 @@
+{
+  "checks": [
+    {
+      "width": 1440,
+      "overflow": false,
+      "images": true,
+      "sizes": true,
+      "smallText": 0,
+      "shortTargets": 0
+    },
+    {
+      "width": 375,
+      "overflow": false,
+      "images": true,
+      "sizes": true,
+      "smallText": 0,
+      "shortTargets": 0
+    }
+  ],
+  "errors": []
+}
