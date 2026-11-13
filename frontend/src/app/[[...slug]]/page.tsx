@@ -7,6 +7,12 @@ import AccountGate from '@/components/AccountGate';
 import CompanyWorkspace from '@/components/CompanyWorkspace';
 import Reminders from '@/components/Reminders';
 import {notFound} from 'next/navigation';
+export async function generateMetadata({params}:{params:Promise<{slug?:string[]}>}) {
+ const path='/'+((await params).slug||[]).join('/');
+ const titles:Record<string,string>={'/':'Wisher.az - Hədiyyələr və şəxsi təbriklər','/az':'Wisher.az - Hədiyyələr və şəxsi təbriklər','/gifts':'Hədiyyələr - Wisher.az','/wishes':'Şəxsi təbriklər - Wisher.az','/companies':'Şirkətlər üçün - Wisher.az','/about':'Haqqımızda - Wisher.az','/faq':'Tez-tez verilən suallar - Wisher.az','/privacy':'Məxfilik - Wisher.az','/terms':'İstifadə şərtləri - Wisher.az'};
+ const publicPage=Boolean(titles[path])||/^\/gifts\/\d+$/.test(path);
+ return {title:titles[path]||'Wisher.az',robots:{index:publicPage&&process.env.SITE_INDEXABLE==='true',follow:publicPage&&process.env.SITE_INDEXABLE==='true'},alternates:publicPage?{canonical:path==='/az'?'/':path}:undefined};
+}
 export default async function Page({params}:{params:Promise<{slug?:string[]}>}){
  const path='/'+((await params).slug||[]).join('/');
  if(path==='/'||path==='/az')return <HomePage/>;

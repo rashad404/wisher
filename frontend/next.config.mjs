@@ -1,1 +1,1 @@
-export default { poweredByHeader: false, distDir: process.env.NEXT_DIST_DIR || '.next', experimental: { cpus: 2 } };
+export default { poweredByHeader: false, distDir: process.env.NEXT_DIST_DIR || '.next', experimental: { cpus: 2 }, async redirects(){return [{source:'/login',destination:'/user',permanent:true},{source:'/register',destination:'/user',permanent:true}]}};
