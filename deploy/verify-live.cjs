@@ -4,7 +4,7 @@ const {chromium}=require(process.env.PLAYWRIGHT_MODULE);
 const fs=require('node:fs');
 const assert=require('node:assert/strict');
 const base='https://wisher.az';
-const out='docs/screenshots/deploy-v2';
+const out=process.env.SCREENSHOT_DIR||'docs/screenshots/deploy-v2';
 (async()=>{
  fs.mkdirSync(out,{recursive:true});
  const browser=await chromium.launch({headless:true,executablePath:'/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'});
@@ -61,6 +61,6 @@ const out='docs/screenshots/deploy-v2';
    await context.close();
   }
   assert.deepEqual(report.errors,[]);
- } finally {fs.writeFileSync('docs/evidence/deploy-v2-checks.json',JSON.stringify(report,null,2)+'\n');await browser.close();}
+ } finally {fs.writeFileSync(process.env.CHECK_REPORT||'docs/evidence/deploy-v2-checks.json',JSON.stringify(report,null,2)+'\n');await browser.close();}
  console.log(JSON.stringify({pages:report.pages.length,checks:report.checks,errors:report.errors},null,2));
 })().catch(e=>{console.error(e.message);process.exitCode=1});
