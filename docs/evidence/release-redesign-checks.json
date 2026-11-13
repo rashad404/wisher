@@ -1,0 +1,230 @@
+{
+  "pages": [
+    {
+      "path": "/",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "screenshot": "home-1440.png",
+      "title": "Wisher.az - Hədiyyələr və şəxsi təbriklər"
+    },
+    {
+      "path": "/gifts",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "screenshot": "gifts-1440.png",
+      "title": "Hədiyyələr - Wisher.az"
+    },
+    {
+      "path": "/gifts/1",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "screenshot": "gifts-1-1440.png",
+      "title": "Wisher.az"
+    },
+    {
+      "path": "/wishes",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "screenshot": "wishes-1440.png",
+      "title": "Şəxsi təbriklər - Wisher.az"
+    },
+    {
+      "path": "/companies",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "screenshot": "companies-1440.png",
+      "title": "Şirkətlər üçün - Wisher.az"
+    },
+    {
+      "path": "/about",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "screenshot": "about-1440.png",
+      "title": "Haqqımızda - Wisher.az"
+    },
+    {
+      "path": "/faq",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "screenshot": "faq-1440.png",
+      "title": "Tez-tez verilən suallar - Wisher.az"
+    },
+    {
+      "path": "/privacy",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "screenshot": "privacy-1440.png",
+      "title": "Məxfilik - Wisher.az"
+    },
+    {
+      "path": "/terms",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "screenshot": "terms-1440.png",
+      "title": "İstifadə şərtləri - Wisher.az"
+    },
+    {
+      "path": "/user",
+      "width": 1440,
+      "status": 200,
+      "overflow": false,
+      "screenshot": "user-1440.png",
+      "title": "Wisher.az"
+    },
+    {
+      "path": "/missing-wisher-page",
+      "width": 1440,
+      "status": 404,
+      "overflow": false,
+      "screenshot": "missing-wisher-page-1440.png",
+      "title": "Wisher.az"
+    },
+    {
+      "path": "/",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "screenshot": "home-375.png",
+      "title": "Wisher.az - Hədiyyələr və şəxsi təbriklər"
+    },
+    {
+      "path": "/gifts",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "screenshot": "gifts-375.png",
+      "title": "Hədiyyələr - Wisher.az"
+    },
+    {
+      "path": "/gifts/1",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "screenshot": "gifts-1-375.png",
+      "title": "Wisher.az"
+    },
+    {
+      "path": "/wishes",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "screenshot": "wishes-375.png",
+      "title": "Şəxsi təbriklər - Wisher.az"
+    },
+    {
+      "path": "/companies",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "screenshot": "companies-375.png",
+      "title": "Şirkətlər üçün - Wisher.az"
+    },
+    {
+      "path": "/about",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "screenshot": "about-375.png",
+      "title": "Haqqımızda - Wisher.az"
+    },
+    {
+      "path": "/faq",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "screenshot": "faq-375.png",
+      "title": "Tez-tez verilən suallar - Wisher.az"
+    },
+    {
+      "path": "/privacy",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "screenshot": "privacy-375.png",
+      "title": "Məxfilik - Wisher.az"
+    },
+    {
+      "path": "/terms",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "screenshot": "terms-375.png",
+      "title": "İstifadə şərtləri - Wisher.az"
+    },
+    {
+      "path": "/user",
+      "width": 375,
+      "status": 200,
+      "overflow": false,
+      "screenshot": "user-375.png",
+      "title": "Wisher.az"
+    },
+    {
+      "path": "/missing-wisher-page",
+      "width": 375,
+      "status": 404,
+      "overflow": false,
+      "screenshot": "missing-wisher-page-375.png",
+      "title": "Wisher.az"
+    }
+  ],
+  "checks": [
+    {
+      "path": "/az/concepts/a",
+      "status": 404
+    },
+    {
+      "path": "/concepts/logos.html",
+      "status": 404
+    },
+    {
+      "path": "/concepts/wish-candle.html",
+      "status": 404
+    },
+    {
+      "path": "/login",
+      "status": 308,
+      "destination": "/user"
+    },
+    {
+      "path": "/register",
+      "status": 308,
+      "destination": "/user"
+    },
+    {
+      "config": {
+        "kimlik_ready": true,
+        "demo": false,
+        "provider": "deepseek"
+      }
+    },
+    {
+      "demoEndpoint": 404
+    },
+    {
+      "products": 5
+    },
+    {
+      "robots": true,
+      "sitemap": true
+    },
+    {
+      "kimlikHost": "kimlik.az",
+      "callback": "https://wisher.az/az/auth/kimlik/callback",
+      "pkce": "S256"
+    },
+    {
+      "mobileMenu": true
+    }
+  ],
+  "errors": []
+}
