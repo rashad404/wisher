@@ -1,0 +1,29 @@
+.kinds { margin-bottom: 20px; }
+.formGrid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px 24px; align-items: start; }
+.contactPick { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; }
+.formError { margin-top: 14px !important; color: var(--pom) !important; font-weight: 700; font-size: 15px; }
+
+.list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.item { display: flex; align-items: center; gap: 16px; padding: 10px 10px 10px 12px; border-radius: 16px; background: #fff; border: 1px solid var(--line); }
+.obj { width: 56px; height: 56px; flex: none; display: grid; place-items: center; border-radius: 14px; }
+.obj img { width: 40px; height: 40px; object-fit: contain; }
+.text { display: grid; min-width: 0; flex: 1; }
+.text b { font-size: 17px; font-weight: 800; overflow-wrap: anywhere; }
+.text small { font-size: 14px; color: var(--muted); display: flex; flex-wrap: wrap; align-items: center; gap: 4px 8px; }
+.rep { display: inline-flex; align-items: center; min-height: 22px; padding: 0 9px; border-radius: 999px; background: var(--well); color: var(--ink); font-size: 13px; font-weight: 700; }
+.when { flex: none; font-style: normal; font-weight: 800; font-size: 15px; padding: 6px 12px; border-radius: 999px; background: var(--blush); color: var(--ink); }
+.acts { display: flex; align-items: center; gap: 2px; flex: none; }
+.wish { display: inline-flex; align-items: center; min-height: 44px; padding: 0 12px; font-weight: 800; font-size: 15px; color: var(--pom) !important; }
+.wish:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+@media (max-width: 900px) { .formGrid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 600px) {
+  .contactPick { grid-template-columns: minmax(0, 1fr); }
+  .item { flex-wrap: wrap; gap: 10px 12px; padding: 12px; }
+  .obj { width: 48px; height: 48px; }
+  .obj img { width: 34px; height: 34px; }
+  .text { flex: 1 1 0; }
+  .text b { font-size: 16px; }
+  .acts { flex: 1 1 100%; border-top: 1px solid var(--row); padding-top: 4px; }
+  .wish { margin-right: auto; padding-left: 0; }
+}

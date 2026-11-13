@@ -1,0 +1,8 @@
+.count { font-size: 14px !important; font-weight: 700; margin-bottom: 4px !important; }
+.wrap { background: transparent !important; }
+.grid { grid-template-columns: repeat(4, minmax(0, 1fr)) !important; gap: 22px 18px !important; margin-top: 8px !important; }
+.warn { font-size: 13px; color: var(--pom); font-weight: 700; }
+.shop { display: inline-flex; align-items: center; min-height: 40px; font-weight: 800; font-size: 14.5px; color: var(--pom) !important; }
+.shop:hover { text-decoration: underline; text-underline-offset: 4px; }
+@media (max-width: 1100px) { .grid { grid-template-columns: repeat(3, minmax(0, 1fr)) !important; } }
+@media (max-width: 900px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)) !important; gap: 18px 12px !important; } }

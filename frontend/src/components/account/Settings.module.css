@@ -1,0 +1,18 @@
+.card { max-width: 720px; background: #fff; border: 1px solid var(--line); border-radius: 18px; padding: 8px 24px 24px; box-shadow: 0 10px 30px rgba(60, 0, 12, .06); }
+.row { display: grid; grid-template-columns: 180px minmax(0, 1fr); align-items: center; gap: 16px; min-height: 72px; padding: 12px 0; border-bottom: 1px solid var(--row); }
+.row > label, .row > span { font-size: 15px; font-weight: 700; color: var(--muted); }
+.row input, .row select { width: 100%; min-height: 48px; padding: 0 14px; border-radius: 12px; border: 1.5px solid transparent; background: var(--well); font: inherit; font-size: 16px; font-weight: 600; color: var(--ink); outline: none; }
+.row input:focus, .row select:focus { border-color: var(--ink); background: #fff; }
+.row select { appearance: none; -webkit-appearance: none; padding-right: 36px; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%235f5357' stroke-width='2.5' stroke-linecap='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; cursor: pointer; }
+.save { width: 100%; margin-top: 22px; }
+.account { max-width: 720px; display: flex; align-items: center; justify-content: space-between; gap: 20px; margin-top: 24px; padding: 20px 24px; border-radius: 18px; background: var(--blush); }
+.account h2 { font-size: 22px; }
+.account p { margin-top: 4px !important; font-size: 15px; }
+.logout { flex: none; display: inline-flex; align-items: center; gap: 8px; min-height: 46px; padding: 0 16px; border-radius: 14px; border: 2px solid var(--pom); background: #fff; color: var(--pom); font: inherit; font-weight: 800; font-size: 15px; cursor: pointer; }
+.logout:hover { background: #fde8ec; }
+@media (max-width: 600px) {
+  .card { padding: 4px 16px 18px; }
+  .row { grid-template-columns: minmax(0, 1fr); gap: 8px; min-height: 0; padding: 14px 0; }
+  .account { flex-direction: column; align-items: stretch; padding: 18px 16px; }
+  .logout { justify-content: center; }
+}

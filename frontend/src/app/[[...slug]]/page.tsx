@@ -6,6 +6,7 @@ import {CompaniesLanding,GreetingsLanding,InfoPage} from '@/components/InfoPages
 import AccountGate from '@/components/AccountGate';
 import CompanyWorkspace from '@/components/CompanyWorkspace';
 import Reminders from '@/components/Reminders';
+import Wishlist from '@/components/account/Wishlist';
 import KimlikCallback from '@/components/KimlikCallback';
 import {notFound} from 'next/navigation';
 export async function generateMetadata({params}:{params:Promise<{slug?:string[]}>}) {
@@ -22,7 +23,7 @@ export default async function Page({params}:{params:Promise<{slug?:string[]}>}){
  if(path==='/wishes')return <GreetingsLanding/>;
  if(path==='/companies')return <CompaniesLanding/>;
  if(['/about','/faq','/privacy','/terms'].includes(path))return <InfoPage page={path.slice(1)}/>;
- if(path==='/user/wishlist')return <AccountGate><ProductCatalog wishlist/></AccountGate>;
+ if(path==='/user/wishlist')return <AccountGate><Wishlist/></AccountGate>;
  if(path==='/user/company')return <AccountGate><CompanyWorkspace/></AccountGate>;
  if(path==='/user/reminders')return <AccountGate><Reminders/></AccountGate>;
  if(['/user','/user/wishes','/user/contacts','/user/occasions','/user/saved','/user/settings'].includes(path))return <Workspace path={path}/>;

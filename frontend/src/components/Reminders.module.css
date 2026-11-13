@@ -1,0 +1,24 @@
+.unread { display: inline-flex; align-items: center; min-height: 26px; padding: 0 10px; margin-left: 4px; border-radius: 999px; background: var(--pom); color: #fff; font-size: 13px; font-weight: 800; }
+.list { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; max-width: 860px; }
+.item, .read { display: flex; gap: 20px; padding: 18px 20px 16px 18px; border-radius: 18px; background: #fff; border: 1px solid var(--line); box-shadow: 0 10px 26px rgba(60, 0, 12, .06); }
+.read { box-shadow: none; background: var(--blush); border-color: transparent; }
+.read .obj { opacity: .7; }
+.obj { width: 76px; height: 76px; flex: none; display: grid; place-items: center; border-radius: 18px; }
+.obj img { width: 52px; height: 52px; object-fit: contain; }
+.text { min-width: 0; flex: 1; }
+.when { font-size: 15px; }
+.when b { color: var(--pom); font-weight: 800; margin-right: 4px; }
+.text h2 { margin-top: 2px !important; font-size: 25px !important; line-height: 1.2; overflow-wrap: anywhere; }
+.acts { display: flex; flex-wrap: wrap; align-items: center; gap: 10px; margin-top: 14px; }
+.acts > a { min-height: 46px; font-size: 15px; }
+.doneMark { font-size: 14px; font-weight: 700; color: var(--leaf); }
+.note { margin-top: 28px !important; font-size: 13.5px; }
+@media (max-width: 600px) {
+  .item, .read { gap: 14px; padding: 16px 14px; }
+  .obj { width: 56px; height: 56px; border-radius: 14px; }
+  .obj img { width: 38px; height: 38px; }
+  .text h2 { font-size: 21px !important; }
+  .acts { margin-left: -70px; }
+  .acts > a { flex: 1 1 40%; padding: 0 12px; }
+  .acts > button { flex: 1 1 100%; }
+}
