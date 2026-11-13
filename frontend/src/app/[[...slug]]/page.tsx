@@ -6,6 +6,7 @@ import {CompaniesLanding,GreetingsLanding,InfoPage} from '@/components/InfoPages
 import AccountGate from '@/components/AccountGate';
 import CompanyWorkspace from '@/components/CompanyWorkspace';
 import Reminders from '@/components/Reminders';
+import KimlikCallback from '@/components/KimlikCallback';
 import {notFound} from 'next/navigation';
 export async function generateMetadata({params}:{params:Promise<{slug?:string[]}>}) {
  const path='/'+((await params).slug||[]).join('/');
@@ -24,6 +25,7 @@ export default async function Page({params}:{params:Promise<{slug?:string[]}>}){
  if(path==='/user/wishlist')return <AccountGate><ProductCatalog wishlist/></AccountGate>;
  if(path==='/user/company')return <AccountGate><CompanyWorkspace/></AccountGate>;
  if(path==='/user/reminders')return <AccountGate><Reminders/></AccountGate>;
- if(['/user','/user/wishes','/user/contacts','/user/occasions','/user/saved','/user/settings','/az/auth/kimlik/callback'].includes(path))return <Workspace path={path}/>;
+ if(['/user','/user/wishes','/user/contacts','/user/occasions','/user/saved','/user/settings'].includes(path))return <Workspace path={path}/>;
+ if(path==='/az/auth/kimlik/callback')return <KimlikCallback/>;
  notFound();
 }
