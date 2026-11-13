@@ -22,6 +22,11 @@ const out=process.env.SCREENSHOT_DIR||'docs/screenshots/deploy-v2';
    for(const path of ['/','/gifts','/gifts/1','/wishes','/companies','/about','/faq','/privacy','/terms','/user','/missing-wisher-page']) {
     const response=await page.goto(base+path,{waitUntil:'networkidle',timeout:45000});
     assert.equal(response.status(),path==='/missing-wisher-page'?404:200,path);
+    if(path==='/user') {
+     await page.getByRole('heading',{name:'Yaxınlarınızın özəl günləri bir yerdə',exact:true}).waitFor();
+     assert.equal(await page.locator('.account-tabs').count(),0);
+     assert.equal(await page.getByRole('button',{name:'kimlik.az ilə daxil ol',exact:true}).isVisible(),true);
+    }
     await page.evaluate(()=>document.fonts.ready);
     await page.evaluate(()=>document.querySelectorAll('img').forEach(img=>{img.loading='eager'}));
     await page.waitForFunction(()=>Array.from(document.images).every(img=>img.complete),{},{timeout:15000});

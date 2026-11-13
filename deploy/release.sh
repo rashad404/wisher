@@ -49,13 +49,19 @@ if [ "${1:-}" = --app ]; then
   exec > "$BASE/build-$sha.log" 2>&1
   disk
   if [ -f "$rel/.release-ready" ]; then exit 0; fi
-  [ ! -e "$rel" ] || { echo 'Incomplete release exists; inspect it before retrying'; exit 1; }
-  cd "$SRC"; git worktree add --detach "$rel" "$sha"
+  if [ -e "$rel" ]; then
+   [ "$(git -C "$rel" rev-parse HEAD)" = "$sha" ]
+   git -C "$rel" diff --quiet HEAD
+  else
+   cd "$SRC"; git worktree add --detach "$rel" "$sha"
+  fi
   chmod 700 "$rel"
   cd "$rel/backend"
-  ln -s "$BASE/shared/backend.env" .env
-  mv storage storage.release
-  ln -s "$BASE/shared/storage" storage
+  [ -L .env ] || ln -s "$BASE/shared/backend.env" .env
+  if [ ! -L storage ]; then
+   mv storage storage.release
+   ln -s "$BASE/shared/storage" storage
+  fi
   mkdir -p bootstrap/cache
   disk
   "$PHP" /usr/local/bin/composer install --no-dev --prefer-dist --no-interaction --optimize-autoloader
@@ -63,7 +69,7 @@ if [ "${1:-}" = --app ]; then
   "$PHP" artisan route:cache
   "$PHP" artisan view:cache
   cd "$rel/frontend"
-  ln -s "$BASE/shared/frontend.env" .env.production.local
+  [ -L .env.production.local ] || ln -s "$BASE/shared/frontend.env" .env.production.local
   disk
   npm ci --no-audit --no-fund
   disk
