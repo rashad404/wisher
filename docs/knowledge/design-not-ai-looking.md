@@ -9,7 +9,9 @@ Wisher has an extra risk: it is an AI product. A site that sells AI wishes and a
 Full sources, if you need more depth:
 - /Users/macmini/projects/knowledge/design-lessons-tech-support-hero.md (what finally worked on sayt.az)
 - /Users/macmini/projects/knowledge/voice-and-design-standards.md, sections 3 (native Azerbaijani), 5 to 7 (why sites read as AI, what a designer does, pre-ship checklist)
-- The startup-design skill (composition, typography, rhythm)
+- docs/knowledge/sayt-az-design-reference.md: the sayt.az design system. Rashad rates sayt.az the best design in the portfolio; it is the model for Wisher.
+
+**The general rules now live in the product-design skill** (sell-focused, fixed rules, process, toolbox, brand decisions). This file keeps the Wisher-specific notes (section 4). The old startup-design skill is retired; Rashad rejected the design it produced.
 
 ## 1. What "AI-looking" actually means
 

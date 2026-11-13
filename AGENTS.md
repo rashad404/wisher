@@ -9,4 +9,4 @@ Read docs/roadmap.md and docs/feature-inventory.md. Laravel 12 backend, Next.js 
 - Plain ASCII punctuation, preserve Azerbaijani letters. All example domains/emails use example.com. Azerbaijani copy is draft pending owner review. Communicate in English.
 - Scope every private query to its owner. Paginate, index, and rate-limit expensive work. Local demo login must be off outside local environment. Fake generation must be labeled.
 
-Before any page, logo or brand work, read docs/knowledge/design-not-ai-looking.md.
+Design: follow the product-design skill (sell first: every page must turn visitors into customers). Write Wisher's own brand decisions in docs/design.md using the skill's template. sayt.az is the best approved example: study it (docs/knowledge/sayt-az-design-reference.md, https://sayt.az) for method and quality, but Wisher must look like Wisher, not a sayt.az copy. docs/knowledge/design-not-ai-looking.md has the Wisher-specific notes. The old startup-design skill is retired.
