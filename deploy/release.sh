@@ -196,6 +196,7 @@ recover() {
 trap recover ERR
 app activate "$rel"
 sed -i -E "s#(CPANEL_APACHE_PROXY_PASS http://127.0.0.1:)[0-9]+#\1$port#" "$SITE"
+grep -q '^gzip on;' "$SITE" || cat "$rel/deploy/nginx-gzip.conf" >> "$SITE"
 # Absolute release paths avoid stale PHP realpath caches after the symlink swap.
 sed -i -E "s#(fastcgi_param SCRIPT_FILENAME) .*;#\1 $rel/backend/public/index.php;#; s#(fastcgi_param DOCUMENT_ROOT) .*;#\1 $rel/backend/public;#" "$API"
 nginx -t
