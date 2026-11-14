@@ -4,14 +4,14 @@ import {api,ApiError,Product} from '@/lib/workspace';
 import {openKimlik} from '@/lib/kimlik';
 import {track} from '@/lib/analytics';
 import s from './HomePage.module.css';
+import {allowedGift,giftImageFor,giftTitleFor} from '@/lib/gifts';
 
-const titles:Record<number,string>={1:'LEGO Botanicals: bambuk',2:'JBL Go 5 portativ dinamik, ağ',4:'Tognana qəhvə dəmləyən',5:'Fujifilm Instax Mini LiPlay+ fotoaparat',6:'Ttec 20000 mAh power bank'};
 const tags:Record<number,string>={1:'Dosta',2:'Yeniyetməyə',4:'Valideynə',5:'Gəncə',6:'Həmkara'};
-const titleFor=(p:Product)=>titles[p.id]||p.title;
+const titleFor=giftTitleFor;
 const priceFor=(p:Product)=>p.price_minor===null?'Qiymət mağazada':(p.price_minor/100).toFixed(2).replace('.',',')+' '+p.currency;
-export const allowedGift=(p:Product)=>p.id!==3&&!/flowers in watering can/i.test(p.title);
-const imageFor=(p:Product)=>[1,2,4,5,6].includes(p.id)?`/concepts/product-${p.id}.webp`:p.image_url;
-export function GiftPhoto({product:p}:{product:Product}){const [failed,setFailed]=useState(false);return imageFor(p)&&!failed?<img src={imageFor(p)!} alt={p.title} width="320" height="320" loading="lazy" onError={()=>setFailed(true)}/>:<span>Şəkil mövcud deyil</span>}
+export {allowedGift};
+const imageFor=giftImageFor;
+export function GiftPhoto({product:p,eager=false}:{product:Product;eager?:boolean}){const [failed,setFailed]=useState(false);return imageFor(p)&&!failed?<img src={imageFor(p)!} alt={p.title} width="320" height="320" loading={eager?'eager':'lazy'} fetchPriority={eager?'high':undefined} onError={()=>setFailed(true)}/>:<span>Şəkil mövcud deyil</span>}
 export function GiftCard({product:p}:{product:Product}){
  const [saved,setSaved]=useState(false),[busy,setBusy]=useState(false),[error,setError]=useState('');
  async function save(){setBusy(true);setError('');try{await api('wishlist/'+p.id,'PUT',{});setSaved(true);track('gift_saved')}catch(e){if(e instanceof ApiError&&e.status===401){try{await openKimlik('/gifts/'+p.id)}catch(e){setError((e as Error).message)}}else setError((e as Error).message)}finally{setBusy(false)}}

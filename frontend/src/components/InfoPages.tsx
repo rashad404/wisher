@@ -111,6 +111,9 @@ const faq:{id:string;title:string;img:string;bg:string;items:QA[]}[]=[
  ]},
 ];
 
+function nodeText(n:React.ReactNode):string{if(n==null||typeof n==='boolean')return '';if(typeof n==='string'||typeof n==='number')return String(n);if(Array.isArray(n))return n.map(nodeText).join('');const el=n as React.ReactElement<{children?:React.ReactNode}>;return el.props?nodeText(el.props.children):''}
+export const faqPlain=():[string,string][]=>faq.flatMap(g=>g.items.map(([q,a])=>[q,nodeText(a)] as [string,string]));
+
 function FaqPage(){
  return <main className={`${home.root} ${s.page}`}>
   <section className={s.faqIntro}>

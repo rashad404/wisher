@@ -1,8 +1,7 @@
 import HomePage from '@/components/HomePage';
 import GiftsOpening from '@/components/GiftsOpening';
 import Workspace from '@/components/Workspace';
-import ProductCatalog from '@/components/ProductCatalog';
-import {InfoPage} from '@/components/InfoPages';
+import {InfoPage,faqPlain} from '@/components/InfoPages';
 import AccountGate from '@/components/AccountGate';
 import CompanyWorkspace from '@/components/CompanyWorkspace';
 import Reminders from '@/components/Reminders';
@@ -11,22 +10,51 @@ import KimlikCallback from '@/components/KimlikCallback';
 import WishesStudio from '@/components/WishesStudio';
 import CompaniesPage from '@/components/CompaniesLanding';
 import ProductDetail from '@/components/ProductDetail';
+import {GreetingLanding,GreetingsHub} from '@/components/GreetingLanding';
+import JsonLd from '@/components/JsonLd';
 import {notFound} from 'next/navigation';
-export async function generateMetadata({params}:{params:Promise<{slug?:string[]}>}) {
- const path='/'+((await params).slug||[]).join('/');
- const titles:Record<string,string>={'/':'Wisher.az - Hədiyyələr və şəxsi təbriklər','/az':'Wisher.az - Hədiyyələr və şəxsi təbriklər','/gifts':'Hədiyyələr - Wisher.az','/wishes':'Şəxsi təbriklər - Wisher.az','/companies':'Şirkətlər üçün - Wisher.az','/about':'Haqqımızda - Wisher.az','/faq':'Tez-tez verilən suallar - Wisher.az','/privacy':'Məxfilik - Wisher.az','/terms':'İstifadə şərtləri - Wisher.az'};
- const publicPage=Boolean(titles[path])||/^\/gifts\/\d+$/.test(path);
- return {title:titles[path]||'Wisher.az',robots:{index:publicPage&&process.env.SITE_INDEXABLE==='true',follow:publicPage&&process.env.SITE_INDEXABLE==='true'},alternates:publicPage?{canonical:path==='/az'?'/':path}:undefined};
+import type {Metadata} from 'next';
+import {breadcrumbLd,faqLd,pageMetadata,productImage,productLd,productSeo,staticPages} from '@/lib/seo';
+import {getCatalogPage,getProduct} from '@/lib/catalog-server';
+import {cleanGiftTitle} from '@/lib/gifts';
+import {greetingBySlug,greetingsHub} from '@/messages/greetings';
+
+type Props={params:Promise<{slug?:string[]}>};
+const pathOf=async(params:Props['params'])=>'/'+((await params).slug||[]).join('/');
+const crumbs:Record<string,string>={'/gifts':'Hədiyyələr','/wishes':'Təbrik yaz','/companies':'Şirkətlər üçün','/about':'Haqqımızda','/faq':'Suallar və cavablar','/privacy':'Məxfilik','/terms':'İstifadə şərtləri'};
+
+export async function generateMetadata({params}:Props):Promise<Metadata>{
+ const path=await pathOf(params);
+ if(staticPages[path])return pageMetadata(path,staticPages[path]);
+ if(path==='/tebrikler')return pageMetadata(path,greetingsHub);
+ const greet=path.startsWith('/tebrikler/')&&greetingBySlug(path.slice(11));
+ if(greet)return pageMetadata(path,greet,{type:'article'});
+ if(/^\/gifts\/\d+$/.test(path)){
+  const p=await getProduct(path.split('/')[2]);
+  if(p&&p!=='error'){const img=productImage(p);return pageMetadata(path,productSeo(p),img?{image:{url:img,alt:cleanGiftTitle(p.title)}}:{})}
+  return {title:'Hədiyyə - Wisher.az',robots:{index:false,follow:true}};
+ }
+ return {title:'Wisher.az',robots:{index:false,follow:false}};
 }
-export default async function Page({params}:{params:Promise<{slug?:string[]}>}){
- const path='/'+((await params).slug||[]).join('/');
- if(path==='/'||path==='/az')return <HomePage/>;
- if(path==='/gifts')return <GiftsOpening/>;
- if(/^\/gifts\/\d+$/.test(path))return <ProductDetail id={path.split('/')[2]}/>;
- if(path==='/wishes')return <WishesStudio/>;
+
+export default async function Page({params}:Props){
+ const path=await pathOf(params);
+ const trail=crumbs[path]?<JsonLd data={breadcrumbLd([[crumbs[path],path]])}/>:null;
+ if(path==='/')return <HomePage/>;
+ if(path==='/gifts'){const first=await getCatalogPage();return <>{trail}<GiftsOpening initial={first?.data}/></>}
+ if(/^\/gifts\/\d+$/.test(path)){
+  const id=path.split('/')[2],p=await getProduct(id);
+  if(p===null)notFound();
+  if(p==='error')return <ProductDetail id={id}/>;
+  return <><JsonLd data={breadcrumbLd([['Hədiyyələr','/gifts'],[cleanGiftTitle(p.title),path]])}/><JsonLd data={productLd(p)}/><ProductDetail id={id} initial={p}/></>;
+ }
+ if(path==='/tebrikler')return <GreetingsHub/>;
+ if(path.startsWith('/tebrikler/')){const g=greetingBySlug(path.slice(11));if(!g)notFound();return <GreetingLanding page={g}/>}
+ if(path==='/wishes')return <>{trail}<WishesStudio/></>;
  if(path==='/user/wishes')return <AccountGate><WishesStudio account/></AccountGate>;
- if(path==='/companies')return <CompaniesPage/>;
- if(['/about','/faq','/privacy','/terms'].includes(path))return <InfoPage page={path.slice(1)}/>;
+ if(path==='/companies')return <>{trail}<CompaniesPage/></>;
+ if(path==='/faq')return <>{trail}<JsonLd data={faqLd(faqPlain())}/><InfoPage page="faq"/></>;
+ if(['/about','/privacy','/terms'].includes(path))return <>{trail}<InfoPage page={path.slice(1)}/></>;
  if(path==='/user/wishlist')return <AccountGate><Wishlist/></AccountGate>;
  if(path==='/user/company')return <AccountGate><CompanyWorkspace/></AccountGate>;
  if(path==='/user/reminders')return <AccountGate><Reminders/></AccountGate>;

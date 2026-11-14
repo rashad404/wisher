@@ -1,5 +1,5 @@
 'use client';
-import {FormEvent,useEffect,useState} from 'react';
+import {FormEvent,useEffect,useRef,useState} from 'react';
 import {api,Product} from '@/lib/workspace';
 import {GiftCard,allowedGift} from './HomeInteractions';
 import {site} from '@/messages/site';
@@ -18,10 +18,11 @@ const occasions:[string,string,string,string][]=[
 ];
 const budgets:[string,string,string][]=[['','','Hər büdcə'],['','50','50 AZN-ə qədər'],['50','150','50-150 AZN'],['150','','150 AZN-dən çox']];
 
-export default function GiftsOpening(){
- const [query,setQuery]=useState<string|null>(null),[products,setProducts]=useState<Product[]|null>(null),[error,setError]=useState(''),[retry,setRetry]=useState(0);
+export default function GiftsOpening({initial}:{initial?:Product[]}){
+ const [query,setQuery]=useState<string|null>(null),[products,setProducts]=useState<Product[]|null>(initial?initial.filter(allowedGift).slice(0,10):null),[error,setError]=useState(''),[retry,setRetry]=useState(0);
+ const first=useRef(true);
  useEffect(()=>setQuery(location.search.slice(1)),[]);
- useEffect(()=>{if(query===null)return;let active=true;setProducts(null);setError('');api('catalog?'+query).then(d=>{if(active)setProducts(d.data.filter(allowedGift).slice(0,10))}).catch(e=>{if(active)setError(e.message)});return()=>{active=false}},[query,retry]);
+ useEffect(()=>{if(query===null)return;if(first.current){first.current=false;if(query===''&&initial)return}let active=true;setProducts(null);setError('');api('catalog?'+query).then(d=>{if(active)setProducts(d.data.filter(allowedGift).slice(0,10))}).catch(e=>{if(active)setError(e.message)});return()=>{active=false}},[query,retry]);
  const params=new URLSearchParams(query||'');
  function apply(next:URLSearchParams){const q=next.toString();history.replaceState(null,'','/gifts'+(q?'?'+q:''));setQuery(q)}
  function set(changes:Record<string,string>){const next=new URLSearchParams(params);Object.entries(changes).forEach(([k,v])=>v?next.set(k,v):next.delete(k));apply(next)}
