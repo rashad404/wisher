@@ -7,7 +7,7 @@ export function GreetingsLanding(){return <main className="product-page"><div cl
 
 
 /* Owner review: no public contact address exists yet. Replace before launch. */
-export const CONTACT_EMAIL='salam@example.com';
+export const CONTACT_EMAIL='support@wisher.az';
 
 function Flame(){return <svg viewBox="0 0 20 28" aria-hidden="true" className={s.flame}><path d="M10 1C10 1 3 10 3 17a7 7 0 0014 0C17 10 10 1 10 1z" fill="#ffb627"/><path d="M10 11s-3 4-3 7a3 3 0 006 0c0-3-3-7-3-7z" fill="#fff3c4"/></svg>}
 
