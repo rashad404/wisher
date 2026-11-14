@@ -13,7 +13,9 @@ const wishOccasions=['birthday','anniversary','wedding','novruz','newyear','grad
 const cleanTitle=cleanGiftTitle;
 const price=(p:Product)=>p.price_minor===null?null:(p.price_minor/100).toFixed(2).replace('.',',')+' '+(p.currency||'AZN');
 const months=['yanvar','fevral','mart','aprel','may','iyun','iyul','avqust','sentyabr','oktyabr','noyabr','dekabr'];
-const day=(iso:string)=>{const d=new Date(iso);return d.getDate()+' '+months[d.getMonth()]};
+// Fixed timezone so server and browser render the same date.
+const bakuDate=new Intl.DateTimeFormat('en-US',{timeZone:'Asia/Baku',day:'numeric',month:'numeric'});
+const day=(iso:string)=>{const parts=Object.fromEntries(bakuDate.formatToParts(new Date(iso)).map(x=>[x.type,x.value]));return parts.day+' '+months[Number(parts.month)-1]};
 
 function Heart({on}:{on:boolean}){return <svg viewBox="0 0 24 24" aria-hidden="true" className={s.heart} style={on?{fill:'#a3122f'}:undefined}><path d="M12 21s-7.5-4.6-9.5-9.3C1 8 3.4 4.5 7 4.5c2 0 3.6 1.1 5 3 1.4-1.9 3-3 5-3 3.6 0 6 3.5 4.5 7.2C19.5 16.4 12 21 12 21z"/></svg>}
 
