@@ -160,6 +160,7 @@ shift
 # Existing lock, opened read-only; no root-owned application files are created.
 flock -n 9 || { echo 'Run the release entry point without internal flags'; exit 1; }
 runuser -u wisher -- git -C "$SRC" show origin/v2:deploy/keep-live.py > "$BASE/bin/keep-live.py"
+chown wisher:wisher "$BASE/bin/keep-live.py"
 mapfile -t live < <(app state)
 old=${live[0]}; oldport=${live[1]}
 valid_release "$old"; slot "$oldport" >/dev/null
