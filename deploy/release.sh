@@ -6,6 +6,7 @@ SRC=/home/wisher/wisher-v2
 PHP=/usr/local/bin/ea-php84
 export PATH=/opt/cpanel/ea-nodejs22/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin
 SELF=$(realpath "$0")
+[ "${1:-}" != --rollback ] || { echo "Redeploy an earlier GitHub SHA instead"; exit 1; }
 app() { runuser -u wisher -- bash "$SELF" --app "$@"; }
 disk() { df -h /; [ "$(df -Pk / | awk 'NR==2 {print $4}')" -ge 10485760 ]; }
 slot() { case "$1" in 3022) echo wisher-web;; 3023) echo wisher-web-green;; *) exit 1;; esac; }
@@ -31,6 +32,7 @@ if [ "${1:-}" = --app ]; then
   cd "$SRC"; [ -z "$(git status --porcelain)" ] || { echo 'Server source checkout is dirty'; exit 1; }
   git fetch origin v2
   mkdir -p "$BASE/bin"
+  git show origin/v2:deploy/keep-live.py > "$BASE/bin/keep-live.py"
   git show origin/v2:deploy/release.sh > "$BASE/bin/release-fetched.pending"
   mv "$BASE/bin/release-fetched.pending" "$BASE/bin/release-fetched.sh"
   ;;
@@ -205,4 +207,7 @@ app health "$port"
 app scheduler "$rel"
 app record "$rel" "$port" "$old" "$oldport"
 trap - ERR
-echo "Live: $(basename "$rel") on $port. Previous release remains running on $oldport."
+curl --retry 5 --retry-delay 1 --max-time 30 -fsS https://wisher.az/ -o /dev/null
+python3 "$BASE/bin/keep-live.py" --base "$BASE" --user wisher --source "$SRC" --health-url https://wisher.az/ --apply
+rm -f "$SITE.release-backup" "$API.release-backup" "$BASE/previous-release" "$BASE/previous-port"
+echo "Live: $(basename "$rel") on $port. Only live release retained."
