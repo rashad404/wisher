@@ -15,13 +15,15 @@ def run(args, **kw):
     return subprocess.run(args, check=True, **kw)
 
 
-def candidates(base, live):
-    releases = base / 'releases'
+def candidates(base, live, releases=None):
+    releases = releases or base / 'releases'
     if releases.is_symlink() or live.parent != releases or not live.is_dir():
         raise RuntimeError('Live release must be a direct real releases directory')
     result = []
     for path in releases.iterdir():
-        if path.is_symlink() or not path.is_dir() or not re.fullmatch(r'[a-f0-9]{7,40}', path.name):
+        if path.is_file() and (path.name.endswith('.log') or path.name == 'deploy.lock'):
+            continue
+        if path.is_symlink() or not path.is_dir() or not re.fullmatch(r'(?:[a-f0-9]{7,40}|[0-9]{8}-[a-z0-9-]+)', path.name):
             raise RuntimeError('Unexpected release entry: ' + str(path))
         if path != live:
             result.append(path)
@@ -32,7 +34,9 @@ def main():
     p = argparse.ArgumentParser()
     p.add_argument('--base', required=True)
     p.add_argument('--user', required=True)
-    p.add_argument('--source', required=True)
+    p.add_argument('--source')
+    p.add_argument('--live-process')
+    p.add_argument('--pm2-home')
     p.add_argument('--health-url', required=True)
     p.add_argument('--apply', action='store_true')
     a = p.parse_args()
@@ -48,8 +52,25 @@ def main():
     if not inherited:
         lock = open(base / 'deploy.lock', 'a')
         fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
-    live = (base / 'current').resolve(strict=True)
-    old = candidates(base, live)
+    env = dict(os.environ, PATH='/opt/cpanel/ea-nodejs22/bin:' + os.environ['PATH'])
+    if a.pm2_home:
+        env['PM2_HOME'] = a.pm2_home
+    prefix = ['runuser', '-u', a.user, '--']
+    def process_list():
+        return json.loads(subprocess.check_output(prefix + ['pm2', 'jlist'], env=env, text=True))
+    processes = process_list()
+    def live_path():
+        if not a.live_process:
+            return (base / 'current').resolve(strict=True)
+        rows = [r for r in process_list() if r['name'] == a.live_process and r.get('pid')]
+        if len(rows) != 1:
+            raise RuntimeError('Expected exactly one running live process')
+        path = Path(rows[0]['pm2_env']['pm_cwd']).resolve(strict=True)
+        while path.parent != base and path != path.parent:
+            path = path.parent
+        return path
+    live = live_path()
+    old = candidates(base, live, base if a.live_process else None)
     run(['curl', '--max-time', '30', '-fsS', a.health_url, '-o', '/dev/null'])
     nginx = subprocess.check_output(['nginx', '-T'], stderr=subprocess.DEVNULL, text=True)
     for directory, dirs, files in os.walk(str(live), followlinks=False):
@@ -57,12 +78,12 @@ def main():
             link = Path(directory) / name
             if link.is_symlink() and any(str(link.resolve()).startswith(str(path) + '/') for path in old):
                 raise RuntimeError('Live release depends on an old release: ' + str(link))
+    for cron in list(Path('/etc/cron.d').glob('*')) + [Path('/var/spool/cron') / a.user]:
+        if cron.is_file():
+            nginx += cron.read_text()
     for path in old:
         if str(path) in nginx:
             raise RuntimeError('Inactive release still referenced by active nginx configuration: ' + str(path))
-    env = dict(os.environ, PATH='/opt/cpanel/ea-nodejs22/bin:' + os.environ['PATH'])
-    prefix = ['runuser', '-u', a.user, '--']
-    processes = json.loads(subprocess.check_output(prefix + ['pm2', 'jlist'], env=env, text=True))
     obsolete = [r for r in processes if any(
         str(r.get('pm2_env', {}).get('pm_cwd', '')).startswith(str(path) + '/') or
         str(r.get('pm2_env', {}).get('pm_exec_path', '')).startswith(str(path) + '/')
@@ -80,7 +101,12 @@ def main():
         blockers = []
         for proc in Path('/proc').glob('[0-9]*'):
             try:
-                refs = [os.readlink(str(proc / 'cwd')), os.readlink(str(proc / 'exe'))]
+                refs = [os.readlink(str(proc / 'exe'))]
+                command = (proc / 'cmdline').read_bytes().replace(b'\0', b' ').decode(errors='replace')
+                # PM2 daemon's inherited cwd is not an app dependency. Its live
+                # workers, descriptors and mappings are checked independently.
+                if not (command.startswith('PM2 ') and 'God Daemon (' in command):
+                    refs.append(os.readlink(str(proc / 'cwd')))
                 for fd in (proc / 'fd').iterdir():
                     try:
                         refs.append(os.readlink(str(fd)))
@@ -97,10 +123,11 @@ def main():
     if blockers:
         raise RuntimeError('Release files still held by processes: ' + ','.join(blockers))
     for path in old:
-        if (base / 'current').resolve(strict=True) != live or path == live:
+        if live_path() != live or path == live:
             raise RuntimeError('Live release changed during cleanup')
         shutil.rmtree(str(path))
-    run(prefix + ['git', '-C', a.source, 'worktree', 'prune'], env=env)
+    if a.source:
+        run(prefix + ['git', '-C', a.source, 'worktree', 'prune'], env=env)
     for path in base.glob('build-*.log'):
         if path.is_file() and not path.is_symlink() and time.time() - path.stat().st_mtime > 7 * 86400:
             path.unlink()
